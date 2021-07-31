@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
+    <plurals name="fui_error_weak_password"> <item quantity="one">Sandi tidak cukup kuat. Gunakan minimal %1$d karakter dan merupakan kombinasi huruf dan angka</item> <item quantity="other">Sandi tidak cukup kuat. Gunakan minimal %1$d karakter dan merupakan kombinasi huruf dan angka</item> </plurals>
+    <string msgid="5976598919945601918" name="abc_action_bar_home_description">"Tunjukkan jalan ke rumah"</string>
+    <string msgid="8388173803310557296" name="abc_action_bar_up_description">"Kembali ke atas"</string>
+    <string msgid="3937310113216875497" name="abc_action_menu_overflow_description">"Opsi lain"</string>
+    <string msgid="4692188335987374352" name="abc_action_mode_done">"Selesai"</string>
+    <string msgid="1189761859438369441" name="abc_activity_chooser_view_see_all">"Lihat semua"</string>
+    <string msgid="2165779757652331008" name="abc_activitychooserview_choose_application">"Pilih aplikasi"</string>
+    <string msgid="4215997306490295099" name="abc_capital_off">"NONAKTIF"</string>
+    <string msgid="884982626291842264" name="abc_capital_on">"AKTIF"</string>
+    <string msgid="8833365367933412986" name="abc_menu_alt_shortcut_label">"Alt+"</string>
+    <string msgid="2223301931652355242" name="abc_menu_ctrl_shortcut_label">"Ctrl+"</string>
+    <string msgid="838001238306846836" name="abc_menu_delete_shortcut_label">"delete"</string>
+    <string msgid="7986526966204849475" name="abc_menu_enter_shortcut_label">"enter"</string>
+    <string msgid="375214403600139847" name="abc_menu_function_shortcut_label">"Function+"</string>
+    <string msgid="4192209724446364286" name="abc_menu_meta_shortcut_label">"Meta+"</string>
+    <string msgid="4741552369836443843" name="abc_menu_shift_shortcut_label">"Shift+"</string>
+    <string msgid="5473865519181928982" name="abc_menu_space_shortcut_label">"spasi"</string>
+    <string msgid="6180552449598693998" name="abc_menu_sym_shortcut_label">"Sym+"</string>
+    <string msgid="5520303668377388990" name="abc_prepend_shortcut_label">"Menu+"</string>
+    <string msgid="7208076849092622260" name="abc_search_hint">"Telusuri..."</string>
+    <string msgid="3741173234950517107" name="abc_searchview_description_clear">"Hapus kueri"</string>
+    <string msgid="693312494995508443" name="abc_searchview_description_query">"Telusuri kueri"</string>
+    <string msgid="3417662926640357176" name="abc_searchview_description_search">"Telusuri"</string>
+    <string msgid="1486535517437947103" name="abc_searchview_description_submit">"Kirim kueri"</string>
+    <string msgid="2293578557972875415" name="abc_searchview_description_voice">"Penelusuran suara"</string>
+    <string msgid="8875138169939072951" name="abc_shareactionprovider_share_with">"Bagikan dengan"</string>
+    <string msgid="9055268688411532828" name="abc_shareactionprovider_share_with_application">"Bagikan dengan <ns1:g id="APPLICATION_NAME">%s</ns1:g>"</string>
+    <string msgid="1656852541809559762" name="abc_toolbar_collapse_description">"Ciutkan"</string>
+    <string gender="unknown" name="com_facebook_device_auth_instructions">Kunjungi &lt;b>facebook.com/device&lt;/b> dan masukkan kode yang ditampilkan di bawah ini.</string>
+    <string gender="unknown" name="com_facebook_image_download_unknown_error">Kesalahan tak terduga ketika mengunduh gambar.</string>
+    <string gender="unknown" name="com_facebook_internet_permission_error_message">Masuk Tampilan Web memerlukan izin INTERNET</string>
+    <string gender="unknown" name="com_facebook_internet_permission_error_title">Terjadi Kesalahan AndroidManifest</string>
+    <string gender="unknown" name="com_facebook_like_button_liked">Suka</string>
+    <string gender="unknown" name="com_facebook_like_button_not_liked">Suka</string>
+    <string gender="unknown" name="com_facebook_loading">Memuat…</string>
+    <string gender="unknown" name="com_facebook_loginview_cancel_action">Batal</string>
+    <string gender="unknown" name="com_facebook_loginview_log_in_button">Masuk</string>
+    <string gender="unknown" name="com_facebook_loginview_log_in_button_continue">Lanjutkan dengan Facebook</string>
+    <string gender="unknown" name="com_facebook_loginview_log_in_button_long">Masuk dengan Facebook</string>
+    <string gender="unknown" name="com_facebook_loginview_log_out_action">Keluar</string>
+    <string gender="unknown" name="com_facebook_loginview_log_out_button">Keluar</string>
+    <string gender="unknown" name="com_facebook_loginview_logged_in_as">Masuk sebagai: %1$s</string>
+    <string gender="unknown" name="com_facebook_loginview_logged_in_using_facebook">Masuk menggunakan Facebook</string>
+    <string gender="unknown" name="com_facebook_send_button_text">Kirim</string>
+    <string gender="unknown" name="com_facebook_share_button_text">Bagikan</string>
+    <string gender="unknown" name="com_facebook_smart_device_instructions">Untuk menghubungkan akun Anda, buka aplikasi Facebook di perangkat seluler Anda dan lihat pemberitahuan.</string>
+    <string gender="unknown" name="com_facebook_smart_device_instructions_or">- ATAU -</string>
+    <string gender="unknown" name="com_facebook_smart_login_confirmation_cancel">Bukan Anda?</string>
+    <string gender="unknown" name="com_facebook_smart_login_confirmation_continue_as">Lanjutkan sebagai %1$s</string>
+    <string gender="unknown" name="com_facebook_smart_login_confirmation_title">Konfirmasikan Masuk</string>
+    <string gender="unknown" name="com_facebook_tooltip_default">Anda memegang kendali - pilih info apa yang ingin Anda bagikan dengan aplikasi.</string>
+    <string msgid="8585111718777012708" name="common_google_play_services_enable_button">"Aktifkan"</string>
+    <string msgid="7045129128108380659" name="common_google_play_services_enable_text">"<ns1:g id="APP_NAME">%1$s</ns1:g> tidak akan berfungsi jika layanan Google Play tidak diaktifkan."</string>
+    <string msgid="3147157405986503375" name="common_google_play_services_enable_title">"Aktifkan layanan Google Play"</string>
+    <string msgid="9115728400623041681" name="common_google_play_services_install_button">"Instal"</string>
+    <string msgid="8179894293032530091" name="common_google_play_services_install_text">"<ns1:g id="APP_NAME">%1$s</ns1:g> tidak akan berjalan tanpa layanan Google Play, yang tidak ada di perangkat Anda."</string>
+    <string msgid="7442193194585196676" name="common_google_play_services_install_title">"Dapatkan layanan Google Play"</string>
+    <string msgid="4293541511340436975" name="common_google_play_services_notification_channel_name">"Ketersediaan layanan Google Play"</string>
+    <string msgid="180394615667698242" name="common_google_play_services_notification_ticker">"Kesalahan layanan Google Play"</string>
+    <string msgid="2518680582564677258" name="common_google_play_services_unknown_issue">"<ns1:g id="APP_NAME">%1$s</ns1:g> mengalami masalah dengan layanan Google Play. Coba lagi."</string>
+    <string msgid="5501187292256987189" name="common_google_play_services_unsupported_text">"<ns1:g id="APP_NAME">%1$s</ns1:g> tidak akan berjalan tanpa layanan Google Play, yang tidak didukung oleh perangkat Anda."</string>
+    <string msgid="8172070149091615356" name="common_google_play_services_update_button">"Update"</string>
+    <string msgid="7773943415006962566" name="common_google_play_services_update_text">"<ns1:g id="APP_NAME">%1$s</ns1:g> tidak akan berjalan jika layanan Google Play tidak diperbarui."</string>
+    <string msgid="8706675115216073244" name="common_google_play_services_update_title">"Perbarui layanan Google Play"</string>
+    <string msgid="7894275749778928941" name="common_google_play_services_updating_text">"<ns1:g id="APP_NAME">%1$s</ns1:g> tidak akan berjalan tanpa layanan Google Play, yang saat ini sedang diperbarui."</string>
+    <string msgid="2804989272736383918" name="common_google_play_services_wear_update_text">"Perlu versi baru layanan Google Play. Akan segera memperbarui sendiri."</string>
+    <string msgid="5201977337835724196" name="common_open_on_phone">"Buka di ponsel"</string>
+    <string msgid="3441753203274453993" name="common_signin_button_text">"Login"</string>
+    <string msgid="669893613918351210" name="common_signin_button_text_long">"Login dengan Google"</string>
+    <string name="fcm_fallback_notification_channel_label">Lain-Lain</string>
+    <string name="fui_accessibility_logo">Logo aplikasi</string>
+    <string name="fui_auto_verified">Nomor telepon terverifikasi secara otomatis</string>
+    <string name="fui_button_text_save">Simpan</string>
+    <string name="fui_button_text_send">Kirim</string>
+    <string name="fui_cancel">Batal</string>
+    <string name="fui_confirm_recovery_body">Ikuti petunjuk yang dikirimkan ke %1$s untuk memulihkan sandi Anda.</string>
+    <string name="fui_continue">Lanjutkan</string>
+    <string name="fui_email_account_creation_error">Pendaftaran akun email tidak berhasil</string>
+    <string name="fui_email_hint">Email</string>
+    <string name="fui_email_link_confirm_email_header">Konfirmasi email</string>
+    <string name="fui_email_link_confirm_email_message">Konfirmasi email untuk melanjutkan login</string>
+    <string name="fui_email_link_cross_device_linking_text">Anda sebelumnya ingin menghubungkan %1$s ke akun email Anda, tapi telah membuka link di perangkat berbeda yang tidak digunakan untuk login.\n\nJika Anda masih ingin menghubungkan ke akun %1$s, buka link di perangkat yang sama yang digunakan untuk login. Jika tidak, ketuk Lanjutkan untuk login di perangkat ini.</string>
+    <string name="fui_email_link_cross_device_sign_in_button_text">Login dengan %1$s</string>
+    <string name="fui_email_link_different_anonymous_user_header">Sesi diakhiri</string>
+    <string name="fui_email_link_different_anonymous_user_message">Sesi yang terkait dengan permintaan login ini sudah berakhir atau sudah dihapus.</string>
+    <string name="fui_email_link_dismiss_button">Tutup</string>
+    <string name="fui_email_link_email_sent">Email login dengan petunjuk tambahan telah dikirim ke %1$s. Buka email Anda untuk menyelesaikan proses login.</string>
+    <string name="fui_email_link_header">Email login dikirim\n</string>
+    <string name="fui_email_link_invalid_link_header">Tidak dapat menyelesaikan login</string>
+    <string name="fui_email_link_invalid_link_message">Kode tindakan tidak valid. Ini bisa terjadi jika kode rusak, sudah tidak berlaku, atau sudah digunakan.</string>
+    <string name="fui_email_link_resend">Kirim ulang</string>
+    <string name="fui_email_link_trouble_getting_email_header">Ada masalah saat mendapatkan email?</string>
+    <string name="fui_email_link_trouble_getting_email_resend_solution">Jika langkah-langkah di atas tidak berfungsi, Anda dapat mengirim ulang email tersebut. Perlu diperhatikan bahwa tindakan ini akan menonaktifkan link di email lama.</string>
+    <string name="fui_email_link_trouble_getting_possible_fixes">Cobalah perbaikan umum ini:\n\u2022 Periksa apakah email tersebut ditandai sebagai spam atau difilter.\n\u2022 Periksa koneksi internet Anda.\n\u2022 Periksa bahwa Anda tidak salah mengeja email Anda.\n\u2022 Periksa apakah masih ada ruang di kotak masuk email Anda atau tidak, atau apakah ada masalah terkait setelan kotak masuk lainnya atau tidak.\n</string>
+    <string name="fui_email_link_wrong_device_header">Perangkat atau browser baru terdeteksi.</string>
+    <string name="fui_email_link_wrong_device_message">Coba buka link menggunakan perangkat atau browser yang sama tempat Anda memulai proses login.</string>
+    <string name="fui_enter_confirmation_code">Masukkan kode 6 digit yang kami kirimkan ke</string>
+    <string name="fui_error_email_does_not_exist">Alamat email tidak cocok dengan akun yang ada</string>
+    <string name="fui_error_invalid_password">Sandi salah.</string>
+    <string name="fui_error_quota_exceeded">Ada masalah saat memverifikasi nomor telepon Anda</string>
+    <string name="fui_error_session_expired">Kode ini sudah tidak valid</string>
+    <string name="fui_error_too_many_attempts">Nomor telepon ini sudah terlalu sering digunakan</string>
+    <string name="fui_error_unknown">Terjadi error yang tidak diketahui.</string>
+    <string name="fui_idp_name_email">Email</string>
+    <string name="fui_idp_name_facebook">Facebook</string>
+    <string name="fui_idp_name_github">GitHub</string>
+    <string name="fui_idp_name_google">Google</string>
+    <string name="fui_idp_name_phone">Ponsel</string>
+    <string name="fui_idp_name_twitter">Twitter</string>
+    <string name="fui_incorrect_code_dialog_body">Kode salah. Coba lagi.</string>
+    <string name="fui_invalid_email_address">Alamat email yang dimasukkan salah</string>
+    <string name="fui_invalid_phone_number">Masukkan nomor telepon yang valid</string>
+    <string name="fui_missing_email_address">Masukkan alamat email Anda untuk melanjutkan</string>
+    <string name="fui_missing_first_and_last_name">Masukkan nama depan dan belakang.</string>
+    <string name="fui_name_hint">Nama depan &amp; belakang</string>
+    <string name="fui_new_password_hint">Sandi baru</string>
+    <string name="fui_next_default">Berikutnya</string>
+    <string name="fui_no_internet" translation_descripition="User message shown when sign-in is attempted while offline.">Error jaringan, periksa koneksi internet Anda.</string>
+    <string name="fui_password_hint">Sandi</string>
+    <string name="fui_password_recovery_body">Dapatkan petunjuk yang dikirimkan ke email ini yang menjelaskan cara menyetel ulang sandi Anda.</string>
+    <string name="fui_phone_hint">Nomor Telepon</string>
+    <string name="fui_privacy_policy">Kebijakan Privasi</string>
+    <string name="fui_progress_dialog_checking_accounts">Memeriksa akun yang ada…</string>
+    <string name="fui_progress_dialog_loading">Memuat…</string>
+    <string name="fui_progress_dialog_sending">Mengirim…</string>
+    <string name="fui_progress_dialog_signing_in">Login…</string>
+    <string name="fui_progress_dialog_signing_up">Mendaftar…</string>
+    <string name="fui_required_field">Anda wajib mengisinya.</string>
+    <string name="fui_resend_code">Kirim Ulang Kode</string>
+    <string name="fui_resend_code_in">Kirimkan ulang kode dalam 0.%02d</string>
+    <string name="fui_sign_in_anonymously">Lanjutkan sebagai tamu</string>
+    <string name="fui_sign_in_default">Login</string>
+    <string name="fui_sign_in_with_apple">Login dengan Apple</string>
+    <string name="fui_sign_in_with_email">Login dengan email</string>
+    <string name="fui_sign_in_with_facebook">Login dengan Facebook</string>
+    <string name="fui_sign_in_with_github">Login dengan GitHub</string>
+    <string name="fui_sign_in_with_google">Login dengan Google</string>
+    <string name="fui_sign_in_with_microsoft">Login dengan Microsoft</string>
+    <string name="fui_sign_in_with_phone">Login dengan nomor telepon</string>
+    <string name="fui_sign_in_with_phone_number">Login dengan nomor telepon</string>
+    <string name="fui_sign_in_with_twitter">Login dengan Twitter</string>
+    <string name="fui_sign_in_with_yahoo">Login dengan Yahoo</string>
+    <string name="fui_sms_terms_of_service">Dengan mengetuk “%1$s\", SMS mungkin akan dikirim. Mungkin dikenakan biaya pesan &amp; data.</string>
+    <string name="fui_sms_terms_of_service_and_privacy_policy_extended">Dengan mengetuk “%1$s”, Anda menyatakan bahwa Anda menyetujui %2$s dan %3$s kami. SMS mungkin akan dikirim. Mungkin dikenakan biaya pesan &amp; data.</string>
+    <string name="fui_terms_of_service">Persyaratan Layanan</string>
+    <string name="fui_title_confirm_recover_password">Periksa email Anda</string>
+    <string name="fui_title_recover_password_activity">Pulihkan sandi</string>
+    <string name="fui_title_register_email">Daftar</string>
+    <string name="fui_tos_and_pp">Dengan melanjutkan, Anda menyatakan bahwa Anda menyetujui %1$s dan %2$s kami.</string>
+    <string name="fui_tos_and_pp_footer">%1$s \u00A0 \u00A0 %2$s</string>
+    <string name="fui_trouble_signing_in">Terjadi masalah saat login?</string>
+    <string name="fui_verify_phone_number">Verifikasi Nomor Telepon</string>
+    <string name="fui_verify_phone_number_title">Masukkan nomor telepon Anda</string>
+    <string name="fui_verify_your_phone_title">Verifikasi nomor telepon Anda</string>
+    <string name="fui_verifying">Memverifikasi…</string>
+    <string name="fui_welcome_back_email_header">Selamat datang kembali!</string>
+    <string name="fui_welcome_back_email_link_header">Anda sudah memiliki akun\n</string>
+    <string name="fui_welcome_back_email_link_prompt_body">Anda sudah menggunakan %1$s. Anda dapat menghubungkan akun %2$s Anda ke %1$s dengan login menggunakan link email di bawah.\n\nAgar alur ini dapat menghubungkan akun %2$s Anda dengan email ini, Anda harus membuka link tersebut di perangkat atau browser yang sama.</string>
+    <string name="fui_welcome_back_idp_header">Anda sudah memiliki akun</string>
+    <string name="fui_welcome_back_idp_prompt">Anda telah menggunakan %1$s. Login dengan %2$s untuk melanjutkan.</string>
+    <string name="fui_welcome_back_password_prompt_body">Anda telah menggunakan %1$s untuk login. Masukkan sandi untuk akun tersebut.</string>
+    <string msgid="4014704848104544569" name="offline_notification_text">"Ketuk untuk membuka iklan"</string>
+    <string msgid="6989673690118446590" name="offline_notification_title">"Lihat iklan yang Anda simpan ketika offline"</string>
+    <string msgid="6452552490969291315" name="offline_opt_in_confirm">"Oke"</string>
+    <string msgid="2485091187023273083" name="offline_opt_in_confirmation">"Anda akan menerima notifikasi berisi link ketika Anda kembali online"</string>
+    <string msgid="1070677888032715836" name="offline_opt_in_decline">"Tidak"</string>
+    <string msgid="5998527443747404848" name="offline_opt_in_message">"Kami akan mengirimkan notifikasi kepada Anda berisi link ke situs pengiklan."</string>
+    <string msgid="4928666061183236333" name="offline_opt_in_title">"Buka iklan ketika Anda kembali online."</string>
+    <string msgid="368094699078615544" name="s1">"Simpan gambar"</string>
+    <string msgid="4550830452390689489" name="s2">"Izinkan Iklan menyimpan gambar di Galeri foto?"</string>
+    <string msgid="2435407834265420668" name="s3">"Terima"</string>
+    <string msgid="9167523597401839819" name="s4">"Tolak"</string>
+    <string msgid="1566682516266724847" name="s5">"Buat acara kalender"</string>
+    <string msgid="5996672174517137271" name="s6">"Izinkan Iklan membuat acara kalender?"</string>
+    <string msgid="7163549807207034258" name="s7">"Tes Iklan"</string>
+    <string msgid="6264217191555673260" name="search_menu_title">"Telusuri"</string>
+    <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
+</resources>

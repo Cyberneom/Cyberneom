@@ -1,0 +1,11 @@
+app/meedu/flutter_facebook_auth/FacebookAuth.java
+ app.meedu.flutter_facebook_auth.FacebookAuth
+ app.meedu.flutter_facebook_auth.FacebookAuth$1
+ app.meedu.flutter_facebook_auth.FacebookAuth$2
+ app.meedu.flutter_facebook_auth.FacebookAuth$3
+app/meedu/flutter_facebook_auth/BuildConfig.java
+ app.meedu.flutter_facebook_auth.BuildConfig
+app/meedu/flutter_facebook_auth/FacebookLoginResultDelegate.java
+ app.meedu.flutter_facebook_auth.FacebookLoginResultDelegate
+app/meedu/flutter_facebook_auth/FlutterFacebookAuthPlugin.java
+ app.meedu.flutter_facebook_auth.FlutterFacebookAuthPlugin

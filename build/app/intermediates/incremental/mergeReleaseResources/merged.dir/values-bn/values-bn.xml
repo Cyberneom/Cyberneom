@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
+    <plurals name="fui_error_weak_password"> <item quantity="one">পাসওয়ার্ডটি পর্যাপ্ত সুরক্ষিত নয়। কমপক্ষে %1$dটি বিশেষ বর্ণ এবং অক্ষর ও সংখ্যা মিশিয়ে ব্যবহার করুন</item> <item quantity="other">পাসওয়ার্ডটি পর্যাপ্ত সুরক্ষিত নয়। কমপক্ষে %1$dটি বিশেষ বর্ণ এবং অক্ষর ও সংখ্যা মিশিয়ে ব্যবহার করুন</item> </plurals>
+    <string msgid="5976598919945601918" name="abc_action_bar_home_description">"হোমে নেভিগেট করুন"</string>
+    <string msgid="8388173803310557296" name="abc_action_bar_up_description">"উপরে নেভিগেট করুন"</string>
+    <string msgid="3937310113216875497" name="abc_action_menu_overflow_description">"আরও বিকল্প"</string>
+    <string msgid="4692188335987374352" name="abc_action_mode_done">"হয়ে গেছে"</string>
+    <string msgid="1189761859438369441" name="abc_activity_chooser_view_see_all">"সবগুলি দেখুন"</string>
+    <string msgid="2165779757652331008" name="abc_activitychooserview_choose_application">"একটি অ্যাপ বেছে নিন"</string>
+    <string msgid="4215997306490295099" name="abc_capital_off">"বন্ধ আছে"</string>
+    <string msgid="884982626291842264" name="abc_capital_on">"চালু করুন"</string>
+    <string msgid="8833365367933412986" name="abc_menu_alt_shortcut_label">"Alt+"</string>
+    <string msgid="2223301931652355242" name="abc_menu_ctrl_shortcut_label">"Ctrl+"</string>
+    <string msgid="838001238306846836" name="abc_menu_delete_shortcut_label">"মুছুন"</string>
+    <string msgid="7986526966204849475" name="abc_menu_enter_shortcut_label">"enter"</string>
+    <string msgid="375214403600139847" name="abc_menu_function_shortcut_label">"Function+"</string>
+    <string msgid="4192209724446364286" name="abc_menu_meta_shortcut_label">"Meta+"</string>
+    <string msgid="4741552369836443843" name="abc_menu_shift_shortcut_label">"Shift+"</string>
+    <string msgid="5473865519181928982" name="abc_menu_space_shortcut_label">"space"</string>
+    <string msgid="6180552449598693998" name="abc_menu_sym_shortcut_label">"Sym+"</string>
+    <string msgid="5520303668377388990" name="abc_prepend_shortcut_label">"Menu+"</string>
+    <string msgid="7208076849092622260" name="abc_search_hint">"সার্চ করুন…"</string>
+    <string msgid="3741173234950517107" name="abc_searchview_description_clear">"কোয়েরি মুছে ফেলুন"</string>
+    <string msgid="693312494995508443" name="abc_searchview_description_query">"সার্চ কোয়েরি"</string>
+    <string msgid="3417662926640357176" name="abc_searchview_description_search">"সার্চ করুন"</string>
+    <string msgid="1486535517437947103" name="abc_searchview_description_submit">"কোয়েরি জমা দিন"</string>
+    <string msgid="2293578557972875415" name="abc_searchview_description_voice">"ভয়েস সার্চ করুন"</string>
+    <string msgid="8875138169939072951" name="abc_shareactionprovider_share_with">"শেয়ার করুন"</string>
+    <string msgid="9055268688411532828" name="abc_shareactionprovider_share_with_application">"<ns1:g id="APPLICATION_NAME">%s</ns1:g>-এর সাথে শেয়ার করুন"</string>
+    <string msgid="1656852541809559762" name="abc_toolbar_collapse_description">"সঙ্কুচিত করুন"</string>
+    <string gender="unknown" name="com_facebook_device_auth_instructions">&lt;b>facebook.com/device&lt;/b> দেখুন এবং উপরে দেখানো কোডটিকে প্রবেশ করান৷</string>
+    <string gender="unknown" name="com_facebook_image_download_unknown_error">একটি ছবি ডাউনলোড করার সময় অপ্রত্যাশিত ত্রুটি ঘটেছে৷</string>
+    <string gender="unknown" name="com_facebook_internet_permission_error_message">WebView লগ ইনের ইন্টারনেটের অনুমতি প্রয়োজন</string>
+    <string gender="unknown" name="com_facebook_internet_permission_error_title">AndroidManifest ত্রুটি</string>
+    <string gender="unknown" name="com_facebook_like_button_liked">পছন্দ করেছে</string>
+    <string gender="unknown" name="com_facebook_like_button_not_liked">লাইক</string>
+    <string gender="unknown" name="com_facebook_loading">লোড হচ্ছে…</string>
+    <string gender="unknown" name="com_facebook_loginview_cancel_action">বাতিল করুন</string>
+    <string gender="unknown" name="com_facebook_loginview_log_in_button">লগ ইন করুন</string>
+    <string gender="unknown" name="com_facebook_loginview_log_in_button_continue">Facebook এর সাথে চালিয়ে যান</string>
+    <string gender="unknown" name="com_facebook_loginview_log_in_button_long">Facebook দিয়ে লগইন করুন</string>
+    <string gender="unknown" name="com_facebook_loginview_log_out_action">লগ আউট করুন</string>
+    <string gender="unknown" name="com_facebook_loginview_log_out_button">লগ আউট করুন</string>
+    <string gender="unknown" name="com_facebook_loginview_logged_in_as">এই হিসেবে লগ ইন রয়েছে: %1$s</string>
+    <string gender="unknown" name="com_facebook_loginview_logged_in_using_facebook">Facebook ব্যবহার করে লগ ইন করা হয়েছে</string>
+    <string gender="unknown" name="com_facebook_send_button_text">পাঠান</string>
+    <string gender="unknown" name="com_facebook_share_button_text">শেয়ার করুন</string>
+    <string gender="unknown" name="com_facebook_smart_device_instructions">আপনার অ্যাকাউন্ট সংযুক্ত করতে, আপনার মোবাইল ডিভাইসে Facebook অ্যাপ খুলুন এবং বিজ্ঞপ্তিগুলির জন্য পরীক্ষা করুন।</string>
+    <string gender="unknown" name="com_facebook_smart_device_instructions_or">- বা -</string>
+    <string gender="unknown" name="com_facebook_smart_login_confirmation_cancel">আপনি নন?</string>
+    <string gender="unknown" name="com_facebook_smart_login_confirmation_continue_as">%1$s হিসাবে চালিয়ে যান</string>
+    <string gender="unknown" name="com_facebook_smart_login_confirmation_title">লগ ইন নিশ্চিত করুন</string>
+    <string gender="unknown" name="com_facebook_tooltip_default">আপনার নিয়ন্ত্রণ রয়েছে - আপনি অ্যাপগুলির সাথে কোন তথ্য শেয়ার করতে চান সেটি বেছে নিন।</string>
+    <string msgid="8585111718777012708" name="common_google_play_services_enable_button">"সক্ষম করুন"</string>
+    <string msgid="7045129128108380659" name="common_google_play_services_enable_text">"আপনি Google Play পরিষেবা সক্ষম না করা পর্যন্ত <ns1:g id="APP_NAME">%1$s</ns1:g> কাজ করবে না।"</string>
+    <string msgid="3147157405986503375" name="common_google_play_services_enable_title">"Google Play পরিষেবা সক্ষম করুন"</string>
+    <string msgid="9115728400623041681" name="common_google_play_services_install_button">"ইনস্টল করুন"</string>
+    <string msgid="8179894293032530091" name="common_google_play_services_install_text">"Google Play পরিষেবা ছাড়া <ns1:g id="APP_NAME">%1$s</ns1:g> চলবে না, যা আপনার ডিভাইসে অনুপস্থিত।"</string>
+    <string msgid="7442193194585196676" name="common_google_play_services_install_title">"Google Play পরিষেবা পান"</string>
+    <string msgid="4293541511340436975" name="common_google_play_services_notification_channel_name">"Google Play পরিষেবার উপলভ্যতা"</string>
+    <string msgid="180394615667698242" name="common_google_play_services_notification_ticker">"Google Play পরিষেবার ত্রুটি"</string>
+    <string msgid="2518680582564677258" name="common_google_play_services_unknown_issue">"Google Play পরিষেবাগুলির সাথে <ns1:g id="APP_NAME">%1$s</ns1:g> এর সমস্যা হচ্ছে৷ অনুগ্রহ করে আবার চেষ্টা করুন৷"</string>
+    <string msgid="5501187292256987189" name="common_google_play_services_unsupported_text">"Google Play পরিষেবা ছাড়া <ns1:g id="APP_NAME">%1$s</ns1:g> চলবে না, যেটি আপনার ডিভাইসে সমর্থিত নয়৷"</string>
+    <string msgid="8172070149091615356" name="common_google_play_services_update_button">"আপডেট করুন"</string>
+    <string msgid="7773943415006962566" name="common_google_play_services_update_text">"আপনি Google Play পরিষেবা আপডেট না করা পর্যন্ত <ns1:g id="APP_NAME">%1$s</ns1:g> চলবে না।"</string>
+    <string msgid="8706675115216073244" name="common_google_play_services_update_title">"Google Play পরিষেবা আপডেট করুন"</string>
+    <string msgid="7894275749778928941" name="common_google_play_services_updating_text">"Google Play পরিষেবা ছাড়া <ns1:g id="APP_NAME">%1$s</ns1:g> চলবে না যা বর্তমানে আপডেট হচ্ছে।"</string>
+    <string msgid="2804989272736383918" name="common_google_play_services_wear_update_text">"Google Play পরিষেবার নতুন ভার্সন প্রয়োজন৷ খুব শীঘ্রই এটা নিজেই আপডেট হবে৷"</string>
+    <string msgid="5201977337835724196" name="common_open_on_phone">"ফোনে খুলুন"</string>
+    <string msgid="3441753203274453993" name="common_signin_button_text">"সাইন-ইন করুন"</string>
+    <string msgid="669893613918351210" name="common_signin_button_text_long">"Google এর মাধ্যমে সাইন-ইন করুন"</string>
+    <string name="fcm_fallback_notification_channel_label">বিবিধ</string>
+    <string name="fui_accessibility_logo">অ্যাপের লোগো</string>
+    <string name="fui_auto_verified">ফোন নম্বরটি নিজে থেকে যাচাই করা হয়েছে</string>
+    <string name="fui_button_text_save">সেভ করুন</string>
+    <string name="fui_button_text_send">পাঠান</string>
+    <string name="fui_cancel">বাতিল করুন</string>
+    <string name="fui_confirm_recovery_body">আপনার পাসওয়ার্ড পুনরুদ্ধার করতে %1$s তে পাঠানো নির্দেশ অনুসরণ করুন।</string>
+    <string name="fui_continue">চালিয়ে যান</string>
+    <string name="fui_email_account_creation_error">ইমেল অ্যাকাউন্টটি রেজিস্টার করা যায়নি</string>
+    <string name="fui_email_hint">ইমেল</string>
+    <string name="fui_email_link_confirm_email_header">ইমেল আইডি কনফার্ম করুন</string>
+    <string name="fui_email_link_confirm_email_message">সাইন-ইন করতে ইমেল আইডি কনফার্ম করুন</string>
+    <string name="fui_email_link_cross_device_linking_text">আপনি %1$s অ্যাকাউন্ট ইমেল অ্যাকাউন্টের সাথে কানেক্ট করতে চেয়েছিলেন কিন্তু এমন একটি ডিভাইসে লিঙ্কটি খুলেছেন যেখানে সাইন-ইন করেননি।\n\nআপনি যদি এখনও %1$s অ্যাকাউন্টটি কানেক্ট করতে চান, যে ডিভাইসে সাইন-ইন করেছিলেন সেখানেই লিঙ্কটি খুলুন। নাহলে, ডিভাইসের সাইন-ইন বিকল্পে ট্যাপ করুন।</string>
+    <string name="fui_email_link_cross_device_sign_in_button_text">%1$s দিয়ে সাইন-ইন করুন</string>
+    <string name="fui_email_link_different_anonymous_user_header">সেশন শেষ হয়ে গেছে</string>
+    <string name="fui_email_link_different_anonymous_user_message">এই সেশনটির সাথে সংশ্লিষ্ট সাইন-ইন করার অনুরোধের মেয়াদ হয় শেষ হয়ে গেছে অথবা মুছে ফেলা হয়েছে।</string>
+    <string name="fui_email_link_dismiss_button">খারিজ করুন</string>
+    <string name="fui_email_link_email_sent">অতিরিক্ত নির্দেশাবলী সহ সাইন-ইন করার একটি ইমেল %1$s-এ পাঠানো হয়েছে। সাইন-ইন করার জন্য আপনার ইমেল দেখুন।</string>
+    <string name="fui_email_link_header">সাইন-ইন করার ইমেল পাঠানো হয়েছে\n</string>
+    <string name="fui_email_link_invalid_link_header">সাইন-ইন করা যায়নি</string>
+    <string name="fui_email_link_invalid_link_message">অ্যাকশন কোডটি ভুল। কোডটি যদি ত্রুটিপূর্ণ হয়, মেয়াদ শেষ হয়ে যায় অথবা আগেই ব্যবহার করা হয়ে থাকে, তাহলেই এমনটি ঘটতে পারে।</string>
+    <string name="fui_email_link_resend">আবার পাঠান</string>
+    <string name="fui_email_link_trouble_getting_email_header">ইমেল পেতে সমস্যা হচ্ছে?</string>
+    <string name="fui_email_link_trouble_getting_email_resend_solution">তারপরেও ইমেলটি না পেলে, আপনি তা আবার পাঠাতে পারেন। তবে, প্রথমে যে ইমেলটি পাঠানো হয়েছিল তাতে থাকা লিঙ্কটি আর কাজ করবে না।</string>
+    <string name="fui_email_link_trouble_getting_possible_fixes">সাধারণ সমাধানগুলি ব্যবহার করে দেখুন:\n\u2022 ইমেলটি স্প্যাম হিসেবে চিহ্নিত করে স্প্যাম ফোল্ডারে পাঠানো হয়েছে কিনা তা দেখুন।\n\u2022 আপনার ইন্টারনেট কানেকশন যাচাই করুন।\n\u2022 আপনার ইমেল আইডিতে কোনও ভুল বানান লিখেছেন কিনা দেখে নিন।\n\u2022 আপনার ইনবক্সের স্পেস শেষ হয়ে গেছে কিনা এবং ইনবক্স সংক্রান্ত অন্যান্য সমস্যাগুলি একবার দেখে নিন।\n</string>
+    <string name="fui_email_link_wrong_device_header">এই ডিভাইস বা ব্রাউজারটি আলাদা।</string>
+    <string name="fui_email_link_wrong_device_message">যে ডিভাইস অথবা ব্রাউজারে আপনি সাইন-ইন প্রসেস শুরু করেছেন সেই একই ডিভাইস অথবা ব্রাউজার ব্যবহার করে লিঙ্কটি খোলার চেষ্টা করুন।</string>
+    <string name="fui_enter_confirmation_code">আমাদের পাঠানো ৬-সংখ্যার কোডটি লিখুন</string>
+    <string name="fui_error_email_does_not_exist">এই ইমেল অ্যাড্রেসটি আগে থেকে থাকা অ্যাকাউন্টের সাথে মিলছে না</string>
+    <string name="fui_error_invalid_password">পাসওয়ার্ডটি সঠিক নয়।</string>
+    <string name="fui_error_quota_exceeded">আপনার ফোন নম্বরটি যাচাই করতে সমস্যা হয়েছে</string>
+    <string name="fui_error_session_expired">এই কোডটি আর ব্যবহার করা যাবে না</string>
+    <string name="fui_error_too_many_attempts">এই ফোন নম্বরটি অনেকবার ব্যবহার করা হয়েছে</string>
+    <string name="fui_error_unknown">অজানা একটি সমস্যা হয়েছে।</string>
+    <string name="fui_idp_name_email">ইমেল আইডি</string>
+    <string name="fui_idp_name_facebook">Facebook</string>
+    <string name="fui_idp_name_github">GitHub</string>
+    <string name="fui_idp_name_google">Google</string>
+    <string name="fui_idp_name_phone">ফোন</string>
+    <string name="fui_idp_name_twitter">Twitter</string>
+    <string name="fui_incorrect_code_dialog_body">কোডটি ভুল। আবার চেষ্টা করুন।</string>
+    <string name="fui_invalid_email_address">ইমেল অ্যাড্রেসটি সঠিক নয়</string>
+    <string name="fui_invalid_phone_number">একটি সঠিক ফোন নম্বর লিখুন</string>
+    <string name="fui_missing_email_address">চালিয়ে যাওয়ার জন্য আপনার ইমেল অ্যাড্রেস লিখুন</string>
+    <string name="fui_missing_first_and_last_name">আপনার নাম এবং পদবি লিখুন।</string>
+    <string name="fui_name_hint">নাম ও পদবি</string>
+    <string name="fui_new_password_hint">নতুন পাসওয়ার্ড</string>
+    <string name="fui_next_default">পরবর্তী</string>
+    <string name="fui_no_internet" translation_descripition="User message shown when sign-in is attempted while offline.">নেটওয়ার্কে সমস্যা, ইন্টারনেট কানেকশন দেখে নিন।</string>
+    <string name="fui_password_hint">পাসওয়ার্ড</string>
+    <string name="fui_password_recovery_body">কীভাবে পাসওয়ার্ড পুনরুদ্ধার করতে হবে তা ইমেলে পাঠানো নির্দেশাবলী থেকে জানুন।</string>
+    <string name="fui_phone_hint">ফোন নম্বর</string>
+    <string name="fui_privacy_policy">গোপনীয়তা নীতি</string>
+    <string name="fui_progress_dialog_checking_accounts">আগে থেকে কোনও অ্যাকাউন্ট আছে কিনা চেক করা হচ্ছে…</string>
+    <string name="fui_progress_dialog_loading">লোড হচ্ছে…</string>
+    <string name="fui_progress_dialog_sending">পাঠানো হচ্ছে…</string>
+    <string name="fui_progress_dialog_signing_in">সাইন-ইন করা হচ্ছে…</string>
+    <string name="fui_progress_dialog_signing_up">সাইন-আপ করা হচ্ছে…</string>
+    <string name="fui_required_field">আপনি এটি খালি ছাড়তে পারেন না।</string>
+    <string name="fui_resend_code">কোডটি আবার পাঠান</string>
+    <string name="fui_resend_code_in">0:%02d এ কোডটি আবার পাঠান</string>
+    <string name="fui_sign_in_anonymously">অতিথি হিসেবে চালিয়ে যান</string>
+    <string name="fui_sign_in_default">সাইন-ইন করুন</string>
+    <string name="fui_sign_in_with_apple">Apple-এর সাথে সাইন-ইন করুন</string>
+    <string name="fui_sign_in_with_email">ইমেল দিয়ে সাইন-ইন করুন</string>
+    <string name="fui_sign_in_with_facebook">Facebook দিয়ে সাইন-ইন করুন</string>
+    <string name="fui_sign_in_with_github">GitHub ব্যবহার করে সাইন-ইন করুন</string>
+    <string name="fui_sign_in_with_google">Google দিয়ে সাইন-ইন করুন</string>
+    <string name="fui_sign_in_with_microsoft">Microsoft-এর সাথে সাইন-ইন করুন</string>
+    <string name="fui_sign_in_with_phone">ফোন দিয়ে সাইন-ইন করুন</string>
+    <string name="fui_sign_in_with_phone_number">ফোন নম্বর দিয়ে সাইন-ইন করুন</string>
+    <string name="fui_sign_in_with_twitter">Twitter দিয়ে সাইন-ইন করুন</string>
+    <string name="fui_sign_in_with_yahoo">Yahoo-এর সাথে সাইন-ইন করুন</string>
+    <string name="fui_sms_terms_of_service">%1$s এ ট্যাপ করলে আপনি একটি এসএমএস পাঠাতে পারেন। মেসেজ ও ডেটার চার্জ প্রযোজ্য।</string>
+    <string name="fui_sms_terms_of_service_and_privacy_policy_extended">“%1$s” বোতামে ট্যাপ করার অর্থ, আপনি আমাদের %2$s এবং %3$s-এর সাথে সম্মত। একটি এসএমএস পাঠানো হতে পারে। মেসেজ এবং ডেটার উপরে প্রযোজ্য চার্জ লাগতে পারে।</string>
+    <string name="fui_terms_of_service">পরিষেবার শর্তাবলি</string>
+    <string name="fui_title_confirm_recover_password">আপনার ইমেল দেখুন</string>
+    <string name="fui_title_recover_password_activity">পাসওয়ার্ড পুনরুদ্ধার করুন</string>
+    <string name="fui_title_register_email">সাইন-আপ করুন</string>
+    <string name="fui_tos_and_pp">চালিয়ে যাওয়ার অর্থ, আপনি আমাদের %1$s এবং %2$s-এর সাথে সম্মত।</string>
+    <string name="fui_tos_and_pp_footer">%1$s \u00A0 \u00A0 %2$s</string>
+    <string name="fui_trouble_signing_in">সাইন-ইন করতে সমস্যা হচ্ছে?</string>
+    <string name="fui_verify_phone_number">ফোন নম্বর যাচাই করুন</string>
+    <string name="fui_verify_phone_number_title">আপনার ফোন নম্বর লিখুন</string>
+    <string name="fui_verify_your_phone_title">আপনার ফোন নম্বর যাচাই করুন</string>
+    <string name="fui_verifying">যাচাই করা হচ্ছে…</string>
+    <string name="fui_welcome_back_email_header">আবার স্বাগতম!</string>
+    <string name="fui_welcome_back_email_link_header">আপনার আগে থেকেই একটি অ্যাকাউন্ট আছে\n</string>
+    <string name="fui_welcome_back_email_link_prompt_body">আপনি আগে থেকেই %1$s ব্যবহার করে ফেলেছেন। নিচের ইমেল লিঙ্কে সাইন-ইন করে আপনি আপনার %2$s অ্যাকাউন্ট %1$s-এ কানেক্ট করতে পারেন।\n\nএই ইমেলে আপনার %2$s অ্যাকাউন্টটি কানেক্ট করার জন্য আপনাকে একই ডিভাইস অথবা ব্রাউজারে লিঙ্কটি খুলতে হবে।</string>
+    <string name="fui_welcome_back_idp_header">আপনার আগে থেকেই একটি অ্যাকাউন্ট আছে</string>
+    <string name="fui_welcome_back_idp_prompt">আপনি %1$s আগেই ব্যবহার করেছেন। চালিয়ে যেতে %2$s দিয়ে সাইন-ইন করুন।</string>
+    <string name="fui_welcome_back_password_prompt_body">আপনি আগেই %1$s দিয়ে সাইন-ইন করেছেন। সেই অ্যাকাউন্টের জন্য পাসওয়ার্ডটি লিখুন।</string>
+    <string msgid="4014704848104544569" name="offline_notification_text">"বিজ্ঞাপন খোলার জন্য ট্যাপ করুন"</string>
+    <string msgid="6989673690118446590" name="offline_notification_title">"অফলাইন থাকাকালীন আপনার সেভ করা বিজ্ঞাপন দেখুন"</string>
+    <string msgid="6452552490969291315" name="offline_opt_in_confirm">"বুঝেছি"</string>
+    <string msgid="2485091187023273083" name="offline_opt_in_confirmation">"আপনি আবার অনলাইন হলে লিঙ্ক সহ বিজ্ঞপ্তি পাবেন"</string>
+    <string msgid="1070677888032715836" name="offline_opt_in_decline">"না থাক"</string>
+    <string msgid="5998527443747404848" name="offline_opt_in_message">"আমরা বিজ্ঞাপনদাতার সাইটে লিঙ্ক সহ একটি বিজ্ঞপ্তি পাঠাব।"</string>
+    <string msgid="4928666061183236333" name="offline_opt_in_title">"আপনি আবার যখন অনলাইন হবেন তখন বিজ্ঞাপনে ক্লিক করুন।"</string>
+    <string msgid="368094699078615544" name="s1">"ছবি সেভ করুন"</string>
+    <string msgid="4550830452390689489" name="s2">"বিজ্ঞাপনকে ছবির গ্যালারিতে ছবি সংরক্ষণ করার অনুমতি দেবেন?"</string>
+    <string msgid="2435407834265420668" name="s3">"গ্রহণ করুন"</string>
+    <string msgid="9167523597401839819" name="s4">"প্রত্যাখ্যান করুন"</string>
+    <string msgid="1566682516266724847" name="s5">"ক্যালেন্ডার ইভেন্ট তৈরি করুন"</string>
+    <string msgid="5996672174517137271" name="s6">"বিজ্ঞাপনকে একটি ক্যালেন্ডার ইভেন্ট তৈরি করার অনুমতি দেবেন?"</string>
+    <string msgid="7163549807207034258" name="s7">"পরীক্ষামূলক বিজ্ঞাপন"</string>
+    <string msgid="6264217191555673260" name="search_menu_title">"সার্চ করুন"</string>
+    <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"৯৯৯+"</string>
+</resources>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
+    <plurals name="fui_error_weak_password"> <item quantity="one">Das Passwort ist zu schwach. Verwenden Sie mindestens %1$d Zeichen und eine Mischung aus Buchstaben und Ziffern.</item> <item quantity="other">Das Passwort ist zu schwach. Verwenden Sie mindestens %1$d Zeichen und eine Mischung aus Buchstaben und Ziffern.</item> </plurals>
+    <string msgid="5976598919945601918" name="abc_action_bar_home_description">"Zur Startseite"</string>
+    <string msgid="8388173803310557296" name="abc_action_bar_up_description">"Nach oben"</string>
+    <string msgid="3937310113216875497" name="abc_action_menu_overflow_description">"Weitere Optionen"</string>
+    <string msgid="4692188335987374352" name="abc_action_mode_done">"Fertig"</string>
+    <string msgid="1189761859438369441" name="abc_activity_chooser_view_see_all">"Alle anzeigen"</string>
+    <string msgid="2165779757652331008" name="abc_activitychooserview_choose_application">"App auswählen"</string>
+    <string msgid="4215997306490295099" name="abc_capital_off">"AUS"</string>
+    <string msgid="884982626291842264" name="abc_capital_on">"AN"</string>
+    <string msgid="8833365367933412986" name="abc_menu_alt_shortcut_label">"Alt +"</string>
+    <string msgid="2223301931652355242" name="abc_menu_ctrl_shortcut_label">"Strg +"</string>
+    <string msgid="838001238306846836" name="abc_menu_delete_shortcut_label">"Löschen"</string>
+    <string msgid="7986526966204849475" name="abc_menu_enter_shortcut_label">"Eingabetaste"</string>
+    <string msgid="375214403600139847" name="abc_menu_function_shortcut_label">"Funktionstaste +"</string>
+    <string msgid="4192209724446364286" name="abc_menu_meta_shortcut_label">"Meta-Taste +"</string>
+    <string msgid="4741552369836443843" name="abc_menu_shift_shortcut_label">"Umschalttaste +"</string>
+    <string msgid="5473865519181928982" name="abc_menu_space_shortcut_label">"Leertaste"</string>
+    <string msgid="6180552449598693998" name="abc_menu_sym_shortcut_label">"Sym-Taste +"</string>
+    <string msgid="5520303668377388990" name="abc_prepend_shortcut_label">"Menütaste +"</string>
+    <string msgid="7208076849092622260" name="abc_search_hint">"Suchen…"</string>
+    <string msgid="3741173234950517107" name="abc_searchview_description_clear">"Suchanfrage löschen"</string>
+    <string msgid="693312494995508443" name="abc_searchview_description_query">"Suchanfrage"</string>
+    <string msgid="3417662926640357176" name="abc_searchview_description_search">"Suche"</string>
+    <string msgid="1486535517437947103" name="abc_searchview_description_submit">"Anfrage senden"</string>
+    <string msgid="2293578557972875415" name="abc_searchview_description_voice">"Sprachsuche"</string>
+    <string msgid="8875138169939072951" name="abc_shareactionprovider_share_with">"Teilen mit"</string>
+    <string msgid="9055268688411532828" name="abc_shareactionprovider_share_with_application">"Mit <ns1:g id="APPLICATION_NAME">%s</ns1:g> teilen"</string>
+    <string msgid="1656852541809559762" name="abc_toolbar_collapse_description">"Minimieren"</string>
+    <string gender="unknown" name="com_facebook_device_auth_instructions">Gehe zu &lt;b>facebook.com/device&lt;/b> und gib den oben angezeigten Code ein.</string>
+    <string gender="unknown" name="com_facebook_image_download_unknown_error">Unerwarteter Fehler beim Herunterladen eines Bildes.</string>
+    <string gender="unknown" name="com_facebook_internet_permission_error_message">WebView-Anmeldung erfordert INTERNET-Berechtigung</string>
+    <string gender="unknown" name="com_facebook_internet_permission_error_title">AndroidOffensichtlicher Fehler</string>
+    <string gender="unknown" name="com_facebook_like_button_liked">Gefällt dir</string>
+    <string gender="unknown" name="com_facebook_like_button_not_liked">Gefällt mir</string>
+    <string gender="unknown" name="com_facebook_loading">Wird geladen ...</string>
+    <string gender="unknown" name="com_facebook_loginview_cancel_action">Abbrechen</string>
+    <string gender="unknown" name="com_facebook_loginview_log_in_button">Melde dich an</string>
+    <string gender="unknown" name="com_facebook_loginview_log_in_button_continue">Weiter mit Facebook</string>
+    <string gender="unknown" name="com_facebook_loginview_log_in_button_long">Mit Facebook anmelden</string>
+    <string gender="unknown" name="com_facebook_loginview_log_out_action">Abmelden</string>
+    <string gender="unknown" name="com_facebook_loginview_log_out_button">Abmelden</string>
+    <string gender="unknown" name="com_facebook_loginview_logged_in_as">Angemeldet als: %1$s</string>
+    <string gender="unknown" name="com_facebook_loginview_logged_in_using_facebook">Mit Facebook angemeldet</string>
+    <string gender="unknown" name="com_facebook_send_button_text">Senden</string>
+    <string gender="unknown" name="com_facebook_share_button_text">Teilen</string>
+    <string gender="unknown" name="com_facebook_smart_device_instructions">Öffne die Facebook-App auf deinem Mobilgerät, um dich mit deinem Konto zu verbinden und nach Benachrichtigungen zu suchen.</string>
+    <string gender="unknown" name="com_facebook_smart_device_instructions_or">- ODER -</string>
+    <string gender="unknown" name="com_facebook_smart_login_confirmation_cancel">Das bist du nicht?</string>
+    <string gender="unknown" name="com_facebook_smart_login_confirmation_continue_as">Weiter als %1$s</string>
+    <string gender="unknown" name="com_facebook_smart_login_confirmation_title">Anmeldung bestätigen</string>
+    <string gender="unknown" name="com_facebook_tooltip_default">Du bestimmst, welche Informationen du mit Apps teilen möchtest.</string>
+    <string msgid="8585111718777012708" name="common_google_play_services_enable_button">"Aktivieren"</string>
+    <string msgid="7045129128108380659" name="common_google_play_services_enable_text">"<ns1:g id="APP_NAME">%1$s</ns1:g> funktioniert erst nach der Aktivierung der Google Play-Dienste."</string>
+    <string msgid="3147157405986503375" name="common_google_play_services_enable_title">"Google Play-Dienste aktivieren"</string>
+    <string msgid="9115728400623041681" name="common_google_play_services_install_button">"Installieren"</string>
+    <string msgid="8179894293032530091" name="common_google_play_services_install_text">"Zur Nutzung von <ns1:g id="APP_NAME">%1$s</ns1:g> sind die Google Play-Dienste erforderlich, die auf deinem Gerät nicht installiert sind."</string>
+    <string msgid="7442193194585196676" name="common_google_play_services_install_title">"Google Play-Dienste installieren"</string>
+    <string msgid="4293541511340436975" name="common_google_play_services_notification_channel_name">"Verfügbarkeit von Google Play-Diensten"</string>
+    <string msgid="180394615667698242" name="common_google_play_services_notification_ticker">"Fehler bei Zugriff auf Google Play-Dienste"</string>
+    <string msgid="2518680582564677258" name="common_google_play_services_unknown_issue">"<ns1:g id="APP_NAME">%1$s</ns1:g> hat Probleme mit Google Play-Diensten. Bitte versuche es noch einmal."</string>
+    <string msgid="5501187292256987189" name="common_google_play_services_unsupported_text">"Zur Nutzung von <ns1:g id="APP_NAME">%1$s</ns1:g> sind Google Play-Dienste erforderlich, die auf deinem Gerät nicht unterstützt werden."</string>
+    <string msgid="8172070149091615356" name="common_google_play_services_update_button">"Aktualisieren"</string>
+    <string msgid="7773943415006962566" name="common_google_play_services_update_text">"<ns1:g id="APP_NAME">%1$s</ns1:g> wird nur ausgeführt, wenn du die Google Play-Dienste aktualisierst."</string>
+    <string msgid="8706675115216073244" name="common_google_play_services_update_title">"Google Play-Dienste aktualisieren"</string>
+    <string msgid="7894275749778928941" name="common_google_play_services_updating_text">"Zur Nutzung von <ns1:g id="APP_NAME">%1$s</ns1:g> sind Google Play-Dienste erforderlich, die gerade aktualisiert werden."</string>
+    <string msgid="2804989272736383918" name="common_google_play_services_wear_update_text">"Eine neue Version der Google Play-Dienste wird benötigt. Diese wird in Kürze automatisch aktualisiert."</string>
+    <string msgid="5201977337835724196" name="common_open_on_phone">"Auf Smartphone öffnen"</string>
+    <string msgid="3441753203274453993" name="common_signin_button_text">"Anmelden"</string>
+    <string msgid="669893613918351210" name="common_signin_button_text_long">"Über Google anmelden"</string>
+    <string name="fcm_fallback_notification_channel_label">Sonstiges</string>
+    <string name="fui_accessibility_logo">App-Logo</string>
+    <string name="fui_auto_verified">Telefonnummer wurde automatisch bestätigt</string>
+    <string name="fui_button_text_save">Speichern</string>
+    <string name="fui_button_text_send">Senden</string>
+    <string name="fui_cancel">Abbrechen</string>
+    <string name="fui_confirm_recovery_body">Folgen Sie der an %1$s gesendeten Anleitung, um Ihr Passwort zurückzusetzen.</string>
+    <string name="fui_continue">Weiter</string>
+    <string name="fui_email_account_creation_error">Registrierung des E-Mail-Kontos fehlgeschlagen</string>
+    <string name="fui_email_hint">E-Mail-Adresse</string>
+    <string name="fui_email_link_confirm_email_header">E-Mail-Adresse bestätigen</string>
+    <string name="fui_email_link_confirm_email_message">E-Mail-Adresse bestätigen, um Anmeldung fortzusetzen</string>
+    <string name="fui_email_link_cross_device_linking_text">Sie haben versucht, %1$s auf einem Gerät, auf dem Sie nicht angemeldet sind, mit Ihrem E-Mail-Konto zu verbinden.\n\nWenn Sie Ihr %1$s-Konto weiterhin verbinden möchten, öffnen Sie den Link bitte auf dem Gerät, auf dem Sie den Anmeldevorgang gestartet haben. Andernfalls tippen Sie auf \"Weiter\", um sich auf diesem Gerät anzumelden.</string>
+    <string name="fui_email_link_cross_device_sign_in_button_text">Mit %1$s anmelden</string>
+    <string name="fui_email_link_different_anonymous_user_header">Sitzung beendet</string>
+    <string name="fui_email_link_different_anonymous_user_message">Die mit dieser Anmeldeanfrage verknüpfte Sitzung ist entweder abgelaufen oder wurde gelöscht.</string>
+    <string name="fui_email_link_dismiss_button">Ablehnen</string>
+    <string name="fui_email_link_email_sent">Wir haben eine Anmelde-E-Mail mit zusätzlichen Informationen an %1$s gesendet. Bitte öffnen Sie die E-Mail, um die Anmeldung abzuschließen.</string>
+    <string name="fui_email_link_header">Anmelde-E-Mail gesendet\n</string>
+    <string name="fui_email_link_invalid_link_header">Anmelden nicht möglich</string>
+    <string name="fui_email_link_invalid_link_message">Der Aktionscode ist ungültig. Möglicherweise ist der Code fehlerhaft oder abgelaufen oder er wurde bereits verwendet.</string>
+    <string name="fui_email_link_resend">Erneut senden</string>
+    <string name="fui_email_link_trouble_getting_email_header">Probleme beim Empfangen von E-Mails?</string>
+    <string name="fui_email_link_trouble_getting_email_resend_solution">Sollte das Problem auch nach Ausführung der obigen Schritte weiterhin bestehen, können Sie sich die Anmelde-E-Mail noch einmal zusenden lassen. Hinweis: Der Link in der vorhergehenden E-Mail ist dann nicht mehr gültig.</string>
+    <string name="fui_email_link_trouble_getting_possible_fixes">Versuchen Sie es mit diesen gängigen Korrekturen:\n\u2022 Prüfen Sie, ob die E-Mail als Spam markiert oder gefiltert wurde.\n\u2022 Prüfen Sie Ihre Internetverbindung.\n\u2022 Prüfen Sie, ob Sie die E-Mail-Adresse korrekt geschrieben haben.\n\u2022 Prüfen Sie, ob Ihr Posteingang über genügend Speicherplatz verfügt oder ob es Probleme mit den Einstellungen gibt.\n</string>
+    <string name="fui_email_link_wrong_device_header">Neues Gerät oder neuer Browser erkannt.</string>
+    <string name="fui_email_link_wrong_device_message">Öffnen Sie den Link mit demselben Gerät oder Browser, mit dem Sie die Anmeldung begonnen haben.</string>
+    <string name="fui_enter_confirmation_code">Gib den 6-stelligen Code ein, der gesendet wurde an</string>
+    <string name="fui_error_email_does_not_exist">Diese E-Mail-Adresse passt zu keinem Konto</string>
+    <string name="fui_error_invalid_password">Falsches Passwort</string>
+    <string name="fui_error_quota_exceeded">Bei der Bestätigung Ihrer Telefonnummer ist ein Problem aufgetreten</string>
+    <string name="fui_error_session_expired">Dieser Code ist nicht mehr gültig</string>
+    <string name="fui_error_too_many_attempts">Diese Telefonnummer wurde schon zu oft verwendet</string>
+    <string name="fui_error_unknown">Ein unbekannter Fehler ist aufgetreten.</string>
+    <string name="fui_idp_name_email">E-Mail</string>
+    <string name="fui_idp_name_facebook">Facebook</string>
+    <string name="fui_idp_name_github">GitHub</string>
+    <string name="fui_idp_name_google">Google</string>
+    <string name="fui_idp_name_phone">Telefon</string>
+    <string name="fui_idp_name_twitter">Twitter</string>
+    <string name="fui_incorrect_code_dialog_body">Falscher Code. Versuchen Sie es noch einmal.</string>
+    <string name="fui_invalid_email_address">Ungültige E-Mail-Adresse</string>
+    <string name="fui_invalid_phone_number">Gib eine gültige Telefonnummer ein</string>
+    <string name="fui_missing_email_address">E-Mail-Adresse eingeben, um fortzufahren</string>
+    <string name="fui_missing_first_and_last_name">Gib einen Vor- und Nachnamen ein.</string>
+    <string name="fui_name_hint">Vor- und Nachname</string>
+    <string name="fui_new_password_hint">Neues Passwort</string>
+    <string name="fui_next_default">Weiter</string>
+    <string name="fui_no_internet" translation_descripition="User message shown when sign-in is attempted while offline.">Netzwerkfehler. Überprüfen Sie Ihre Internetverbindung.</string>
+    <string name="fui_password_hint">Passwort</string>
+    <string name="fui_password_recovery_body">In der an diese E-Mail-Adresse gesendeten Anleitung wird beschrieben, wie Sie Ihr Passwort zurücksetzen können.</string>
+    <string name="fui_phone_hint">Telefonnummer</string>
+    <string name="fui_privacy_policy">Datenschutzerklärung</string>
+    <string name="fui_progress_dialog_checking_accounts">Auf vorhandene Konten wird geprüft…</string>
+    <string name="fui_progress_dialog_loading">Wird geladen…</string>
+    <string name="fui_progress_dialog_sending">Wird gesendet…</string>
+    <string name="fui_progress_dialog_signing_in">Anmeldung wird durchgeführt…</string>
+    <string name="fui_progress_dialog_signing_up">Registrierung wird durchgeführt…</string>
+    <string name="fui_required_field">Pflichtfeld.</string>
+    <string name="fui_resend_code">Code erneut senden</string>
+    <string name="fui_resend_code_in">Code in 0:%02d erneut senden</string>
+    <string name="fui_sign_in_anonymously">Als Gast fortfahren</string>
+    <string name="fui_sign_in_default">Anmelden</string>
+    <string name="fui_sign_in_with_apple">Über Apple anmelden</string>
+    <string name="fui_sign_in_with_email">Mit einer E-Mail-Adresse anmelden</string>
+    <string name="fui_sign_in_with_facebook">Über Facebook anmelden</string>
+    <string name="fui_sign_in_with_github">Über GitHub anmelden</string>
+    <string name="fui_sign_in_with_google">Über Google anmelden</string>
+    <string name="fui_sign_in_with_microsoft">Über Microsoft anmelden</string>
+    <string name="fui_sign_in_with_phone">Mit einer Telefonnummer anmelden</string>
+    <string name="fui_sign_in_with_phone_number">Mit einer Telefonnummer anmelden</string>
+    <string name="fui_sign_in_with_twitter">Über Twitter anmelden</string>
+    <string name="fui_sign_in_with_yahoo">Über Yahoo anmelden</string>
+    <string name="fui_sms_terms_of_service">Wenn Sie auf “%1$s” tippen, erhalten Sie möglicherweise eine SMS. Es können Gebühren für SMS und Datenübertragung anfallen.</string>
+    <string name="fui_sms_terms_of_service_and_privacy_policy_extended">Indem Sie auf “%1$s” tippen, stimmen Sie unseren %2$s und unserer %3$s zu. Sie erhalten möglicherweise eine SMS und es können Gebühren für die Nachricht und die Datenübertragung anfallen.</string>
+    <string name="fui_terms_of_service">Nutzungsbedingungen</string>
+    <string name="fui_title_confirm_recover_password">Im Posteingang nachsehen</string>
+    <string name="fui_title_recover_password_activity">Passwort zurücksetzen</string>
+    <string name="fui_title_register_email">Registrieren</string>
+    <string name="fui_tos_and_pp">Indem Sie fortfahren, stimmen Sie unseren %1$s und unserer %2$s zu.</string>
+    <string name="fui_tos_and_pp_footer">%1$s \u00A0 \u00A0 %2$s</string>
+    <string name="fui_trouble_signing_in">Probleme bei der Anmeldung?</string>
+    <string name="fui_verify_phone_number">Telefonnummer bestätigen</string>
+    <string name="fui_verify_phone_number_title">Telefonnummer eingeben</string>
+    <string name="fui_verify_your_phone_title">Telefonnummer bestätigen</string>
+    <string name="fui_verifying">Wird verifiziert…</string>
+    <string name="fui_welcome_back_email_header">Willkommen zurück!</string>
+    <string name="fui_welcome_back_email_link_header">Sie haben schon ein Konto\n</string>
+    <string name="fui_welcome_back_email_link_prompt_body">Sie haben %1$s schon benutzt. Sie können Ihr %2$s-Konto mit %1$s verbinden, indem Sie sich über den folgenden E-Mail-Link anmelden.\n\nÖffnen Sie den Link mit demselben Gerät oder Browser, um Ihr %2$s-Konto mit dieser E-Mail-Adresse zu verbinden.</string>
+    <string name="fui_welcome_back_idp_header">Sie haben bereits ein Konto</string>
+    <string name="fui_welcome_back_idp_prompt">Sie haben %1$s bereits verwendet. Melden Sie sich mit %2$s an, um fortzufahren.</string>
+    <string name="fui_welcome_back_password_prompt_body">Sie haben %1$s bereits zur Anmeldung verwendet. Gib das Passwort für dieses Konto ein.</string>
+    <string msgid="4014704848104544569" name="offline_notification_text">"Tippen, um die Werbung zu öffnen"</string>
+    <string msgid="6989673690118446590" name="offline_notification_title">"Werbung anzeigen, die du gespeichert hast, während du offline warst"</string>
+    <string msgid="6452552490969291315" name="offline_opt_in_confirm">"OK"</string>
+    <string msgid="2485091187023273083" name="offline_opt_in_confirmation">"Du bekommst eine Benachrichtigung mit dem Link, wenn du wieder online bist"</string>
+    <string msgid="1070677888032715836" name="offline_opt_in_decline">"Nein danke"</string>
+    <string msgid="5998527443747404848" name="offline_opt_in_message">"Wir senden dir eine Benachrichtigung mit einem Link zur Website des Werbetreibenden."</string>
+    <string msgid="4928666061183236333" name="offline_opt_in_title">"Werbung öffnen, wenn du wieder online bist."</string>
+    <string msgid="368094699078615544" name="s1">"Bild speichern"</string>
+    <string msgid="4550830452390689489" name="s2">"Der Werbeanzeige erlauben, das Bild in der Bildergalerie zu speichern?"</string>
+    <string msgid="2435407834265420668" name="s3">"Zustimmen"</string>
+    <string msgid="9167523597401839819" name="s4">"Ablehnen"</string>
+    <string msgid="1566682516266724847" name="s5">"Kalendertermin erstellen"</string>
+    <string msgid="5996672174517137271" name="s6">"Der Werbeanzeige erlauben, einen Kalendertermin zu erstellen?"</string>
+    <string msgid="7163549807207034258" name="s7">"Testanzeige"</string>
+    <string msgid="6264217191555673260" name="search_menu_title">"Suche"</string>
+    <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
+</resources>

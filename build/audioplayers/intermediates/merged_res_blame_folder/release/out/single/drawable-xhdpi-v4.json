@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "X:\\codebase\\Cyberneom\\build\\audioplayers\\intermediates\\res\\merged\\release\\drawable-xhdpi-v4\\notification_bg_normal.9.png",
+        "source": "C:\\Users\\Jmkz\\.gradle\\caches\\transforms-2\\files-2.1\\afea5f613010d04667956c14b3665aa6\\core-1.6.0\\res\\drawable-xhdpi-v4\\notification_bg_normal.9.png"
+    },
+    {
+        "merged": "X:\\codebase\\Cyberneom\\build\\audioplayers\\intermediates\\res\\merged\\release\\drawable-xhdpi-v4\\notify_panel_notification_icon_bg.png",
+        "source": "C:\\Users\\Jmkz\\.gradle\\caches\\transforms-2\\files-2.1\\afea5f613010d04667956c14b3665aa6\\core-1.6.0\\res\\drawable-xhdpi-v4\\notify_panel_notification_icon_bg.png"
+    },
+    {
+        "merged": "X:\\codebase\\Cyberneom\\build\\audioplayers\\intermediates\\res\\merged\\release\\drawable-xhdpi-v4\\notification_bg_low_normal.9.png",
+        "source": "C:\\Users\\Jmkz\\.gradle\\caches\\transforms-2\\files-2.1\\afea5f613010d04667956c14b3665aa6\\core-1.6.0\\res\\drawable-xhdpi-v4\\notification_bg_low_normal.9.png"
+    },
+    {
+        "merged": "X:\\codebase\\Cyberneom\\build\\audioplayers\\intermediates\\res\\merged\\release\\drawable-xhdpi-v4\\notification_bg_low_pressed.9.png",
+        "source": "C:\\Users\\Jmkz\\.gradle\\caches\\transforms-2\\files-2.1\\afea5f613010d04667956c14b3665aa6\\core-1.6.0\\res\\drawable-xhdpi-v4\\notification_bg_low_pressed.9.png"
+    },
+    {
+        "merged": "X:\\codebase\\Cyberneom\\build\\audioplayers\\intermediates\\res\\merged\\release\\drawable-xhdpi-v4\\notification_bg_normal_pressed.9.png",
+        "source": "C:\\Users\\Jmkz\\.gradle\\caches\\transforms-2\\files-2.1\\afea5f613010d04667956c14b3665aa6\\core-1.6.0\\res\\drawable-xhdpi-v4\\notification_bg_normal_pressed.9.png"
+    }
+]

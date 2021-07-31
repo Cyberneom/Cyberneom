@@ -1,0 +1,34 @@
+{
+    "logs": [
+        {
+            "outputFile": "X:\\codebase\\Cyberneom\\build\\google_mobile_ads\\intermediates\\res\\merged\\release\\values-v23\\values-v23.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Jmkz\\.gradle\\caches\\transforms-2\\files-2.1\\75842382bd668311b7144158b002fd9e\\work-runtime-2.1.0\\res\\values-v23\\values-v23.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,121",
+                        "endColumns": "65,62",
+                        "endOffsets": "116,179"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "X:\\codebase\\Cyberneom\\build\\google_mobile_ads\\intermediates\\incremental\\mergeReleaseResources\\merged.dir\\values-v23\\values-v23.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Jmkz\\.gradle\\caches\\transforms-2\\files-2.1\\75842382bd668311b7144158b002fd9e\\work-runtime-2.1.0\\res\\values-v23\\values-v23.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,121",
+                        "endColumns": "65,62",
+                        "endOffsets": "116,179"
+                    }
+                }
+            ]
+        }
+    ]
+}

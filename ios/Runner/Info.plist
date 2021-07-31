@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<key>NSAppTransportSecurity</key>
+<dict>
+  <key>NSAllowsArbitraryLoads</key>
+  <true/>
+</dict>
+<dict>
+    <!-- Add these permissions for ios -->
+	<key>NSCameraUsageDescription</key>
+	<string>Used to record videos playing music or photos</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Used to capture audio for videos taken</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Used to upload Images</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <!--
+        <dict>
+        ... Some other CFBundleURLTypes definition.
+        </dict>
+        -->
+        <dict>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <!--
+                  Replace "000000000000" with your Facebook App ID here.
+                  **NOTE**: The scheme needs to start with `fb` and then your ID.
+                -->
+                <string>fb000000000000</string>
+            </array>
+        </dict>
+    </array>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Needed to access location</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Needed to access location</string>
+    <key>FacebookAppID</key>
+    <!-- Replace "000000000000" with your Facebook App ID here. -->
+    <string>570241033975630</string>
+    <key>FacebookDisplayName</key>
+    <!-- Replace "YOUR_APP_NAME" with your Facebook App name. -->
+    <string>cyberneom</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>fbapi</string>
+        <string>fb-messenger-share-api</string>
+        <string>fbauth2</string>
+        <string>fbshareextension</string>
+    </array>
+    <key>GADApplicationIdentifier</key>
+    <string>ca-app-pub-9248844542810621~4699252247</string>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>Cyberneom</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(FLUTTER_BUILD_NAME)</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIMainStoryboardFile</key>
+	<string>Main</string>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+</dict>
+</plist>

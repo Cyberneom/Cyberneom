@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
+    <plurals name="fui_error_weak_password"> <item quantity="one">A senha não é forte o suficiente. Use pelo menos %1$d caractere e combine letras e números.</item> <item quantity="other">A senha não é forte o suficiente. Use pelo menos %1$d caracteres e combine letras e números.</item> </plurals>
+    <string msgid="5976598919945601918" name="abc_action_bar_home_description">"Navegar para a página inicial"</string>
+    <string msgid="8388173803310557296" name="abc_action_bar_up_description">"Navegar para cima"</string>
+    <string msgid="3937310113216875497" name="abc_action_menu_overflow_description">"Mais opções"</string>
+    <string msgid="4692188335987374352" name="abc_action_mode_done">"Concluído"</string>
+    <string msgid="1189761859438369441" name="abc_activity_chooser_view_see_all">"Ver tudo"</string>
+    <string msgid="2165779757652331008" name="abc_activitychooserview_choose_application">"Selecionar um app"</string>
+    <string msgid="4215997306490295099" name="abc_capital_off">"DESATIVADO"</string>
+    <string msgid="884982626291842264" name="abc_capital_on">"ATIVADO"</string>
+    <string msgid="8833365367933412986" name="abc_menu_alt_shortcut_label">"Alt+"</string>
+    <string msgid="2223301931652355242" name="abc_menu_ctrl_shortcut_label">"Ctrl+"</string>
+    <string msgid="838001238306846836" name="abc_menu_delete_shortcut_label">"delete"</string>
+    <string msgid="7986526966204849475" name="abc_menu_enter_shortcut_label">"enter"</string>
+    <string msgid="375214403600139847" name="abc_menu_function_shortcut_label">"Function+"</string>
+    <string msgid="4192209724446364286" name="abc_menu_meta_shortcut_label">"Meta+"</string>
+    <string msgid="4741552369836443843" name="abc_menu_shift_shortcut_label">"Shift+"</string>
+    <string msgid="5473865519181928982" name="abc_menu_space_shortcut_label">"espaço"</string>
+    <string msgid="6180552449598693998" name="abc_menu_sym_shortcut_label">"Sym+"</string>
+    <string msgid="5520303668377388990" name="abc_prepend_shortcut_label">"Menu+"</string>
+    <string msgid="7208076849092622260" name="abc_search_hint">"Pesquisar…"</string>
+    <string msgid="3741173234950517107" name="abc_searchview_description_clear">"Limpar consulta"</string>
+    <string msgid="693312494995508443" name="abc_searchview_description_query">"Consulta de pesquisa"</string>
+    <string msgid="3417662926640357176" name="abc_searchview_description_search">"Pesquisar"</string>
+    <string msgid="1486535517437947103" name="abc_searchview_description_submit">"Enviar consulta"</string>
+    <string msgid="2293578557972875415" name="abc_searchview_description_voice">"Pesquisa por voz"</string>
+    <string msgid="8875138169939072951" name="abc_shareactionprovider_share_with">"Compartilhar com"</string>
+    <string msgid="9055268688411532828" name="abc_shareactionprovider_share_with_application">"Compartilhar com <ns1:g id="APPLICATION_NAME">%s</ns1:g>"</string>
+    <string msgid="1656852541809559762" name="abc_toolbar_collapse_description">"Recolher"</string>
+    <string gender="unknown" name="com_facebook_device_auth_instructions">Acesse &lt;b>facebook.com/device&lt;/b> e insira o código mostrado acima.</string>
+    <string gender="unknown" name="com_facebook_image_download_unknown_error">Erro inesperado ao baixar uma imagem.</string>
+    <string gender="unknown" name="com_facebook_internet_permission_error_message">O login do WebView exige permissão da INTERNET</string>
+    <string gender="unknown" name="com_facebook_internet_permission_error_title">Erro AndroidManifest</string>
+    <string gender="unknown" name="com_facebook_like_button_liked">Curtiu</string>
+    <string gender="unknown" name="com_facebook_like_button_not_liked">Curtir</string>
+    <string gender="unknown" name="com_facebook_loading">Carregando…</string>
+    <string gender="unknown" name="com_facebook_loginview_cancel_action">Cancelar</string>
+    <string gender="unknown" name="com_facebook_loginview_log_in_button">Entrar</string>
+    <string gender="unknown" name="com_facebook_loginview_log_in_button_continue">Continuar com o Facebook</string>
+    <string gender="unknown" name="com_facebook_loginview_log_in_button_long">Entrar com o Facebook</string>
+    <string gender="unknown" name="com_facebook_loginview_log_out_action">Sair</string>
+    <string gender="unknown" name="com_facebook_loginview_log_out_button">Sair</string>
+    <string gender="unknown" name="com_facebook_loginview_logged_in_as">Entrou como %1$s</string>
+    <string gender="unknown" name="com_facebook_loginview_logged_in_using_facebook">Conectado usando o Facebook</string>
+    <string gender="unknown" name="com_facebook_send_button_text">Enviar</string>
+    <string gender="unknown" name="com_facebook_share_button_text">Compartilhar</string>
+    <string gender="unknown" name="com_facebook_smart_device_instructions">Para conectar sua conta, abra o aplicativo do Facebook no seu dispositivo móvel e verifique se há notificações.</string>
+    <string gender="unknown" name="com_facebook_smart_device_instructions_or">- OU -</string>
+    <string gender="unknown" name="com_facebook_smart_login_confirmation_cancel">Não é você?</string>
+    <string gender="unknown" name="com_facebook_smart_login_confirmation_continue_as">Continuar como %1$s</string>
+    <string gender="unknown" name="com_facebook_smart_login_confirmation_title">Confirmar login</string>
+    <string gender="unknown" name="com_facebook_tooltip_default">Você está no controle — escolha quais informações você quer compartilhar com os aplicativos.</string>
+    <string name="fui_accessibility_logo">Logotipo do app</string>
+    <string name="fui_auto_verified">O número de telefone foi verificado automaticamente</string>
+    <string name="fui_button_text_save">Salvar</string>
+    <string name="fui_button_text_send">Enviar</string>
+    <string name="fui_cancel">Cancelar</string>
+    <string name="fui_confirm_recovery_body">Siga as instruções enviadas para %1$s para recuperar sua senha.</string>
+    <string name="fui_continue">Continuar</string>
+    <string name="fui_email_account_creation_error">Falha no registro da conta do e-mail</string>
+    <string name="fui_email_hint">E-mail</string>
+    <string name="fui_email_link_confirm_email_header">Confirme o e-mail</string>
+    <string name="fui_email_link_confirm_email_message">Confirme o e-mail para continuar o login</string>
+    <string name="fui_email_link_cross_device_linking_text">Inicialmente, você quis conectar %1$s à sua conta de e-mail, mas abriu o link em outro dispositivo no qual você não está conectado.\n\nSe você ainda quiser conectar sua conta de %1$s, abra o link no mesmo dispositivo em que fez login. Se preferir, toque em \"Continuar\" para fazer login neste dispositivo.</string>
+    <string name="fui_email_link_cross_device_sign_in_button_text">Fazer login com %1$s</string>
+    <string name="fui_email_link_different_anonymous_user_header">Sessão encerrada</string>
+    <string name="fui_email_link_different_anonymous_user_message">A sessão associada a este login expirou ou foi apagada.</string>
+    <string name="fui_email_link_dismiss_button">Dispensar</string>
+    <string name="fui_email_link_email_sent">Um e-mail de login com mais instruções foi enviado para %1$s. Verifique sua caixa de entrada para concluir o login.</string>
+    <string name="fui_email_link_header">E-mail de login enviado\n</string>
+    <string name="fui_email_link_invalid_link_header">Não é possível fazer login</string>
+    <string name="fui_email_link_invalid_link_message">O código da ação é inválido. Isso pode acontecer quando o código está incorreto ou já foi usado.</string>
+    <string name="fui_email_link_resend">Reenviar</string>
+    <string name="fui_email_link_trouble_getting_email_header">Problemas para receber e-mails?</string>
+    <string name="fui_email_link_trouble_getting_email_resend_solution">Se as etapas acima não funcionarem, envie o e-mail novamente. Observação: isso desativará o link do e-mail anterior.</string>
+    <string name="fui_email_link_trouble_getting_possible_fixes">Utilize estas soluções comuns:\n\u2022 Verifique se o e-mail foi filtrado ou marcado como spam\n\u2022 Verifique sua conexão com a Internet.\n\u2022 Verifique se você digitou seu e-mail corretamente.\n\u2022 Verifique se a sua caixa de entrada está cheia ou se ela está com outro tipo de problema.\n</string>
+    <string name="fui_email_link_wrong_device_header">Novo dispositivo ou navegador detectado.</string>
+    <string name="fui_email_link_wrong_device_message">Tente abrir o link usando o mesmo dispositivo ou navegador que você usou para iniciar o processo de login.</string>
+    <string name="fui_enter_confirmation_code">Insira o código de 6 dígitos enviado para</string>
+    <string name="fui_error_email_does_not_exist">O endereço de e-mail não corresponde a uma conta existente</string>
+    <string name="fui_error_invalid_password">A senha está incorreta.</string>
+    <string name="fui_error_quota_exceeded">Ocorreu um problema na verificação do seu número de telefone</string>
+    <string name="fui_error_session_expired">Este código não é mais válido</string>
+    <string name="fui_error_too_many_attempts">Este número de telefone já foi usado muitas vezes</string>
+    <string name="fui_error_unknown">Ocorreu um erro desconhecido.</string>
+    <string name="fui_idp_name_email">E-mail</string>
+    <string name="fui_idp_name_facebook">Facebook</string>
+    <string name="fui_idp_name_github">GitHub</string>
+    <string name="fui_idp_name_google">Google</string>
+    <string name="fui_idp_name_phone">Telefone</string>
+    <string name="fui_idp_name_twitter">Twitter</string>
+    <string name="fui_incorrect_code_dialog_body">Código incorreto. Tente novamente.</string>
+    <string name="fui_invalid_email_address">Endereço de e-mail inválido</string>
+    <string name="fui_invalid_phone_number">Insira um número de telefone válido</string>
+    <string name="fui_missing_email_address">Digite seu endereço de e-mail para continuar</string>
+    <string name="fui_missing_first_and_last_name">Digite um nome e um sobrenome.</string>
+    <string name="fui_name_hint">Nome e sobrenome</string>
+    <string name="fui_new_password_hint">Nova senha</string>
+    <string name="fui_next_default">Próxima</string>
+    <string name="fui_no_internet" translation_descripition="User message shown when sign-in is attempted while offline.">Erro de rede, confira sua conexão de Internet.</string>
+    <string name="fui_password_hint">Senha</string>
+    <string name="fui_password_recovery_body">Veja como redefinir sua senha nas instruções enviadas para este e-mail.</string>
+    <string name="fui_phone_hint">Número de telefone</string>
+    <string name="fui_privacy_policy">Política de privacidade</string>
+    <string name="fui_progress_dialog_checking_accounts">Verificando contas existentes…</string>
+    <string name="fui_progress_dialog_loading">Carregando…</string>
+    <string name="fui_progress_dialog_sending">Enviando…</string>
+    <string name="fui_progress_dialog_signing_in">Fazendo login…</string>
+    <string name="fui_progress_dialog_signing_up">Concluindo sua inscrição…</string>
+    <string name="fui_required_field">Esse campo não pode ficar em branco.</string>
+    <string name="fui_resend_code">Reenviar código</string>
+    <string name="fui_resend_code_in">Reenviar código em 0:%02d</string>
+    <string name="fui_sign_in_anonymously">Continuar como convidado</string>
+    <string name="fui_sign_in_default">Fazer login</string>
+    <string name="fui_sign_in_with_apple">Fazer login com a Apple</string>
+    <string name="fui_sign_in_with_email">Fazer login com o e-mail</string>
+    <string name="fui_sign_in_with_facebook">Fazer login com o Facebook</string>
+    <string name="fui_sign_in_with_github">Fazer login com o GitHub</string>
+    <string name="fui_sign_in_with_google">Fazer login com o Google</string>
+    <string name="fui_sign_in_with_microsoft">Fazer login com a Microsoft</string>
+    <string name="fui_sign_in_with_phone">Fazer login com o telefone</string>
+    <string name="fui_sign_in_with_phone_number">Fazer login com o número de telefone</string>
+    <string name="fui_sign_in_with_twitter">Fazer login com o Twitter</string>
+    <string name="fui_sign_in_with_yahoo">Fazer login com o Yahoo</string>
+    <string name="fui_sms_terms_of_service">Se você tocar em “%1$s”, um SMS poderá ser enviado e tarifas de mensagens e de dados serão cobradas.</string>
+    <string name="fui_sms_terms_of_service_and_privacy_policy_extended">Ao tocar em “%1$s”, você concorda com nossos %2$s e a %3$s. Um SMS poderá ser enviado e tarifas de mensagens e de dados poderão ser cobradas.</string>
+    <string name="fui_terms_of_service">Termos de Serviço</string>
+    <string name="fui_title_confirm_recover_password">Verifique seu e-mail</string>
+    <string name="fui_title_recover_password_activity">Recuperar a senha</string>
+    <string name="fui_title_register_email">Inscrever-se</string>
+    <string name="fui_tos_and_pp">Ao continuar, você concorda com nossos %1$s e a %2$s.</string>
+    <string name="fui_tos_and_pp_footer">%1$s \u00A0 \u00A0 %2$s</string>
+    <string name="fui_trouble_signing_in">Problemas com login?</string>
+    <string name="fui_verify_phone_number">Confirmar número de telefone</string>
+    <string name="fui_verify_phone_number_title">Insira o número do seu telefone</string>
+    <string name="fui_verify_your_phone_title">Confirmar seu número de telefone</string>
+    <string name="fui_verifying">Verificando…</string>
+    <string name="fui_welcome_back_email_header">É bom ver você novamente!</string>
+    <string name="fui_welcome_back_email_link_header">Você já tem uma conta\n</string>
+    <string name="fui_welcome_back_email_link_prompt_body">Você já usou %1$s. Você pode conectar sua conta do %2$s com %1$s ao fazer login usando o link de e-mail abaixo.\n\nPara conectar sua conta do %2$s com este e-mail, é necessário abrir o link no mesmo dispositivo ou navegador.</string>
+    <string name="fui_welcome_back_idp_header">Você já tem uma conta</string>
+    <string name="fui_welcome_back_idp_prompt">Você já usou o e-mail %1$s. Faça login com o %2$s para continuar.</string>
+    <string name="fui_welcome_back_password_prompt_body">Você já usou o e-mail %1$s para fazer login. Insira a senha dessa conta.</string>
+    <string msgid="6264217191555673260" name="search_menu_title">"Pesquisar"</string>
+    <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
+</resources>

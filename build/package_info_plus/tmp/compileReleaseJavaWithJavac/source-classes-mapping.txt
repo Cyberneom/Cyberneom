@@ -1,0 +1,4 @@
+dev/fluttercommunity/plus/packageinfo/PackageInfoPlugin.java
+ dev.fluttercommunity.plus.packageinfo.PackageInfoPlugin
+dev/fluttercommunity/plus/packageinfo/BuildConfig.java
+ dev.fluttercommunity.plus.packageinfo.BuildConfig

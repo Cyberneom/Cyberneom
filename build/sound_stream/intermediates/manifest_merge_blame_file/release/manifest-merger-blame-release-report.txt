@@ -1,0 +1,12 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="vn.casperpas.sound_stream" >
+4
+5    <uses-sdk android:minSdkVersion="21" />
+5-->C:\Users\Jmkz\AppData\Local\Pub\Cache\hosted\pub.dartlang.org\sound_stream-0.3.0\android\src\main\AndroidManifest.xml
+6
+7    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+7-->C:\Users\Jmkz\AppData\Local\Pub\Cache\hosted\pub.dartlang.org\sound_stream-0.3.0\android\src\main\AndroidManifest.xml:3:5-71
+7-->C:\Users\Jmkz\AppData\Local\Pub\Cache\hosted\pub.dartlang.org\sound_stream-0.3.0\android\src\main\AndroidManifest.xml:3:22-68
+8
+9</manifest>

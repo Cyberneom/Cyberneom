@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">cyberneom</string>
+    <string name="facebook_application_id" translatable="false">570241033975630</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb570241033975630</string>
+</resources>
