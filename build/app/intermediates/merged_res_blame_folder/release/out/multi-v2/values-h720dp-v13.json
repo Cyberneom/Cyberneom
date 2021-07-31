@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "X:\\codebase\\Cyberneom\\build\\app\\intermediates\\incremental\\mergeReleaseResources\\merged.dir\\values-h720dp-v13\\values-h720dp-v13.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Jmkz\\.gradle\\caches\\transforms-2\\files-2.1\\4c29ec7eb9b512c3ed854a09eb315d25\\appcompat-1.2.0\\res\\values-h720dp-v13\\values-h720dp-v13.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "66",
+                        "endOffsets": "117"
+                    }
+                }
+            ]
+        }
+    ]
+}

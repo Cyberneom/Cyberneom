@@ -1,0 +1,4 @@
+enum NeomFileFrom {
+  Camera,
+  Gallery,
+}

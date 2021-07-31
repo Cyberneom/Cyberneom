@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "X:\\codebase\\Cyberneom\\build\\audioplayers\\intermediates\\res\\merged\\release\\drawable\\notification_bg.xml",
+        "source": "C:\\Users\\Jmkz\\.gradle\\caches\\transforms-2\\files-2.1\\afea5f613010d04667956c14b3665aa6\\core-1.6.0\\res\\drawable\\notification_bg.xml"
+    },
+    {
+        "merged": "X:\\codebase\\Cyberneom\\build\\audioplayers\\intermediates\\res\\merged\\release\\drawable\\notification_tile_bg.xml",
+        "source": "C:\\Users\\Jmkz\\.gradle\\caches\\transforms-2\\files-2.1\\afea5f613010d04667956c14b3665aa6\\core-1.6.0\\res\\drawable\\notification_tile_bg.xml"
+    },
+    {
+        "merged": "X:\\codebase\\Cyberneom\\build\\audioplayers\\intermediates\\res\\merged\\release\\drawable\\notification_icon_background.xml",
+        "source": "C:\\Users\\Jmkz\\.gradle\\caches\\transforms-2\\files-2.1\\afea5f613010d04667956c14b3665aa6\\core-1.6.0\\res\\drawable\\notification_icon_background.xml"
+    },
+    {
+        "merged": "X:\\codebase\\Cyberneom\\build\\audioplayers\\intermediates\\res\\merged\\release\\drawable\\notification_bg_low.xml",
+        "source": "C:\\Users\\Jmkz\\.gradle\\caches\\transforms-2\\files-2.1\\afea5f613010d04667956c14b3665aa6\\core-1.6.0\\res\\drawable\\notification_bg_low.xml"
+    }
+]

@@ -1,0 +1,12 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.video_compress" >
+4
+5    <uses-sdk android:minSdkVersion="18" />
+5-->C:\Users\Jmkz\AppData\Local\Pub\Cache\hosted\pub.dartlang.org\video_compress-3.0.0\android\src\main\AndroidManifest.xml
+6
+7    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+7-->C:\Users\Jmkz\AppData\Local\Pub\Cache\hosted\pub.dartlang.org\video_compress-3.0.0\android\src\main\AndroidManifest.xml:3:5-81
+7-->C:\Users\Jmkz\AppData\Local\Pub\Cache\hosted\pub.dartlang.org\video_compress-3.0.0\android\src\main\AndroidManifest.xml:3:22-78
+8
+9</manifest>

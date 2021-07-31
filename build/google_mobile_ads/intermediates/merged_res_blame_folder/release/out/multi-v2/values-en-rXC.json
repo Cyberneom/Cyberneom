@@ -1,0 +1,34 @@
+{
+    "logs": [
+        {
+            "outputFile": "X:\\codebase\\Cyberneom\\build\\google_mobile_ads\\intermediates\\incremental\\mergeReleaseResources\\merged.dir\\values-en-rXC\\values-en-rXC.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Jmkz\\.gradle\\caches\\transforms-2\\files-2.1\\1fe7493292c9dd5edae0293c3934b7dd\\core-1.2.0\\res\\values-en-rXC\\values-en-rXC.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "203",
+                        "endOffsets": "254"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "X:\\codebase\\Cyberneom\\build\\google_mobile_ads\\intermediates\\res\\merged\\release\\values-en-rXC\\values-en-rXC.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Jmkz\\.gradle\\caches\\transforms-2\\files-2.1\\1fe7493292c9dd5edae0293c3934b7dd\\core-1.2.0\\res\\values-en-rXC\\values-en-rXC.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "203",
+                        "endOffsets": "254"
+                    }
+                }
+            ]
+        }
+    ]
+}

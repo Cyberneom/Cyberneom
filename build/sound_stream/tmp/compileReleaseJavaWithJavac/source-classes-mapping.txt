@@ -1,0 +1,2 @@
+vn/casperpas/sound_stream/BuildConfig.java
+ vn.casperpas.sound_stream.BuildConfig

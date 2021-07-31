@@ -1,0 +1,9 @@
+com/dataxad/flutter_mailer/FlutterMailerPlugin.java
+ com.dataxad.flutter_mailer.FlutterMailerPlugin
+com/dataxad/flutter_mailer/MethodCallHandlerImpl.java
+ com.dataxad.flutter_mailer.MethodCallHandlerImpl
+ com.dataxad.flutter_mailer.MethodCallHandlerImpl$FlutterMailerException
+com/dataxad/flutter_mailer/BuildConfig.java
+ com.dataxad.flutter_mailer.BuildConfig
+com/dataxad/flutter_mailer/FlutterMailerFileProvider.java
+ com.dataxad.flutter_mailer.FlutterMailerFileProvider

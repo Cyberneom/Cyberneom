@@ -1,0 +1,24 @@
+ru/innim/flutter_login_facebook/MethodCallHandler.java
+ ru.innim.flutter_login_facebook.MethodCallHandler
+ ru.innim.flutter_login_facebook.MethodCallHandler$1
+ ru.innim.flutter_login_facebook.MethodCallHandler$2
+ru/innim/flutter_login_facebook/Results.java
+ ru.innim.flutter_login_facebook.Results
+ ru.innim.flutter_login_facebook.Results$1
+ ru.innim.flutter_login_facebook.Results$2
+ ru.innim.flutter_login_facebook.Results$3
+ ru.innim.flutter_login_facebook.Results$4
+ ru.innim.flutter_login_facebook.Results$5
+ ru.innim.flutter_login_facebook.Results$6
+ ru.innim.flutter_login_facebook.Results$LoginStatus
+ru/innim/flutter_login_facebook/BuildConfig.java
+ ru.innim.flutter_login_facebook.BuildConfig
+ru/innim/flutter_login_facebook/ErrorCode.java
+ ru.innim.flutter_login_facebook.ErrorCode
+ru/innim/flutter_login_facebook/FlutterLoginFacebookPlugin.java
+ ru.innim.flutter_login_facebook.FlutterLoginFacebookPlugin
+ru/innim/flutter_login_facebook/LoginCallback.java
+ ru.innim.flutter_login_facebook.LoginCallback
+ ru.innim.flutter_login_facebook.LoginCallback$1
+ru/innim/flutter_login_facebook/ActivityListener.java
+ ru.innim.flutter_login_facebook.ActivityListener

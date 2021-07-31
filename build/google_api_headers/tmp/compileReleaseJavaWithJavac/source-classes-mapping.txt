@@ -1,0 +1,2 @@
+io/github/zeshuaro/google_api_headers/BuildConfig.java
+ io.github.zeshuaro.google_api_headers.BuildConfig

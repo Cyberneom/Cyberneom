@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
+    <plurals name="fui_error_weak_password"> <item quantity="one">Ο κωδικός πρόσβασης δεν είναι αρκετά ισχυρός. Χρησιμοποιήστε τουλάχιστον %1$d χαρακτήρα και έναν συνδυασμό γραμμάτων και αριθμών</item> <item quantity="other">Ο κωδικός πρόσβασης δεν είναι αρκετά ισχυρός. Χρησιμοποιήστε τουλάχιστον %1$d χαρακτήρες και έναν συνδυασμό γραμμάτων και αριθμών</item> </plurals>
+    <string msgid="5976598919945601918" name="abc_action_bar_home_description">"Πλοήγηση στην αρχική σελίδα"</string>
+    <string msgid="8388173803310557296" name="abc_action_bar_up_description">"Πλοήγηση προς τα επάνω"</string>
+    <string msgid="3937310113216875497" name="abc_action_menu_overflow_description">"Περισσότερες επιλογές"</string>
+    <string msgid="4692188335987374352" name="abc_action_mode_done">"Τέλος"</string>
+    <string msgid="1189761859438369441" name="abc_activity_chooser_view_see_all">"Εμφάνιση όλων"</string>
+    <string msgid="2165779757652331008" name="abc_activitychooserview_choose_application">"Επιλέξτε μια εφαρμογή"</string>
+    <string msgid="4215997306490295099" name="abc_capital_off">"ΑΠΕΝΕΡΓΟΠΟΙΗΣΗ"</string>
+    <string msgid="884982626291842264" name="abc_capital_on">"ΕΝΕΡΓΟΠΟΙΗΣΗ"</string>
+    <string msgid="8833365367933412986" name="abc_menu_alt_shortcut_label">"Alt+"</string>
+    <string msgid="2223301931652355242" name="abc_menu_ctrl_shortcut_label">"Ctrl+"</string>
+    <string msgid="838001238306846836" name="abc_menu_delete_shortcut_label">"delete"</string>
+    <string msgid="7986526966204849475" name="abc_menu_enter_shortcut_label">"enter"</string>
+    <string msgid="375214403600139847" name="abc_menu_function_shortcut_label">"Function+"</string>
+    <string msgid="4192209724446364286" name="abc_menu_meta_shortcut_label">"Meta+"</string>
+    <string msgid="4741552369836443843" name="abc_menu_shift_shortcut_label">"Shift+"</string>
+    <string msgid="5473865519181928982" name="abc_menu_space_shortcut_label">"διάστημα"</string>
+    <string msgid="6180552449598693998" name="abc_menu_sym_shortcut_label">"Sym+"</string>
+    <string msgid="5520303668377388990" name="abc_prepend_shortcut_label">"Menu+"</string>
+    <string msgid="7208076849092622260" name="abc_search_hint">"Αναζήτηση…"</string>
+    <string msgid="3741173234950517107" name="abc_searchview_description_clear">"Διαγραφή ερωτήματος"</string>
+    <string msgid="693312494995508443" name="abc_searchview_description_query">"Ερώτημα αναζήτησης"</string>
+    <string msgid="3417662926640357176" name="abc_searchview_description_search">"Αναζήτηση"</string>
+    <string msgid="1486535517437947103" name="abc_searchview_description_submit">"Υποβολή ερωτήματος"</string>
+    <string msgid="2293578557972875415" name="abc_searchview_description_voice">"Φωνητική αναζήτηση"</string>
+    <string msgid="8875138169939072951" name="abc_shareactionprovider_share_with">"Κοινοποίηση σε"</string>
+    <string msgid="9055268688411532828" name="abc_shareactionprovider_share_with_application">"Κοινοποίηση στην εφαρμογή <ns1:g id="APPLICATION_NAME">%s</ns1:g>"</string>
+    <string msgid="1656852541809559762" name="abc_toolbar_collapse_description">"Σύμπτυξη"</string>
+    <string gender="unknown" name="com_facebook_device_auth_instructions">Πηγαίνετε στη διεύθυνση &lt;b>facebook.com/device&lt;/b> και εισαγάγετε τον παραπάνω κωδικό.</string>
+    <string gender="unknown" name="com_facebook_image_download_unknown_error">Παρουσιάστηκε μη αναμενόμενο σφάλμα κατά τη λήψη μιας εικόνας.</string>
+    <string gender="unknown" name="com_facebook_internet_permission_error_message">Για σύνδεση στην εφαρμογή WebView απαιτείται άδεια INTERNET</string>
+    <string gender="unknown" name="com_facebook_internet_permission_error_title">Σφάλμα AndroidManifest</string>
+    <string gender="unknown" name="com_facebook_like_button_liked">Σας αρέσει</string>
+    <string gender="unknown" name="com_facebook_like_button_not_liked">Μου αρέσει!</string>
+    <string gender="unknown" name="com_facebook_loading">Φόρτωση...</string>
+    <string gender="unknown" name="com_facebook_loginview_cancel_action">Ακύρωση</string>
+    <string gender="unknown" name="com_facebook_loginview_log_in_button">Σύνδεση</string>
+    <string gender="unknown" name="com_facebook_loginview_log_in_button_continue">Συνέχεια με το Facebook</string>
+    <string gender="unknown" name="com_facebook_loginview_log_in_button_long">Συνδεθείτε μέσω Facebook</string>
+    <string gender="unknown" name="com_facebook_loginview_log_out_action">Αποσύνδεση</string>
+    <string gender="unknown" name="com_facebook_loginview_log_out_button">Αποσύνδεση</string>
+    <string gender="unknown" name="com_facebook_loginview_logged_in_as">Έχετε συνδεθεί ως: %1$s</string>
+    <string gender="unknown" name="com_facebook_loginview_logged_in_using_facebook">Έγινε σύνδεση μέσω Facebook</string>
+    <string gender="unknown" name="com_facebook_send_button_text">Αποστολή</string>
+    <string gender="unknown" name="com_facebook_share_button_text">Κοινοποιήστε</string>
+    <string gender="unknown" name="com_facebook_smart_device_instructions">Για να συνδέσετε το λογαριασμό σας, ανοίξτε την εφαρμογή Facebook στη φορητή συσκευή σας και ελέγξτε για ειδοποιήσεις.</string>
+    <string gender="unknown" name="com_facebook_smart_device_instructions_or">- Ή -</string>
+    <string gender="unknown" name="com_facebook_smart_login_confirmation_cancel">Δεν είστε εσείς;</string>
+    <string gender="unknown" name="com_facebook_smart_login_confirmation_continue_as">Συνέχεια ως %1$s</string>
+    <string gender="unknown" name="com_facebook_smart_login_confirmation_title">Επιβεβαίωση σύνδεσης</string>
+    <string gender="unknown" name="com_facebook_tooltip_default">Εσείς έχετε τον έλεγχο - επιλέξτε ποιες πληροφορίες θέλετε να κοινοποιείτε στις εφαρμογές.</string>
+    <string msgid="8585111718777012708" name="common_google_play_services_enable_button">"Ενεργοποίηση"</string>
+    <string msgid="7045129128108380659" name="common_google_play_services_enable_text">"Η εφαρμογή <ns1:g id="APP_NAME">%1$s</ns1:g> δεν θα λειτουργήσει εάν δεν έχετε ενεργοποιήσει τις υπηρεσίες Google Play."</string>
+    <string msgid="3147157405986503375" name="common_google_play_services_enable_title">"Ενεργοποίηση υπηρεσιών Google Play"</string>
+    <string msgid="9115728400623041681" name="common_google_play_services_install_button">"Εγκατάσταση"</string>
+    <string msgid="8179894293032530091" name="common_google_play_services_install_text">"Η εφαρμογή <ns1:g id="APP_NAME">%1$s</ns1:g> δεν μπορεί να εκτελεστεί χωρίς τις υπηρεσίες Google Play, οι οποίες λείπουν από τη συσκευή σας."</string>
+    <string msgid="7442193194585196676" name="common_google_play_services_install_title">"Λήψη υπηρεσιών Google Play"</string>
+    <string msgid="4293541511340436975" name="common_google_play_services_notification_channel_name">"Διαθεσιμότητα υπηρεσιών Google Play"</string>
+    <string msgid="180394615667698242" name="common_google_play_services_notification_ticker">"Σφάλμα Υπηρεσιών Google Play"</string>
+    <string msgid="2518680582564677258" name="common_google_play_services_unknown_issue">"Η εφαρμογή <ns1:g id="APP_NAME">%1$s</ns1:g> αντιμετωπίζει κάποιο πρόβλημα με τις υπηρεσίες Google Play. Προσπαθήστε ξανά."</string>
+    <string msgid="5501187292256987189" name="common_google_play_services_unsupported_text">"Η εφαρμογή <ns1:g id="APP_NAME">%1$s</ns1:g> δεν θα εκτελεστεί χωρίς τις υπηρεσίες Google Play, οι οποίες δεν υποστηρίζονται από τη συσκευή σας."</string>
+    <string msgid="8172070149091615356" name="common_google_play_services_update_button">"Ενημέρωση"</string>
+    <string msgid="7773943415006962566" name="common_google_play_services_update_text">"Η εφαρμογή <ns1:g id="APP_NAME">%1$s</ns1:g> θα εκτελεστεί αφού ενημερώσετε τις Υπηρεσίες Google Play."</string>
+    <string msgid="8706675115216073244" name="common_google_play_services_update_title">"Ενημέρωση υπηρεσιών Google Play"</string>
+    <string msgid="7894275749778928941" name="common_google_play_services_updating_text">"Η εφαρμογή <ns1:g id="APP_NAME">%1$s</ns1:g> δεν θα εκτελεστεί χωρίς τις υπηρεσίες Google Play, οι οποίες ενημερώνονται αυτήν τη στιγμή."</string>
+    <string msgid="2804989272736383918" name="common_google_play_services_wear_update_text">"Απαιτείται νέα έκδοση των υπηρεσιών Google Play. Θα ενημερωθεί σύντομα."</string>
+    <string msgid="5201977337835724196" name="common_open_on_phone">"Άνοιγμα σε τηλέφωνο"</string>
+    <string msgid="3441753203274453993" name="common_signin_button_text">"Σύνδεση"</string>
+    <string msgid="669893613918351210" name="common_signin_button_text_long">"Συνδεθείτε με το Google"</string>
+    <string name="fcm_fallback_notification_channel_label">Διάφορα</string>
+    <string name="fui_accessibility_logo">Λογότυπο εφαρμογής</string>
+    <string name="fui_auto_verified">Ο αριθμός τηλεφώνου επαληθεύτηκε αυτόματα</string>
+    <string name="fui_button_text_save">Αποθήκευση</string>
+    <string name="fui_button_text_send">Αποστολή</string>
+    <string name="fui_cancel">Ακύρωση</string>
+    <string name="fui_confirm_recovery_body">Ακολουθήστε τις οδηγίες που στάλθηκαν στο %1$s για να ανακτήσετε τον κωδικό πρόσβασής σας.</string>
+    <string name="fui_continue">Συνέχεια</string>
+    <string name="fui_email_account_creation_error">Η εγγραφή του λογαριασμού ηλεκτρονικού ταχυδρομείου δεν ήταν επιτυχής</string>
+    <string name="fui_email_hint">Ηλεκτρονικό ταχυδρομείο</string>
+    <string name="fui_email_link_confirm_email_header">Επιβεβαίωση διεύθυνσης ηλεκτρονικού ταχυδρομείου</string>
+    <string name="fui_email_link_confirm_email_message">Επιβεβαιώστε τη διεύθυνση ηλεκτρονικού ταχυδρομείου για να συνεχίσετε τη σύνδεση</string>
+    <string name="fui_email_link_cross_device_linking_text">Αρχικά, σκοπεύατε να συνδέσετε το %1$s με τον λογαριασμό ηλεκτρονικού ταχυδρομείου, αλλά, για το άνοιγμα του συνδέσμου, χρησιμοποιήσατε άλλη συσκευή στην οποία δεν είστε συνδεδεμένοι.\n\nΑν θέλετε να συνεχίσετε τη σύνδεση του λογαριασμού %1$s, ανοίξτε τον σύνδεσμο στην ίδια συσκευή από την οποία ξεκινήσατε τη σύνδεση. Διαφορετικά, πατήστε Συνέχεια για να συνδεθείτε σε αυτήν τη συσκευή.</string>
+    <string name="fui_email_link_cross_device_sign_in_button_text">Συνδεθείτε μέσω %1$s</string>
+    <string name="fui_email_link_different_anonymous_user_header">Η περίοδος σύνδεσης έληξε</string>
+    <string name="fui_email_link_different_anonymous_user_message">Η περίοδος σύνδεσης που συσχετίζεται με το αίτημα σύνδεσης είτε έληξε είτε διαγράφηκε.</string>
+    <string name="fui_email_link_dismiss_button">Παράβλεψη</string>
+    <string name="fui_email_link_email_sent">Ένα μήνυμα ηλεκτρονικού ταχυδρομείου σύνδεσης με πρόσθετες οδηγίες στάλθηκε στη διεύθυνση %1$s. Ελέγξτε τη διεύθυνση ηλεκτρονικού ταχυδρομείου για να ολοκληρώσετε τη σύνδεση.</string>
+    <string name="fui_email_link_header">Το μήνυμα ηλεκτρονικού ταχυδρομείου σύνδεσης στάλθηκε\n</string>
+    <string name="fui_email_link_invalid_link_header">Δεν είναι δυνατή η ολοκλήρωση της σύνδεσης</string>
+    <string name="fui_email_link_invalid_link_message">Ο κωδικός ενέργειας δεν είναι έγκυρος. Αυτό μπορεί να συμβεί αν ο κωδικός έχει λανθασμένη μορφή, έχει λήξει ή χρησιμοποιείται ήδη.</string>
+    <string name="fui_email_link_resend">Επανάληψη αποστολής</string>
+    <string name="fui_email_link_trouble_getting_email_header">Αντιμετωπίζετε πρόβλημα με τη λήψη του μηνύματος ηλεκτρονικού ταχυδρομείου;</string>
+    <string name="fui_email_link_trouble_getting_email_resend_solution">Αν τα παραπάνω βήματα δεν λειτούργησαν, μπορείτε να στείλετε ξανά το μήνυμα ηλεκτρονικού ταχυδρομείου. Έχετε υπόψη ότι με αυτήν την ενέργεια, ο σύνδεσμος στο παλιότερο μήνυμα ηλεκτρονικού ταχυδρομείου θα απενεργοποιηθεί.</string>
+    <string name="fui_email_link_trouble_getting_possible_fixes">Δοκιμάστε αυτές τις συνήθεις διορθώσεις:\n\u2022 Ελέγξτε αν το μήνυμα ηλεκτρονικού ταχυδρομείου επισημάνθηκε ως ανεπιθύμητο ή φιλτραρισμένο.\n\u2022 Ελέγξτε τη σύνδεσή σας στο διαδίκτυο.\n\u2022 Βεβαιωθείτε ότι δεν έχετε γράψει λάθος το μήνυμα ηλεκτρονικού ταχυδρομείου.\n\u2022 Βεβαιωθείτε ότι δεν έχει γεμίσει ο χώρος εισερχομένων ή ότι δεν υπάρχουν άλλα προβλήματα που σχετίζονται με τις ρυθμίσεις εισερχομένων.\n</string>
+    <string name="fui_email_link_wrong_device_header">Εντοπίστηκε νέα συσκευή ή πρόγραμμα περιήγησης.</string>
+    <string name="fui_email_link_wrong_device_message">Δοκιμάστε να ανοίξετε τον σύνδεσμο χρησιμοποιώντας την ίδια συσκευή ή το ίδιο πρόγραμμα περιήγησης από όπου ξεκινήσατε τη διαδικασία σύνδεσης.</string>
+    <string name="fui_enter_confirmation_code">Εισαγάγετε τον 6ψήφιο κωδικό που σας στείλαμε στο</string>
+    <string name="fui_error_email_does_not_exist">Αυτή η διεύθυνση ηλεκτρονικού ταχυδρομείου δεν ταιριάζει με κάποιον υπάρχοντα λογαριασμό</string>
+    <string name="fui_error_invalid_password">Λανθασμένος κωδικός πρόσβασης.</string>
+    <string name="fui_error_quota_exceeded">Παρουσιάστηκε πρόβλημα με την επαλήθευση του αριθμού τηλεφώνου</string>
+    <string name="fui_error_session_expired">Αυτός ο κωδικός δεν είναι πλέον έγκυρος</string>
+    <string name="fui_error_too_many_attempts">Αυτός ο αριθμός τηλεφώνου χρησιμοποιήθηκε πάρα πολλές φορές</string>
+    <string name="fui_error_unknown">Παρουσιάστηκε άγνωστο σφάλμα.</string>
+    <string name="fui_idp_name_email">Ηλεκτρονικό ταχυδρομείο</string>
+    <string name="fui_idp_name_facebook">Facebook</string>
+    <string name="fui_idp_name_github">GitHub</string>
+    <string name="fui_idp_name_google">Google</string>
+    <string name="fui_idp_name_phone">Τηλέφωνο</string>
+    <string name="fui_idp_name_twitter">Twitter</string>
+    <string name="fui_incorrect_code_dialog_body">Εσφαλμένος κωδικός. Δοκιμάστε ξανά.</string>
+    <string name="fui_invalid_email_address">Αυτή η διεύθυνση ηλεκτρονικού ταχυδρομείου δεν είναι σωστή</string>
+    <string name="fui_invalid_phone_number">Καταχωρίστε έναν έγκυρο αριθμό τηλεφώνου</string>
+    <string name="fui_missing_email_address">Εισαγάγετε τη διεύθυνση ηλεκτρονικού ταχυδρομείου για να συνεχίσετε</string>
+    <string name="fui_missing_first_and_last_name">Εισαγάγετε ένα όνομα και ένα επώνυμο.</string>
+    <string name="fui_name_hint">Όνομα και επώνυμο</string>
+    <string name="fui_new_password_hint">Νέος κωδικός πρόσβασης</string>
+    <string name="fui_next_default">Επόμενο</string>
+    <string name="fui_no_internet" translation_descripition="User message shown when sign-in is attempted while offline.">Σφάλμα δικτύου, ελέγξτε τη σύνδεση στο διαδίκτυο.</string>
+    <string name="fui_password_hint">Κωδικός πρόσβασης</string>
+    <string name="fui_password_recovery_body">Δείτε τις οδηγίες που στάλθηκαν σε αυτήν τη διεύθυνση ηλεκτρονικού ταχυδρομείου, οι οποίες εξηγούν πώς να επαναφέρετε τον κωδικό πρόσβασής σας.</string>
+    <string name="fui_phone_hint">Αριθμός τηλεφώνου</string>
+    <string name="fui_privacy_policy">Πολιτική απορρήτου</string>
+    <string name="fui_progress_dialog_checking_accounts">Γίνεται έλεγχος για υπάρχοντες λογαριασμούς…</string>
+    <string name="fui_progress_dialog_loading">Γίνεται φόρτωση…</string>
+    <string name="fui_progress_dialog_sending">Γίνεται αποστολή…</string>
+    <string name="fui_progress_dialog_signing_in">Γίνεται σύνδεση…</string>
+    <string name="fui_progress_dialog_signing_up">Γίνεται εγγραφή…</string>
+    <string name="fui_required_field">Αυτό το πεδίο είναι υποχρεωτικό.</string>
+    <string name="fui_resend_code">Επανάληψη αποστολής κωδικού</string>
+    <string name="fui_resend_code_in">Επανάληψη αποστολής κωδικού σε 0:%02d</string>
+    <string name="fui_sign_in_anonymously">Συνέχεια ως επισκέπτης</string>
+    <string name="fui_sign_in_default">Σύνδεση</string>
+    <string name="fui_sign_in_with_apple">Σύνδεση μέσω Apple</string>
+    <string name="fui_sign_in_with_email">Σύνδεση μέσω ηλεκτρονικού ταχυδρομείου</string>
+    <string name="fui_sign_in_with_facebook">Σύνδεση μέσω Facebook</string>
+    <string name="fui_sign_in_with_github">Σύνδεση μέσω GitHub</string>
+    <string name="fui_sign_in_with_google">Σύνδεση μέσω Google</string>
+    <string name="fui_sign_in_with_microsoft">Σύνδεση μέσω Microsoft</string>
+    <string name="fui_sign_in_with_phone">Σύνδεση μέσω τηλεφώνου</string>
+    <string name="fui_sign_in_with_phone_number">Σύνδεση με αριθμό τηλεφώνου</string>
+    <string name="fui_sign_in_with_twitter">Σύνδεση μέσω Twitter</string>
+    <string name="fui_sign_in_with_yahoo">Σύνδεση μέσω Yahoo</string>
+    <string name="fui_sms_terms_of_service">Αν πατήσετε “%1$s”, μπορεί να σταλεί ένα SMS. Ενδέχεται να ισχύουν χρεώσεις μηνυμάτων και δεδομένων.</string>
+    <string name="fui_sms_terms_of_service_and_privacy_policy_extended">Αν πατήσετε “%1$s”, δηλώνετε ότι αποδέχεστε τους %2$s και την %3$s. Μπορεί να σταλεί ένα SMS. Ενδέχεται να ισχύουν χρεώσεις μηνυμάτων και δεδομένων.</string>
+    <string name="fui_terms_of_service">Όρους Παροχής Υπηρεσιών</string>
+    <string name="fui_title_confirm_recover_password">Ελέγξτε τα εισερχόμενα του ηλεκτρονικού ταχυδρομείου σας</string>
+    <string name="fui_title_recover_password_activity">Ανάκτηση κωδικού πρόσβασης</string>
+    <string name="fui_title_register_email">Εγγραφή</string>
+    <string name="fui_tos_and_pp">Αν συνεχίσετε, δηλώνετε ότι αποδέχεστε τους %1$s και την %2$s.</string>
+    <string name="fui_tos_and_pp_footer">%1$s \u00A0 \u00A0 %2$s</string>
+    <string name="fui_trouble_signing_in">Πρόβλημα κατά τη σύνδεση;</string>
+    <string name="fui_verify_phone_number">Επαλήθευση αριθμού τηλεφώνου</string>
+    <string name="fui_verify_phone_number_title">Εισαγάγετε τον αριθμό τηλεφώνου σας</string>
+    <string name="fui_verify_your_phone_title">Επαλήθευση του τηλεφώνου σας</string>
+    <string name="fui_verifying">Επαλήθευση…</string>
+    <string name="fui_welcome_back_email_header">Καλώς ορίσατε και πάλι!</string>
+    <string name="fui_welcome_back_email_link_header">Έχετε ήδη λογαριασμό\n</string>
+    <string name="fui_welcome_back_email_link_prompt_body">Χρησιμοποιήσατε ήδη το %1$s. Για να συνδέσετε τον λογαριασμό σας %2$s με το %1$s, συνδεθείτε στον σύνδεσμο ηλεκτρονικού ταχυδρομείου παρακάτω.\n\nΣε αυτήν τη ροή για την επιτυχή σύνδεση του λογαριασμού %2$s με αυτήν τη διεύθυνση ηλεκτρονικού ταχυδρομείου, θα πρέπει να ανοίξετε τον σύνδεσμο στην ίδια συσκευή ή στο ίδιο πρόγραμμα περιήγησης.</string>
+    <string name="fui_welcome_back_idp_header">Έχετε ήδη λογαριασμό</string>
+    <string name="fui_welcome_back_idp_prompt">Έχετε ήδη χρησιμοποιήσει τη διεύθυνση %1$s. Συνδεθείτε μέσω %2$s για να συνεχίσετε.</string>
+    <string name="fui_welcome_back_password_prompt_body">Έχετε ήδη χρησιμοποιήσει τη διεύθυνση %1$s για να συνδεθείτε. Εισαγάγετε τον κωδικό πρόσβασής σας για αυτόν τον λογαριασμό.</string>
+    <string msgid="4014704848104544569" name="offline_notification_text">"Πατήστε για να ανοίξετε τη διαφήμιση."</string>
+    <string msgid="6989673690118446590" name="offline_notification_title">"Δείτε τη διαφήμιση που αποθηκεύσατε ενώ ήσασταν εκτός σύνδεσης"</string>
+    <string msgid="6452552490969291315" name="offline_opt_in_confirm">"ΟΚ"</string>
+    <string msgid="2485091187023273083" name="offline_opt_in_confirmation">"Θα λάβετε μια ειδοποίηση με έναν σύνδεσμο όταν συνδεθείτε ξανά στο διαδίκτυο."</string>
+    <string msgid="1070677888032715836" name="offline_opt_in_decline">"Όχι"</string>
+    <string msgid="5998527443747404848" name="offline_opt_in_message">"Θα σας στείλουμε μια ειδοποίηση με έναν σύνδεσμο στον ιστότοπο του διαφημιζόμενου."</string>
+    <string msgid="4928666061183236333" name="offline_opt_in_title">"Άνοιγμα της διαφήμισης όταν συνδεθείτε ξανά στο διαδίκτυο"</string>
+    <string msgid="368094699078615544" name="s1">"Αποθήκευση εικόνας"</string>
+    <string msgid="4550830452390689489" name="s2">"Να επιτραπεί στη διαφήμιση να αποθηκεύσει την εικόνα στο gallery φωτογραφιών;"</string>
+    <string msgid="2435407834265420668" name="s3">"Αποδοχή"</string>
+    <string msgid="9167523597401839819" name="s4">"Απόρριψη"</string>
+    <string msgid="1566682516266724847" name="s5">"Δημιουργία συμβάντος ημερολογίου"</string>
+    <string msgid="5996672174517137271" name="s6">"Να επιτραπεί στη διαφήμιση να δημιουργήσει ένα συμβάν ημερολογίου;"</string>
+    <string msgid="7163549807207034258" name="s7">"Δοκιμαστική διαφήμιση"</string>
+    <string msgid="6264217191555673260" name="search_menu_title">"Αναζήτηση"</string>
+    <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
+</resources>
