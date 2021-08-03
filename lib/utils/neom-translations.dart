@@ -107,6 +107,7 @@ class NeomTranslations extends Translations {
       'address': 'Address',
       'place': 'Place',
 
+
       'followingMsg': "You are not following anyone yet. Check them out in our feed and search section.",
       'followersMsg': "You have no followers yet. Share your skills and content to engage with people.",
       'neommatesMsg': "Do you have Neommates in real life? Share this place with them!",
@@ -125,7 +126,7 @@ class NeomTranslations extends Translations {
       'writeYourMessage': "Write your message...",
       'postOptions': 'Post Options',
 
-      'aboutcyberneom': "About Cyberneom",
+      'aboutCyberneom': "About Cyberneom",
       'help': "Help",
       'developer': "Developer",
       'prevVersion1': "It seems that you have a previous version for this application.",
@@ -261,6 +262,10 @@ class NeomTranslations extends Translations {
       'errorCreatingAccount': "Error creating Cyberneom Account",
 
       'frequencyGenerator': 'Frequency Generator',
+      'rootFrequencies': 'Root Frequencies',
+      'myClusters': 'My Clusters',
+      'savePreset': 'Save Preset'
+
 
     },
 
@@ -386,7 +391,7 @@ class NeomTranslations extends Translations {
       'writeYourMessage': "Escribe tu mensaje...",
       'postOptions': 'Opciones de Publicación',
 
-      'aboutcyberneom': "Sobre Cyberneom",
+      'aboutCyberneom': "Sobre Cyberneom",
       'help': "Ayuda",
       'developer': "Desarrollador",
       'prevVersion1': "Parece ser que estás utilizando una versión previa de esta aplicación.",
@@ -522,6 +527,9 @@ class NeomTranslations extends Translations {
       'errorCreatingAccount': "Error creando cuenta de Cyberneom",
 
       'frequencyGenerator': 'Generador de Frecuencias',
+      'rootFrequencies': 'Frecuencias Raíz',
+      'myClusters': 'Mis Clusters',
+      'savePreset': 'Guardar Preset'
 
     },
   };

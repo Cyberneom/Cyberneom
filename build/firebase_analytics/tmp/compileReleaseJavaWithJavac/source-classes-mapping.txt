@@ -1,6 +1,0 @@
-io/flutter/plugins/firebaseanalytics/BuildConfig.java
- io.flutter.plugins.firebaseanalytics.BuildConfig
-io/flutter/plugins/firebaseanalytics/FirebaseAnalyticsPlugin.java
- io.flutter.plugins.firebaseanalytics.FirebaseAnalyticsPlugin
-io/flutter/plugins/firebaseanalytics/FlutterFirebaseAppRegistrar.java
- io.flutter.plugins.firebaseanalytics.FlutterFirebaseAppRegistrar

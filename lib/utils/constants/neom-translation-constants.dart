@@ -45,7 +45,7 @@ class NeomTranslationConstants {
   static const String chamberSearch = "chamberSearch";
   static const String presetSearch = "presetSearch";
   static const String tribes = "tribes";
-  static const String aboutCyberneom = "aboutcyberneom";
+  static const String aboutCyberneom = "aboutCyberneom";
   static const String addNewNeomChamber = 'addNewNeomChamber';
   static const String neomChamberName = 'neomChamberName';
 

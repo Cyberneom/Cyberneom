@@ -1,7 +1,0 @@
-#Fri Jul 30 19:18:13 CDT 2021
-base.1=X\:\\codebase\\Cyberneom\\build\\app\\intermediates\\dex\\release\\minifyReleaseWithR8\\classes2.dex
-path.1=classes2.dex
-base.0=X\:\\codebase\\Cyberneom\\build\\app\\intermediates\\dex\\release\\minifyReleaseWithR8\\classes.dex
-renamed.1=classes2.dex
-renamed.0=classes.dex
-path.0=classes.dex

@@ -1,6 +1,0 @@
-dev/fluttercommunity/plus/device_info/MethodCallHandlerImpl.java
- dev.fluttercommunity.plus.device_info.MethodCallHandlerImpl
-dev/fluttercommunity/plus/device_info/DeviceInfoPlusPlugin.java
- dev.fluttercommunity.plus.device_info.DeviceInfoPlusPlugin
-dev/fluttercommunity/plus/device_info/BuildConfig.java
- dev.fluttercommunity.plus.device_info.BuildConfig

@@ -1,2 +1,0 @@
-plugins/cachet/audio_streamer/BuildConfig.java
- plugins.cachet.audio_streamer.BuildConfig
