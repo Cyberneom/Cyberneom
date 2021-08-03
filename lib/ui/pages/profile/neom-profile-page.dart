@@ -142,7 +142,7 @@ Widget _buildFollowerInfo(context, NeomProfile neommate, TextTheme textTheme) {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           GestureDetector(
-            child: Text('${neommate.neommates.length.toString()} ${NeomTranslationConstants.neommates}', style: followerStyle),
+            child: Text('${neommate.neommates.length.toString()} ${NeomTranslationConstants.neommates.capitalizeFirst}', style: followerStyle),
             onTap: () => NeomUtilities.showAlert(context, "Neommates", NeomTranslationConstants.neommatesMsg.tr),
           ),
         ],

@@ -1,2 +1,0 @@
-com/jhomlala/catcher/BuildConfig.java
- com.jhomlala.catcher.BuildConfig

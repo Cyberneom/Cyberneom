@@ -10,12 +10,6 @@
 @import audio_streamer;
 #endif
 
-#if __has_include(<audioplayers/AudioplayersPlugin.h>)
-#import <audioplayers/AudioplayersPlugin.h>
-#else
-@import audioplayers;
-#endif
-
 #if __has_include(<catcher/CatcherPlugin.h>)
 #import <catcher/CatcherPlugin.h>
 #else
@@ -100,12 +94,6 @@
 @import geolocator;
 #endif
 
-#if __has_include(<google_maps_flutter/FLTGoogleMapsPlugin.h>)
-#import <google_maps_flutter/FLTGoogleMapsPlugin.h>
-#else
-@import google_maps_flutter;
-#endif
-
 #if __has_include(<google_mobile_ads/FLTGoogleMobileAdsPlugin.h>)
 #import <google_mobile_ads/FLTGoogleMobileAdsPlugin.h>
 #else
@@ -122,12 +110,6 @@
 #import <image_picker/FLTImagePickerPlugin.h>
 #else
 @import image_picker;
-#endif
-
-#if __has_include(<package_info/FLTPackageInfoPlugin.h>)
-#import <package_info/FLTPackageInfoPlugin.h>
-#else
-@import package_info;
 #endif
 
 #if __has_include(<package_info_plus/FLTPackageInfoPlusPlugin.h>)
@@ -200,7 +182,6 @@
 
 + (void)registerWithRegistry:(NSObject<FlutterPluginRegistry>*)registry {
   [SwiftAudioStreamerPlugin registerWithRegistrar:[registry registrarForPlugin:@"SwiftAudioStreamerPlugin"]];
-  [AudioplayersPlugin registerWithRegistrar:[registry registrarForPlugin:@"AudioplayersPlugin"]];
   [CatcherPlugin registerWithRegistrar:[registry registrarForPlugin:@"CatcherPlugin"]];
   [FLTFirebaseFirestorePlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseFirestorePlugin"]];
   [FLTDeviceInfoPlusPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTDeviceInfoPlusPlugin"]];
@@ -215,11 +196,9 @@
   [FluttertoastPlugin registerWithRegistrar:[registry registrarForPlugin:@"FluttertoastPlugin"]];
   [GeocodingPlugin registerWithRegistrar:[registry registrarForPlugin:@"GeocodingPlugin"]];
   [GeolocatorPlugin registerWithRegistrar:[registry registrarForPlugin:@"GeolocatorPlugin"]];
-  [FLTGoogleMapsPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTGoogleMapsPlugin"]];
   [FLTGoogleMobileAdsPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTGoogleMobileAdsPlugin"]];
   [FLTGoogleSignInPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTGoogleSignInPlugin"]];
   [FLTImagePickerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTImagePickerPlugin"]];
-  [FLTPackageInfoPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTPackageInfoPlugin"]];
   [FLTPackageInfoPlusPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTPackageInfoPlusPlugin"]];
   [FLTPathProviderPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTPathProviderPlugin"]];
   [PermissionHandlerPlugin registerWithRegistrar:[registry registrarForPlugin:@"PermissionHandlerPlugin"]];

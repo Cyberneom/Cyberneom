@@ -25,9 +25,6 @@ class _NeomGeneratorExamplePageState extends State<NeomGeneratorExamplePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Surround Sound Example"),
-      ),
       body: Container(
         decoration: NeomAppTheme.neomBoxDecoration,
         child: Stack(children: [ Column(

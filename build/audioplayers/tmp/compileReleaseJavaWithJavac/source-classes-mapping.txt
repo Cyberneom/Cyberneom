@@ -1,2 +1,0 @@
-xyz/luan/audioplayers/BuildConfig.java
- xyz.luan.audioplayers.BuildConfig

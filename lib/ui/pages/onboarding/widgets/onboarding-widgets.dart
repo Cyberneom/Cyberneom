@@ -8,7 +8,6 @@ import 'package:cyberneom/utils/constants/neom-translation-constants.dart';
 import 'package:cyberneom/utils/constants/message-translation-constants.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 
 Widget buildActionChip({
   required neomEnum,
@@ -39,32 +38,6 @@ Widget buildContainerTextField(String hint, {required TextEditingController cont
     child: TextFormField(
       controller: controller,
       decoration: InputDecoration(labelText: hint),
-    )
-  );
-}
-
-Widget buildPhoneField({required TextEditingController controllerPhone,
-  required TextEditingController controllerCountryCode}) {
-  return Container(
-    padding: EdgeInsets.only(left: NeomAppTheme.appPadding, right: NeomAppTheme.appPadding, bottom: 10),
-      decoration: BoxDecoration(
-        color: NeomAppColor.bottomNavigationBar,
-        borderRadius: BorderRadius.circular(40),
-      ),
-    child: IntlPhoneField(
-      decoration: InputDecoration(
-        labelText: NeomTranslationConstants.phoneNumber.tr,
-        alignLabelWithHint: true,
-      ),
-      searchText: NeomTranslationConstants.searchByCountryName.tr,
-      initialCountryCode: Get.locale!.countryCode,
-      onChanged: (phone) {
-        controllerPhone.text = phone.number ?? "";
-        controllerCountryCode.text = phone.countryCode ?? "";
-      },
-      onCountryChanged: (phone) {
-        controllerCountryCode.text = phone.countryCode ?? "";
-      },
     )
   );
 }

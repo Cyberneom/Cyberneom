@@ -1,2 +1,0 @@
-com/example/video_compress/BuildConfig.java
- com.example.video_compress.BuildConfig

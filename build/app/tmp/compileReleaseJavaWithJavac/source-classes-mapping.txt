@@ -1,4 +1,0 @@
-io/flutter/plugins/GeneratedPluginRegistrant.java
- io.flutter.plugins.GeneratedPluginRegistrant
-com/cyberneom/neom/BuildConfig.java
- com.cyberneom.neom.BuildConfig
