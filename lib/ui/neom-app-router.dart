@@ -9,7 +9,7 @@ import 'package:cyberneom/ui/pages/chamber/chamber-neom-chamber-preset-page.dart
 import 'package:cyberneom/ui/pages/chamber/neom-chamber-page.dart';
 import 'package:cyberneom/ui/pages/drawer/frequencies/frequency-fav-page.dart';
 import 'package:cyberneom/ui/pages/drawer/frequencies/frequency-page.dart';
-import 'package:cyberneom/ui/pages/neom-generator/neom-generator-example-page.dart';
+import 'package:cyberneom/ui/pages/neom-generator/neom-generator-page.dart';
 import 'package:cyberneom/ui/pages/neommates/neommate-details/neommate-details-page.dart';
 import 'package:cyberneom/ui/pages/profile/neom-profile-details-page.dart';
 import 'package:cyberneom/ui/pages/drawer/settings/about-page.dart';
@@ -120,7 +120,7 @@ class NeomAppRoutes {
     ),
     GetPage(
       name: NeomRouteConstants.NEOM_GENERATOR,
-      page: () => NeomGeneratorExamplePage(),
+      page: () => NeomGeneratorPage(),
       transition: Transition.downToUp
     ),
     GetPage(

@@ -56,11 +56,11 @@ class NeomChamberPresetDetailsController extends GetxController {
       _neomProfileId = neomUserController.neomProfile!.id;
       _neomChambers.assignAll(neomUserController.neomProfile!.neomChambers ?? {});
 
-      List<dynamic> arguments  = Get.arguments;
+      List<dynamic> arguments  = Get.arguments ?? [];
 
       neomChamberPreset =  arguments.elementAt(0);
 
-      if(_neomChambers.values.isNotEmpty){
+      if(neomChambers.isNotEmpty){
         _existsInNeomChamber.value = presetAlreadyInChamber();
       } else if (arguments.length > 1) { //to save in previously selected neomChamber
         NeomChamber neomChamber =  arguments.elementAt(1);
@@ -74,7 +74,7 @@ class NeomChamberPresetDetailsController extends GetxController {
       logger.d(e.toString());
     }
 
-    _isLoading.value = false;
+    isLoading = false;
   }
 
   void clear() {

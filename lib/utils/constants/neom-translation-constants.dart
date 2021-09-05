@@ -168,8 +168,8 @@ class NeomTranslationConstants {
   static const String events = 'events';
   static const String inbox = 'inbox';
 
-  static const String myFirstNeomChamberName = 'myFirstNeomClusterName';
-  static const String myFirstNeomChamberDesc = 'myFirstNeomClusterDesc';
+  static const String myFirstNeomChamberName = 'myFirstNeomChamberName';
+  static const String myFirstNeomChamberDesc = 'myFirstNeomChamberDesc';
 
   static const String addFrequency = "addFrequency";
   static const String rootFrequency = "rootFrequency";
@@ -217,8 +217,9 @@ class NeomTranslationConstants {
 
   static const String chambers = 'chambers';
   static const String statistics = 'statistics';
-
+  static const String parameters = 'parameters';
 
 
 
 }
+

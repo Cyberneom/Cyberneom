@@ -164,7 +164,7 @@ class NeomTranslations extends Translations {
       'title': 'Title',
 
       'myFirstNeomChamberName': "My First Neom Chamber",
-      'myFirstGiglistDesc': "This is where you would add your songs. You already have two songs you may already know.",
+      'myFirstNeomChamberDesc': "This is where you would add your Chamber Presets. You already have one preset to practice.",
 
       'addFrequency': "Add frequency",
       'mainFrequency': "Main frequency",
@@ -172,6 +172,7 @@ class NeomTranslations extends Translations {
       'selectedAsMainFrequency': 'selected as main root frequency',
 
       'multimediaUpload': 'Upload Multimedia',
+      'createEvent': 'Create Event',
       'next':'Next',
       'TBD': 'To be defined',
 
@@ -263,6 +264,7 @@ class NeomTranslations extends Translations {
 
       'frequencyGenerator': 'Frequency Generator',
       'rootFrequencies': 'Root Frequencies',
+      'rootFrequency': 'Root Frequency',
       'myClusters': 'My Clusters',
       'savePreset': 'Save Preset'
 
@@ -429,7 +431,7 @@ class NeomTranslations extends Translations {
       'title': 'Título',
 
       'myFirstNeomChamberName': "Mi Primer Cámara Neom",
-      'myFirstGiglistDesc': "Aquí es donde agregarás las canciones que sueles practicar. Tienes dos canciones de muestra que quizá ya conoces.",
+      'myFirstNeomChamberDesc': "Aquí es donde agregarás los presets que sueles prcaticar. Tienes un ejemplo que quiza ya has entonado.",
 
       'addFrequency': 'Agregar frecuencia',
       'mainFrequency': "Frequencia principal",
@@ -437,6 +439,7 @@ class NeomTranslations extends Translations {
       'selectedAsMainFrequency': 'seleccionado como frequencia raíz',
 
       'multimediaUpload': 'Subir Multimedia',
+      'createEvent': 'createEvent',
       'next':'Siguiente',
       'TBD': 'Por Definir',
 
@@ -528,6 +531,7 @@ class NeomTranslations extends Translations {
 
       'frequencyGenerator': 'Generador de Frecuencias',
       'rootFrequencies': 'Frecuencias Raíz',
+      'rootFrequency': 'Frecuencia Raíz',
       'myClusters': 'Mis Clusters',
       'savePreset': 'Guardar Preset'
 

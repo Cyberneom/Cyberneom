@@ -4,10 +4,9 @@ class MessageTranslationConstants {
 
 
   static const String errorLoginGoogle = 'errorLoginGoogle';
-  static const String errorLoginFacebook = 'errorLoginFacebook';
+  static const String errorLoginFacebook = 'errorerrorLoginGoogleLoginFacebook';
   static const String errorLoginSpotify = 'errorLoginSpotify';
   static const String errorLoginEmail = 'errorLoginEmail';
-
   static const String forgotPassword = 'forgotPassword';
   static const String passwordReset = 'passwordReset';
   static const String errorHandlingAuth = 'errorHandlingAuth';

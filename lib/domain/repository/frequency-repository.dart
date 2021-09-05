@@ -9,8 +9,7 @@ abstract class FrequencyRepository {
 
   Future<String> addBasicFrequency({required String neomProfileId, required String frequencyName});
 
-  Future<bool> updateRootFrequency({required String neomProfileId,
-    required String frequencyId, required String prevFreqId});
+  Future<bool> updateRootFrequency({required String neomProfileId,required String frequencyId, required String prevFreqId});
 
 }
 
