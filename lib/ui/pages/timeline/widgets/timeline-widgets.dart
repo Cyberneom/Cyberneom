@@ -330,11 +330,10 @@ Widget likeCommentShare(TimelineController _, NeomPost neomPost) {
         ]
       ),
       GestureDetector(
-        onTap: () => Share.share('check out my website https://cyberneom.com'),
-        child: Icon(FontAwesomeIcons.bookmark, size: 18),
-      ),
-      GestureDetector(
-        onTap: () => Share.share('check out my website https://cyberneom.com'),
+        onTap: () => Get.snackbar(
+            NeomTranslationConstants.aboutCyberneom.tr,
+            NeomTranslationConstants.underConstruction.tr,
+            snackPosition: SnackPosition.BOTTOM),
         child: Icon(FontAwesomeIcons.shareAlt, size: 18))
     ],
   );
@@ -385,7 +384,7 @@ Widget userAvatarSection(BuildContext context, NeomPost neomPost) {
               ],
             ),
             //TODO
-            moreOptions3Dots(context),
+            //moreOptions3Dots(context),
           ],
         ),
       )

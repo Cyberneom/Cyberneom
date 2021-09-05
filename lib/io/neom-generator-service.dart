@@ -6,7 +6,7 @@ abstract class NeomGeneratorService {
 
   Future<void> settingChamber();
   void setFrequency(NeomFrequency frequency);
-  void setVolume(NeomParameter parameter);
+  void setVolume(double volume);
   void setPosition(NeomParameter parameter);
   Future<void> stopPlay();
 

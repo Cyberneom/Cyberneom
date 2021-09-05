@@ -149,15 +149,24 @@ class NeomChamberFirestore implements NeomChamberRepository {
   }
 
 
-  Future<bool> update(String neomUserId, NeomChamber chamber) async {
-    logger.d("Updating Chamber for user " + neomUserId);
+  Future<bool> update(String neomProfileId, NeomChamber chamber) async {
+    logger.d("Updating Chamber for user " + neomProfileId);
 
     try {
-      await neomUsersReference.doc(neomUserId).collection(NeomFirestoreConstants.fs_profiles)
-          .doc(neomUserId).collection(NeomFirestoreConstants.fs_chambers)
-          .doc(chamber.id).update({
-            "name": chamber.name,
-            "description": chamber.description});
+
+      await neomProfileReference.get()
+          .then((querySnapshot) {
+        querySnapshot.docs.forEach((document) {
+          if (document.id == neomProfileId) {
+            document.reference.collection(
+                NeomFirestoreConstants.fs_chambers)
+                .doc(chamber.id).update({
+              "name": chamber.name,
+              "description": chamber.description});
+          }
+        });
+      });
+
 
       logger.d("Chamber ${chamber.id} was updated");
       return true;
@@ -170,13 +179,21 @@ class NeomChamberFirestore implements NeomChamberRepository {
   }
 
 
-  Future<bool> setAsFavorite(String neomUserId, NeomChamber chamber) async {
-    logger.d("Updating to favorite Chamber for user " + neomUserId);
+  Future<bool> setAsFavorite(String neomProfileId, NeomChamber chamber) async {
+    logger.d("Updating to favorite Chamber for user " + neomProfileId);
 
     try {
-      await neomUsersReference.doc(neomUserId).collection(NeomFirestoreConstants.fs_profiles)
-          .doc(neomUserId).collection(NeomFirestoreConstants.fs_chambers)
-          .doc(chamber.id).update({"isFav": true});
+
+      await neomProfileReference.get()
+          .then((querySnapshot) {
+        querySnapshot.docs.forEach((document) {
+          if (document.id == neomProfileId) {
+            document.reference.collection(
+                NeomFirestoreConstants.fs_chambers)
+                .doc(chamber.id).update({"isFav": true});
+          }
+        });
+      });
 
       logger.d("Chamber ${chamber.id} was set as favorite");
       return true;
@@ -189,14 +206,22 @@ class NeomChamberFirestore implements NeomChamberRepository {
   }
 
 
-  Future<bool> unsetOfFavorite(String neomUserId, NeomChamber chamber) async {
-    logger.d("Updating to unFavorite Neom Chamber for user " + neomUserId);
+  Future<bool> unsetOfFavorite(String neomProfileId, NeomChamber chamber) async {
+    logger.d("Updating to unFavorite Neom Chamber for user " + neomProfileId);
     chamber.isFav = false;
 
     try {
-      await neomUsersReference.doc(neomUserId).collection(NeomFirestoreConstants.fs_profiles)
-          .doc(neomUserId).collection(NeomFirestoreConstants.fs_chambers)
-          .doc(chamber.id).update({"isFav": false});
+
+      await neomProfileReference.get()
+          .then((querySnapshot) {
+        querySnapshot.docs.forEach((document) {
+          if (document.id == neomProfileId) {
+            document.reference.collection(
+                NeomFirestoreConstants.fs_chambers)
+                .doc(chamber.id).update({"isFav": false});
+          }
+        });
+      });
 
       logger.d("Chamber ${chamber.id} was unset of favorite");
       return true;

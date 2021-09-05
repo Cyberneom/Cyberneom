@@ -41,7 +41,6 @@ class NeomChamberController extends GetxController implements NeomChamberService
   set updateNeomChamberDesc(String desc) => this._updateNeomChamberDesc.value = desc;
 
   NeomChamber _favNeomChamber = NeomChamber();
-  String _neomUserId = "";
   NeomProfile _neomProfile = NeomProfile();
 
   RxBool _isLoading = true.obs;
@@ -53,7 +52,7 @@ class NeomChamberController extends GetxController implements NeomChamberService
   void onInit() async {
     super.onInit();
     logger.d("");
-    _neomUserId = neomUserController.neomUser!.id;
+
 
     if(neomUserController.neomProfile != null) {
       _neomProfile = neomUserController.neomProfile!;
@@ -150,12 +149,12 @@ class NeomChamberController extends GetxController implements NeomChamberService
   Future<void> setAsFavorite(NeomChamber neomChamber) async {
     logger.d("Making favorite for $neomChamber");
 
-    if(await NeomChamberFirestore().setAsFavorite(_neomUserId, neomChamber)){
+    if(await NeomChamberFirestore().setAsFavorite(_neomProfile.id, neomChamber)){
       neomChamber.isFav = true;
       neomChambers[neomChamber.id] = neomChamber;
       logger.i("Chamber ${neomChamber.id} set as favorite");
-      if(await NeomChamberFirestore().unsetOfFavorite(_neomUserId, _favNeomChamber)) {
-        logger.i("Chamber $_neomUserId unset from favorite");
+      if(await NeomChamberFirestore().unsetOfFavorite(_neomProfile.id, _favNeomChamber)) {
+        logger.i("Chamber unset from favorite");
         _favNeomChamber.isFav = false;
         neomChambers[_favNeomChamber.id] = _favNeomChamber;
       }
@@ -185,7 +184,7 @@ class NeomChamberController extends GetxController implements NeomChamberService
     logger.d("Updating to $neomChamber");
 
     if(updateNeomChamberName.isNotEmpty || updateNeomChamberDesc.isNotEmpty){
-      if(await NeomChamberFirestore().update(_neomUserId, neomChamber)){
+      if(await NeomChamberFirestore().update(_neomProfile.id, neomChamber)){
         logger.d("Chamber $neomChamberId updated");
         _neomChambers[neomChamber.id] = neomChamber;
         // }

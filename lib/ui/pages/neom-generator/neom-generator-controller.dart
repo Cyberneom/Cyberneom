@@ -17,8 +17,7 @@ class NeomGeneratorController extends GetxController implements NeomGeneratorSer
   final neomUserController = Get.find<NeomUserController>();
   final presetController = Get.put(NeomChamberPresetDetailsController());
 
-  late SoundController _soundController;
-  SoundController get soundController => _soundController;
+  final soundController = SoundController();
 
   NeomChamberPreset _neomChamberPreset = NeomChamberPreset();
   NeomChamberPreset get neomChamberPreset => _neomChamberPreset;
@@ -56,14 +55,14 @@ class NeomGeneratorController extends GetxController implements NeomGeneratorSer
   Future<void> settingChamber() async {
 
     try {
-      _soundController = SoundController();
+
       AudioParam customAudioParam = AudioParam(
           volume: neomChamberPreset.neomParameter!.volume,
           x: neomChamberPreset.neomParameter!.x,
           y: neomChamberPreset.neomParameter!.y,
           z: neomChamberPreset.neomParameter!.z,
           freq:neomChamberPreset.neomFrequency!.frequency);
-        _soundController.value = customAudioParam;
+        soundController.value = customAudioParam;
     } catch (e) {
       logger.e(e.toString());
       Get.back();
@@ -80,8 +79,8 @@ class NeomGeneratorController extends GetxController implements NeomGeneratorSer
   }
 
 
-  void setVolume(NeomParameter parameter) async {
-    await soundController.setVolume(parameter.volume);
+  void setVolume(double volume) async {
+    neomChamberPreset.neomParameter!.volume = volume;
     update([NeomPageIdConstants.neomGenerator]);
   }
 
@@ -104,4 +103,25 @@ class NeomGeneratorController extends GetxController implements NeomGeneratorSer
     logger.i('isPlaying: $isPlaying');
     update([NeomPageIdConstants.neomGenerator]);
   }
+
+  void changeControllerStatus(bool status){
+    isPlaying = status;
+    update([NeomPageIdConstants.neomGenerator]);
+  }
+
+
+  AudioParam getAudioParam()  {
+
+
+      return AudioParam(
+          volume: neomChamberPreset.neomParameter!.volume,
+          x: neomChamberPreset.neomParameter!.x,
+          y: neomChamberPreset.neomParameter!.y,
+          z: neomChamberPreset.neomParameter!.z,
+          freq:neomChamberPreset.neomFrequency!.frequency);
+
+
+  }
+
 }
+

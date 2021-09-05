@@ -5,6 +5,7 @@ import 'package:cyberneom/domain/repository/frequency-repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cyberneom/utils/constants/neom-firestore-constants.dart';
 import 'package:logger/logger.dart';
+import 'package:uuid/uuid.dart';
 
 class FrequencyFirestore implements FrequencyRepository {
 
@@ -61,29 +62,30 @@ class FrequencyFirestore implements FrequencyRepository {
     }
   }
 
+
   Future<String> addBasicFrequency({required String neomProfileId, required String frequencyName}) async {
     logger.d("Adding $frequencyName for $neomProfileId");
 
-    String frequencyId = "";
+    String frequencyId = Uuid().v4();
     NeomFrequency frequencyBasic = NeomFrequency.addBasic(frequencyId);
 
     try {
-      DocumentReference? documentReference = await neomProfileReference.get()
+      await neomProfileReference.get()
           .then((querySnapshot) {
             querySnapshot.docs.forEach((document) {
               if (document.id == neomProfileId) {
                 document.reference.collection(NeomFirestoreConstants.fs_frequencies)
-                .add(frequencyBasic.toJsonNoId());
+                  .doc(frequencyId)
+                  .set(frequencyBasic.toJsonNoId());
               }
             });
           });
-
-      if(documentReference != null) frequencyId = documentReference.id;
 
       logger.d("Frequency $frequencyId added");
 
     } catch (e) {
       logger.d(e.toString());
+      return frequencyId = "";
 
     }
     return frequencyId;
