@@ -1,5 +1,7 @@
 import 'package:cyberneom/ui/pages/auth/widgets/signup-widgets.dart';
 import 'package:cyberneom/ui/pages/neom-generator/neom-generator-controller.dart';
+import 'package:cyberneom/ui/pages/neom-generator/vr/panorama-view.dart';
+import 'package:cyberneom/ui/pages/neom-generator/vr/video_section.dart';
 import 'package:cyberneom/utils/constants/neom-constants.dart';
 import 'package:cyberneom/utils/constants/neom-page-id-constants.dart';
 import 'package:cyberneom/utils/constants/neom-slider-constant.dart';
@@ -197,11 +199,37 @@ class NeomGeneratorPage extends StatelessWidget {
             },
           ),
         ],
-      ),Positioned(
+      ),
+      Positioned(
         top: 26.0,
         left: 4.0,
         child: BackButton(color: Colors.white),
-      ),]),),
-    ),);
+      ),
+        ]),
+      ),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+        FloatingActionButton(
+          heroTag: "",
+          backgroundColor: Colors.white12,
+          mini: true,
+          child: Icon(FontAwesomeIcons.vrCardboard, size: 12,color: Colors.white,),
+          onPressed: ()=>{
+            Get.to(PanoramaView())
+          },
+        ),
+        FloatingActionButton(
+          heroTag: " ",
+          backgroundColor: Colors.white12,
+          mini: true,
+          child: Icon(FontAwesomeIcons.globe, size: 12,color: Colors.white,),
+          onPressed: ()=> {
+            Get.to(VideoSection())
+          },
+        )
+      ],)
+    ),
+    );
   }
 }

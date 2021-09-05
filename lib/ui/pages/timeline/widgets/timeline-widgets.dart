@@ -19,7 +19,6 @@ import 'package:cyberneom/utils/constants/neom-translation-constants.dart';
 import 'package:cyberneom/utils/enum/neom-from.dart';
 import 'package:cyberneom/utils/enum/neom-media-type.dart';
 import 'package:cyberneom/utils/enum/neom-post-type.dart';
-import 'package:share/share.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 Widget feedCardItem(BuildContext context, TimelineController _, NeomPost neomPost) {

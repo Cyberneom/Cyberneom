@@ -106,6 +106,12 @@
 @import image_picker;
 #endif
 
+#if __has_include(<motion_sensors/MotionSensorsPlugin.h>)
+#import <motion_sensors/MotionSensorsPlugin.h>
+#else
+@import motion_sensors;
+#endif
+
 #if __has_include(<package_info_plus/FLTPackageInfoPlusPlugin.h>)
 #import <package_info_plus/FLTPackageInfoPlusPlugin.h>
 #else
@@ -140,6 +146,12 @@
 #import <url_launcher/FLTURLLauncherPlugin.h>
 #else
 @import url_launcher;
+#endif
+
+#if __has_include(<video_360/Video360Plugin.h>)
+#import <video_360/Video360Plugin.h>
+#else
+@import video_360;
 #endif
 
 #if __has_include(<video_compress/VideoCompressPlugin.h>)
@@ -180,12 +192,14 @@
   [FLTGoogleMobileAdsPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTGoogleMobileAdsPlugin"]];
   [FLTGoogleSignInPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTGoogleSignInPlugin"]];
   [FLTImagePickerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTImagePickerPlugin"]];
+  [MotionSensorsPlugin registerWithRegistrar:[registry registrarForPlugin:@"MotionSensorsPlugin"]];
   [FLTPackageInfoPlusPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTPackageInfoPlusPlugin"]];
   [FLTPathProviderPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTPathProviderPlugin"]];
   [FLTSharePlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTSharePlugin"]];
   [FLTSharedPreferencesPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTSharedPreferencesPlugin"]];
   [SqflitePlugin registerWithRegistrar:[registry registrarForPlugin:@"SqflitePlugin"]];
   [FLTURLLauncherPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTURLLauncherPlugin"]];
+  [Video360Plugin registerWithRegistrar:[registry registrarForPlugin:@"Video360Plugin"]];
   [VideoCompressPlugin registerWithRegistrar:[registry registrarForPlugin:@"VideoCompressPlugin"]];
   [FLTVideoPlayerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTVideoPlayerPlugin"]];
   [FLTWebViewFlutterPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTWebViewFlutterPlugin"]];

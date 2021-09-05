@@ -29,5 +29,7 @@ class NeomPageIdConstants {
   static const String timeline = "timeline";
   static const String postComments = "postComments";
   static const String neomActivityFeed = "neomActivityFeed";
+  static const String audioProcessing = "audioProcessing";
+  static const String neomViewer360 = "neomViewer360";
 
 }

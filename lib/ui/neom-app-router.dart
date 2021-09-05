@@ -34,6 +34,7 @@ import 'package:cyberneom/ui/pages/profile/neom-profile-page.dart';
 import 'package:cyberneom/ui/pages/static/previous-version-page.dart';
 import 'package:cyberneom/ui/pages/static/splash-page.dart';
 import 'package:cyberneom/ui/pages/static/under-construction-page.dart';
+import 'package:cyberneom/ui/pages/statistics/audio-processing-page.dart';
 import 'package:cyberneom/ui/pages/statistics/statistics-page.dart';
 import 'package:cyberneom/ui/pages/timeline/timeline-page.dart';
 import 'package:cyberneom/utils/constants/neom-route-constants.dart';

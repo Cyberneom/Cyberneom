@@ -90,8 +90,23 @@ dependencies:
   uuid: ^3.0.4
 
   #First we need permission.RECORD_AUDIO and Privacy Policy
-  #sound_stream: 0.3.0
+  #sound_stream: 0.3.0s
   #noise_meter: ^3.0.2
+
+  #Tonic is a Flutter-compatible Dart package that models components of music theory.
+  #Used for Neom Harmony
+  #tonic: ^0.2.4
+
+  #AudioProcessing
+  #flutter_fft: ^1.0.2+6
+
+  #Virtual Reality Experimental
+  panorama: ^0.4.1
+  video_360: ^0.0.3
+  split_view: ^3.1.0
+
+
+
 
 
 dev_dependencies:
