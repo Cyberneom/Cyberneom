@@ -105,6 +105,8 @@ dependencies:
   video_360: ^0.0.3
   split_view: ^3.1.0
 
+  flutter_custom_tabs: 1.0.3
+
 
 
 

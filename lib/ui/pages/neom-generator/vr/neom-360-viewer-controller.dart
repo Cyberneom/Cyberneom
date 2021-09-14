@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:cyberneom/ui/pages/auth/neom-user-controller.dart';
 import 'package:cyberneom/utils/neom-utilities.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:get/get.dart';
 import 'package:video_360/video_360.dart';
 
@@ -49,7 +52,32 @@ class Neom360ViewerController extends GetxController  {
   }
 
 
-
+  Future<void> launchChromeVRView(BuildContext context, {String url = 'https://sbis04.github.io/demo360'}) async {
+    try {
+      await launch(
+        // NOTE: Replace this URL with your GitHub Pages URL.
+        url,
+        customTabsOption: CustomTabsOption(
+          toolbarColor: Theme.of(context).primaryColor,
+          enableDefaultShare: true,
+          enableUrlBarHiding: true,
+          showPageTitle: false,
+          animation: CustomTabsSystemAnimation.slideIn(),
+          extraCustomTabs: const <String>[
+            // ref.
+            'https://play.google.com/store/apps/details?id=org.mozilla.firefox',
+            'org.mozilla.firefox',
+            // ref.
+            'https://play.google.com/store/apps/details?id=com.microsoft.emmx',
+            'com.microsoft.emmx',
+          ],
+        ),
+      );
+    }catch (e) {
+// An exception is thrown if browser app is not installed on Android device.
+      debugPrint(e.toString());
+    }
+  }
 
 
 

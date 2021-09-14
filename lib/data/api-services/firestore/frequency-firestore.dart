@@ -67,7 +67,7 @@ class FrequencyFirestore implements FrequencyRepository {
     logger.d("Adding $frequencyName for $neomProfileId");
 
     String frequencyId = Uuid().v4();
-    NeomFrequency frequencyBasic = NeomFrequency.addBasic(frequencyId);
+    NeomFrequency frequencyBasic = NeomFrequency.addBasic(frequencyName);
 
     try {
       await neomProfileReference.get()

@@ -62,15 +62,9 @@
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCr2yQKePG9aW6q3U9u2yDG4iFQxKvuHRE"/>
     </application>
+
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!--
-    NOTE: Specifying the ACCESS_COARSE_LOCATION permission results in location updates with an accuracy approximately equivalant to a city block.
-     It might take a long time (minutes) before you will get your first locations fix as ACCESS_COARSE_LOCATION will only use the network services
-     to calculate the position of the device. More information can be found here.
-     -->
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <!--
     <uses-permission android:name="android.permission.RECORD_AUDIO" />

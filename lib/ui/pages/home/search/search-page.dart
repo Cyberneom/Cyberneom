@@ -21,9 +21,10 @@ class SearchPage extends StatelessWidget {
         child: NeomAppBarSearch()),
       body: Container(
         decoration: NeomAppTheme.neomBoxDecoration,
-        child: _.neommates.isEmpty ?
-        Center(child: CircularProgressIndicator(),)
-            :ListView.builder(
+        child: _.isLoading ?
+        Center(child: CircularProgressIndicator()) : _.neommates.isEmpty ? Container()
+            : ListView.builder(
+
         itemCount: _.neommates.length,
         itemBuilder: (context, index) {
           NeomProfile neommate = _.neommates.values.elementAt(index);
@@ -39,7 +40,7 @@ class SearchPage extends StatelessWidget {
           title: Text(neommate.name),
           subtitle: Row(
               children: [
-                Text(NeomUtilities.getTotalNeomChamberPresets(neommate.neomChambers!).toString()),
+                Text(NeomUtilities.getTotalNeomChamberPresets(neommate.neomChambers ?? Map()).toString()),
                 Icon(Icons.graphic_eq, color: Colors.blueGrey, size: 20,),
                 Text(neommate.rootFrequency.tr),
               ]
