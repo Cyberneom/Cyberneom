@@ -1,5 +1,7 @@
 import 'package:cyberneom/ui/pages/auth/widgets/signup-widgets.dart';
 import 'package:cyberneom/ui/pages/neom-generator/neom-generator-controller.dart';
+import 'package:cyberneom/ui/pages/neom-generator/vr/panorama-view.dart';
+import 'package:cyberneom/ui/pages/neom-generator/vr/video_section.dart';
 import 'package:cyberneom/utils/constants/neom-constants.dart';
 import 'package:cyberneom/utils/constants/neom-page-id-constants.dart';
 import 'package:cyberneom/utils/constants/neom-slider-constant.dart';
@@ -25,17 +27,17 @@ class NeomGeneratorPage extends StatelessWidget {
         id: NeomPageIdConstants.neomGenerator,
         init: NeomGeneratorController(),
     builder: (_) => Scaffold(
-      body: Container(
+      body: SingleChildScrollView(child: Container(
         decoration: NeomAppTheme.neomBoxDecoration,
-        child: Stack(children: [ Column(
+        child: Stack(children: [Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           SoundWidget(
             soundController: _soundController,
           ),
-          SizedBox(height: 25),
+          SizedBox(height: 30),
           buildLabel(context, NeomTranslationConstants.frequencyGenerator.tr, ""),
-          SizedBox(height: 20),
+          SizedBox(height: 30),
           ValueListenableBuilder<AudioParam>(
             valueListenable: _soundController,
             builder: (context, AudioParam freqValue, __) {
@@ -128,8 +130,9 @@ class NeomGeneratorPage extends StatelessWidget {
                       _.setVolume(val);
                     },
                   ),
+                  SizedBox(height: 20),
                   Text(
-                    NeomTranslationConstants.parameters.tr,
+                    NeomTranslationConstants.parameters.tr.capitalizeFirst!,
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 18,
@@ -151,7 +154,8 @@ class NeomGeneratorPage extends StatelessWidget {
                       Text("z-axis: ${_soundController.value.z.toPrecision(2)}"),
                     ],
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 25),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -192,16 +196,52 @@ class NeomGeneratorPage extends StatelessWidget {
                       ),
                     ],
                   ),
+                  SizedBox(height: 65),
                 ],
               );
             },
           ),
         ],
-      ),Positioned(
+      ),
+      Positioned(
         top: 26.0,
         left: 4.0,
         child: BackButton(color: Colors.white),
-      ),]),),
-    ),);
+      ),
+        ]),
+      ),),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+        FloatingActionButton(
+          heroTag: "",
+          backgroundColor: Colors.white12,
+          mini: true,
+          child: Icon(FontAwesomeIcons.vrCardboard, size: 12,color: Colors.white,),
+          onPressed: ()=>{
+            Get.to(PanoramaView())
+          },
+        ),
+        FloatingActionButton(
+          heroTag: " ",
+          backgroundColor: Colors.white12,
+          mini: true,
+          child: Icon(FontAwesomeIcons.globe, size: 12,color: Colors.white,),
+          onPressed: ()=> {
+            Get.to(VideoSection())
+          },
+        ),
+          FloatingActionButton(
+            heroTag: " _",
+            backgroundColor: Colors.white12,
+            mini: true,
+            child: Icon(FontAwesomeIcons.chrome, size: 12,color: Colors.white,),
+            onPressed: ()=> {
+              _.neom360viewerController.launchChromeVRView(context, url: 'https://larkintuckerllc.github.io/hello-react-360/')
+            },
+          )
+      ],)
+    ),
+    );
   }
 }

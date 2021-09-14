@@ -59,7 +59,7 @@ class GeoLocatorServiceImpl implements GeoLocatorService {
         address = "$locality, $country"
           : address = "$administrativeArea, $country" ;
     } catch (e) {
-      logger.d(e.toString());
+      logger.e(e.toString());
     }
 
     logger.d(address);
@@ -73,7 +73,7 @@ class GeoLocatorServiceImpl implements GeoLocatorService {
       position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
       logger.d("Position: ${position.toString()}");
     } catch (e) {
-      logger.d(e.toString());
+      logger.e(e.toString());
     }
 
     return position;
@@ -103,7 +103,7 @@ class GeoLocatorServiceImpl implements GeoLocatorService {
       }
 
     } catch (e) {
-      logger.d(e.toString());
+      logger.e(e.toString());
     }
 
     logger.d("updateLocation method Exit");

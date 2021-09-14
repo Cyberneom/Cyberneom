@@ -105,7 +105,7 @@ class NeomProfile {
     neomClusterIds = List.from(queryDocumentSnapshot.get("neomClusterIds")?? []);
 
 
-  NeomProfile.fromDocumentSnapshot({required DocumentSnapshot documentSnapshot}) :
+  NeomProfile.fromDocumentSnapshot(DocumentSnapshot documentSnapshot) :
     id = documentSnapshot.id,
     name = documentSnapshot.get("name"),
     position = NeomUtilities.jsonToPosition(documentSnapshot.get("position")),

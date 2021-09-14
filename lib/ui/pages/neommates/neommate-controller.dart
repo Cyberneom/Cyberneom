@@ -57,13 +57,14 @@ class NeommateController extends GetxController implements NeommateService {
   bool get isLoading => _isLoading.value;
   set isLoading(bool isLoading) => this._isLoading.value = isLoading;
 
+  GeoLocatorService geoLocatorService = GeoLocatorServiceImpl();
 
   @override
   void onInit() async {
     super.onInit();
     logger.d("");
     List<String> neommateIds = Get.arguments ?? [];
-    _neomUserId = neomUserController.neomUser!.id;
+
     _neomProfile = neomUserController.neomProfile!;
 
 
@@ -82,23 +83,32 @@ class NeommateController extends GetxController implements NeommateService {
 
   Future<void> loadNeommates() async {
     logger.d("");
-    _neommates.value = await NeommateFirestore().getNeommates(_neomUserId);
-    logger.d(neommates.length.toString() + " neommates found ");
-    _isLoading.value = false;
-    update(['neommates']);
+    try {
+      neommates = await NeommateFirestore().getNeommates(_neomProfile.id);
+      logger.d(neommates.length.toString() + " neommates found ");
+    } catch (e) {
+      logger.e(e.toString());
+    }
+
+    isLoading = false;
+    update([NeomPageIdConstants.neommates, NeomPageIdConstants.search]);
   }
 
   Future<void> loadNeommatesById(List<String> neommateIds) async {
     logger.d("");
 
-    for(int i=0; i < neommateIds.length; i++) {
-      NeomProfile neomProfile = await NeomProfileFirestore().retrieveNeomProfile(neommateIds.elementAt(i));
-      _neommates[neomProfile.id] = neomProfile;
+    try {
+      for(int i=0; i < neommateIds.length; i++) {
+        NeomProfile neomProfile = await NeomProfileFirestore().retrieveNeomProfile(neommateIds.elementAt(i));
+        _neommates[neomProfile.id] = neomProfile;
+      }
+    } catch (e) {
+      logger.e(e.toString());
     }
 
     logger.d(neommates.length.toString() + " neommates found ");
-    _isLoading.value = false;
-    update(['neommates']);
+    isLoading = false;
+    update([NeomPageIdConstants.neommates]);
   }
 
   Future<void> getNeommateDetails(NeomProfile neommate) async {
@@ -121,29 +131,43 @@ class NeommateController extends GetxController implements NeommateService {
 
   Future<void> loadNeommate(String neommateId) async {
     logger.d("");
-    _neommate.value = await NeomProfileFirestore().retrieveNeomProfile(neommateId);
-    if(neommate.id.isNotEmpty) {
-      _following.value = _neomProfile.following.contains(neommateId);
-      await retrieveDetails();
-      _isLoading.value = false;
+
+    try {
+      neommate = await NeomProfileFirestore().retrieveNeomProfile(neommateId);
+      if(neommate.id.isNotEmpty) {
+        following = _neomProfile.following.contains(neommateId);
+        await retrieveDetails();
+        isLoading = false;
+      }
+    } catch (e) {
+      logger.e(e.toString());
     }
 
     update([NeomPageIdConstants.neommate]);
   }
 
+
   Future<void> getNeommatePosts() async {
     logger.d("");
-    _neommatePosts = await NeomPostFirestore().getPosts(neommate.id);
-    logger.d("${neommatePosts.length} Total Posts for NeomProfile");
-    _isLoading.value = false;
+
+    try {
+      _neommatePosts = await NeomPostFirestore().getPosts(neommate.id);
+      logger.d("${neommatePosts.length} Total Posts for NeomProfile");
+    } catch (e) {
+      logger.e(e.toString());
+    }
+
+    isLoading = false;
     update([NeomPageIdConstants.neommate]);
   }
 
+
   void clear() {
-    _neommates.value = Map<String, NeomProfile>();
+    neommates = Map<String, NeomProfile>();
   }
 
-  GeoLocatorService geoLocatorService = GeoLocatorServiceImpl();
+
+
 
   Future<void> getAddressSimple() async {
     logger.d("");
@@ -151,10 +175,10 @@ class NeommateController extends GetxController implements NeommateService {
     double distance = 0.0;
     try {
       address = await geoLocatorService.getAddressSimple(neommate.position!);
-      _address.value = address;
+      address = address;
 
       distance = geoLocatorService.distanceBetweenPositions(_neomProfile.position!, neommate.position!);
-      _distance.value = distance;
+      distance = distance;
     } catch (e) {
       logger.d(e.toString());
     }

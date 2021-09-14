@@ -89,7 +89,7 @@ class NeomTranslations extends Translations {
 
       'presetSearch': "Preset Search",
       'search': "Search",
-      'searchPostProfileSongmates': 'Search posts, events and neommates',
+      'searchPostProfileNeommates': 'Search posts, events and neommates',
 
       'featureComingSoon': 'Feature Coming Soon',
       'noPostsYet': 'No posts yet',
@@ -357,7 +357,7 @@ class NeomTranslations extends Translations {
 
       'presetSearch': "Buscar Presets",
       'search': "Buscar",
-      'searchPostProfileSongmates': 'Buscar publicaciones, eventos y neommates',
+      'searchPostProfileNeommates': 'Buscar publicaciones, eventos y neommates',
 
       'featureComingSoon': 'Funcionalidad lista proximamente',
       'noPostsYet': 'Sin publicaciones aún',

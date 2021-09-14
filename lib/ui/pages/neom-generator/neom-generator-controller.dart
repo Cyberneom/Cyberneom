@@ -6,6 +6,7 @@ import 'package:cyberneom/domain/model/neom-parameter.dart';
 import 'package:cyberneom/io/neom-generator-service.dart';
 import 'package:cyberneom/ui/pages/auth/neom-user-controller.dart';
 import 'package:cyberneom/ui/pages/chamber/chamber-preset/neom-chamber-preset-details-controller.dart';
+import 'package:cyberneom/ui/pages/neom-generator/vr/neom-360-viewer-controller.dart';
 import 'package:cyberneom/utils/constants/neom-page-id-constants.dart';
 import 'package:cyberneom/utils/neom-utilities.dart';
 import 'package:get/get.dart';
@@ -16,6 +17,7 @@ class NeomGeneratorController extends GetxController implements NeomGeneratorSer
   var logger = NeomUtilities.logger;
   final neomUserController = Get.find<NeomUserController>();
   final presetController = Get.put(NeomChamberPresetDetailsController());
+  final neom360viewerController = Get.put(Neom360ViewerController());
 
   final soundController = SoundController();
 

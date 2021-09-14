@@ -52,14 +52,12 @@ android {
     }*/
 
     defaultConfig {
-        // TODO:
-        //  Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.cyberneom.neom"
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion 30
         multiDexEnabled true
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 4
+        versionName "1.0.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         //multiDexEnabled true
     }

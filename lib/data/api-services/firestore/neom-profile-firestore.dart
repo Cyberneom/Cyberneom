@@ -62,7 +62,7 @@ class NeomProfileFirestore implements NeomProfileRepository {
           .then((querySnapshot) {
           querySnapshot.docs.forEach((document) {
             if(document.id == neomProfileId) {
-              neomProfile = NeomProfile.fromDocumentSnapshot(documentSnapshot: document);
+              neomProfile = NeomProfile.fromDocumentSnapshot(document);
             }
           });
         });
@@ -91,7 +91,7 @@ class NeomProfileFirestore implements NeomProfileRepository {
           .collection(NeomFirestoreConstants.fs_profiles).doc(neomProfileId).get();
 
       if (documentSnapshot.exists) {
-        neomProfile = NeomProfile.fromDocumentSnapshot(documentSnapshot: documentSnapshot);
+        neomProfile = NeomProfile.fromDocumentSnapshot(documentSnapshot);
       } else {
         logger.d("neomProfile not found");
       }
