@@ -45,7 +45,7 @@
             android:value="ca-app-pub-9248844542810621~4699252247"/>
 
 
-        <!--<meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>-->
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges= "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />

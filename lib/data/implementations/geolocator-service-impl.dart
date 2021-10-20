@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:cyberneom/data/api-services/firestore/neom-profile-firestore.dart';
 import 'package:cyberneom/domain/use-cases/geolocator-service.dart';
 import 'package:cyberneom/utils/constants/neom-constants.dart';
+import 'package:cyberneom/utils/constants/neom-route-constants.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:cyberneom/utils/neom-utilities.dart';
+import 'package:get/get.dart';
 
 class GeoLocatorServiceImpl implements GeoLocatorService {
 
@@ -66,11 +68,36 @@ class GeoLocatorServiceImpl implements GeoLocatorService {
     return address;
   }
 
-  Future<Position> getCurrentGpsPosition() async {
+  Future<Position> getCurrentPosition() async {
+
+    bool serviceEnabled;
+    LocationPermission permission;
     Position position = Position(longitude: 0, latitude: 0, timestamp: DateTime.now(),
         accuracy: 0, altitude: 0, heading: 0, speed: 0, speedAccuracy: 0);
+
     try {
-      position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
+
+      serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        return Future.error('Location services are disabled.');
+      }
+
+      permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          Get.toNamed(NeomRouteConstants.LOGOUT,
+              arguments: [NeomRouteConstants.LOGOUT, NeomRouteConstants.LOGIN]);
+          return Future.error('Location permissions are denied');
+        }
+      } else if (permission == LocationPermission.deniedForever) {
+        Get.toNamed(NeomRouteConstants.LOGOUT,
+            arguments: [NeomRouteConstants.LOGOUT, NeomRouteConstants.LOGIN]);
+        return Future.error('Location permissions are permanently denied,'
+            ' we cannot request permissions.');
+      }
+
+      position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.medium);
       logger.d("Position: ${position.toString()}");
     } catch (e) {
       logger.e(e.toString());
@@ -85,19 +112,19 @@ class GeoLocatorServiceImpl implements GeoLocatorService {
         accuracy: 0, altitude: 0, heading: 0, speed: 0, speedAccuracy: 0);
 
     try {
-      newPosition =  (await GeoLocatorServiceImpl().getCurrentGpsPosition());
+      newPosition =  (await GeoLocatorServiceImpl().getCurrentPosition());
       if(currentPosition != null) {
         double distance = distanceBetweenPositions(currentPosition, newPosition);
         if(distance > NeomConstants.significantDistanceKM){
           logger.d("GpsLocation would be updated as distance difference is significant");
-          if(await NeomProfileFirestore().updateGpsPosition(neomUserId, neomProfileId, newPosition)){
+          if(await NeomProfileFirestore().updatePosition(neomUserId, neomProfileId, newPosition)){
             logger.i("GpsLocation was updated as distance was significant " + distance.toString() + "Kms");
           }
         } else {
           return currentPosition;
         }
       } else {
-        if(await NeomProfileFirestore().updateGpsPosition(neomUserId, neomProfileId, newPosition)){
+        if(await NeomProfileFirestore().updatePosition(neomUserId, neomProfileId, newPosition)){
           logger.i("GpsLocation was updated as there was no data for it");
         }
       }

@@ -66,6 +66,17 @@ class NeomAppTheme {
   static const String fontFamily = "Open-Sans";
   static const double aspectRatio = 16/9;
 
+
+  static final SizedBox heightSpace100 = SizedBox(height: 100);
+  static final SizedBox heightSpace50 = SizedBox(height: 50);
+  static final SizedBox heightSpace30 = SizedBox(height: 30);
+  static final SizedBox heightSpace20 = SizedBox(height: 20);
+  static final SizedBox heightSpace10 = SizedBox(height: 10);
+  static final SizedBox heightSpace5 = SizedBox(height: 5);
+
+  static final SizedBox widthSpace20 = SizedBox(width: 20);
+  static final SizedBox widthSpace10 = SizedBox(width: 10);
+  static final SizedBox widthSpace5 = SizedBox(width: 5);
 }
 
 class NeomAppColor{
@@ -82,6 +93,6 @@ class NeomAppColor{
   static final Color mystic = Color.fromRGBO(230, 236, 240, 1.0);
   static final Color bondiBlue = Color.fromRGBO(0, 132, 180, 1.0);
   static final Color dodgetBlue = Color.fromRGBO(29, 162, 240, 1.0);
-
+  static final Color textButton = Color(0xFF527DAA);
 }
 

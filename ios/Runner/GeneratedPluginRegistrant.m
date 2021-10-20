@@ -2,6 +2,8 @@
 //  Generated file. Do not edit.
 //
 
+// clang-format off
+
 #import "GeneratedPluginRegistrant.h"
 
 #if __has_include(<catcher/CatcherPlugin.h>)
@@ -88,10 +90,10 @@
 @import geocoding;
 #endif
 
-#if __has_include(<geolocator/GeolocatorPlugin.h>)
-#import <geolocator/GeolocatorPlugin.h>
+#if __has_include(<geolocator_apple/GeolocatorPlugin.h>)
+#import <geolocator_apple/GeolocatorPlugin.h>
 #else
-@import geolocator;
+@import geolocator_apple;
 #endif
 
 #if __has_include(<google_mobile_ads/FLTGoogleMobileAdsPlugin.h>)

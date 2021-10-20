@@ -20,7 +20,7 @@ class NeomFirestoreConstants {
   static const String fs_neommates = "neommates";
   static const String fs_following = "following";
   static const String fs_followers = "followers";
-  static const String fs_gpsPosition = "gpsPosition";
+  static const String fs_position = "position";
 
   static const String createdTime = "createdTime";
 

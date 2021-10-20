@@ -266,8 +266,12 @@ class NeomTranslations extends Translations {
       'rootFrequencies': 'Root Frequencies',
       'rootFrequency': 'Root Frequency',
       'myClusters': 'My Clusters',
-      'savePreset': 'Save Preset'
-
+      'savePreset': 'Save Preset',
+      'locationRequiredTitle': 'Use your location',
+      'locationRequiredMsg1': 'In order to connect with meditators around you, allow Cyberneom to use your location.',
+      'locationRequiredMsg2': 'Cyberneom would use your location in order to show the distance of profiles and organized events.',
+      'allow': 'allow',
+      'deny': 'deny',
 
     },
 
@@ -533,7 +537,13 @@ class NeomTranslations extends Translations {
       'rootFrequencies': 'Frecuencias Raíz',
       'rootFrequency': 'Frecuencia Raíz',
       'myClusters': 'Mis Clusters',
-      'savePreset': 'Guardar Preset'
+      'savePreset': 'Guardar Preset',
+
+      'locationRequiredTitle': 'Usa tu ubicación',
+      'locationRequiredMsg1': 'Para poder conectar con meditadores en tu localidad, permita que Cyberneom use la ubicación.',
+      'locationRequiredMsg2': 'Cybernom utilizará la ubicación para mostrar la distancia de los perfiles y los eventos realizados.',
+      'allow': 'permitir',
+      'deny': 'denegar',
 
     },
   };

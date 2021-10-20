@@ -219,6 +219,11 @@ class NeomTranslationConstants {
   static const String statistics = 'statistics';
   static const String parameters = 'parameters';
 
+  static const String locationRequiredTitle = "locationRequiredTitle";
+  static const String locationRequiredMsg1 = "locationRequiredMsg1";
+  static const String locationRequiredMsg2 = "locationRequiredMsg2";
+  static const String allow = "allow";
+  static const String deny = "deny";
 
 
 }
