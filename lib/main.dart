@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget{
   Widget build(BuildContext context){
     initializeDateFormatting('es_MX',"");
     return GetMaterialApp(
-      navigatorKey: Catcher.navigatorKey,
+      //navigatorKey: Catcher.navigatorKey,
       initialBinding: RootBinding(),
       enableLog: true,
       translations: NeomTranslations(),

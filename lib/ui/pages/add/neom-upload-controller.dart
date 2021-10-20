@@ -218,7 +218,7 @@ class NeomUploadController extends GetxController implements NeomUploadService {
   }
 
   Future<void> getUserLocation() async{
-    Position position = await GeoLocatorServiceImpl().getCurrentGpsPosition();
+    Position position = await GeoLocatorServiceImpl().getCurrentPosition();
     locationController.text = await GeoLocatorServiceImpl().getAddressSimple(position);
     _position = position;
   }

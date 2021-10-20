@@ -9,7 +9,7 @@ class NeomRouteConstants {
   static const String SPLASH_SCREEN = "/splash";
   static const String HOME = "/home";
 
-
+  static const String INTRO_REQUIRED_PERMISSIONS = "/intro/requiredPermissions";
   static const String INTRO_LOCALE = "/intro/locale";
   static const String INTRO_PROFILE = "/intro/profileType";
   static const String INTRO_FREQUENCY = "/intro/frequency";

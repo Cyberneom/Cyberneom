@@ -48,7 +48,7 @@ dependencies:
   logger: 1.0.0
   enum_to_string: 2.0.1
 
-  geolocator: 7.0.3
+  geolocator: 7.6.0
   geocoding:  2.0.0
   flutter_rating_bar: 4.0.0
 
@@ -67,7 +67,7 @@ dependencies:
   cupertino_icons: 1.0.3
   url_launcher: 6.0.3
 
-  google_sign_in: 5.0.5
+  google_sign_in: 5.1.0
 
   intl: 0.17.0
   scroll_snap_list: 0.8.0

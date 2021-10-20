@@ -16,7 +16,7 @@ abstract class NeomProfileRepository {
   Future<bool> followNeomProfile(String neomUserId, String followedNeomUserId);
   Future<bool> unfollowNeomProfile(String neomUserId, String unfollowNeomUserId);
 
-  Future<bool> updateGpsPosition(String neomUserId, String neomProfileId, Position newPositionO);
+  Future<bool> updatePosition(String neomUserId, String neomProfileId, Position newPositionO);
 
   Future<bool> addPost(String neomProfileId, String neomPostId);
 

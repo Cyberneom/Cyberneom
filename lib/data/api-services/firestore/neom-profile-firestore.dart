@@ -257,7 +257,7 @@ class NeomProfileFirestore implements NeomProfileRepository {
   }
 
 
-  Future<bool> updateGpsPosition(String neomUserId, String neomProfileId, Position newPosition) async {
+  Future<bool> updatePosition(String neomUserId, String neomProfileId, Position newPosition) async {
     logger.d("$neomProfileId updating location");
 
     try {
@@ -266,7 +266,7 @@ class NeomProfileFirestore implements NeomProfileRepository {
         querySnapshot.docs.forEach((document) {
           if (document.id == neomProfileId) {
             document.reference.update({
-              NeomFirestoreConstants.fs_gpsPosition: jsonEncode(newPosition)
+              NeomFirestoreConstants.fs_position: jsonEncode(newPosition)
             });
           }
         });

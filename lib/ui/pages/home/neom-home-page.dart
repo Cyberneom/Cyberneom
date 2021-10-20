@@ -33,7 +33,7 @@ class NeomHomePage extends StatelessWidget {
           child: NeomBottomAppBar(
             backgroundColor: NeomAppColor.bottomNavigationBar,
             color: Colors.white54,
-            selectedColor: Theme.of(context).accentColor,
+            selectedColor: Theme.of(context).colorScheme.secondary,
             notchedShape: CircularNotchedRectangle(),
             iconSize: 20.0,
             onTabSelected:(int index) => _.changePageView(index),

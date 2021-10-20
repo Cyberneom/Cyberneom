@@ -11,6 +11,7 @@ import 'package:cyberneom/ui/pages/drawer/frequencies/frequency-fav-page.dart';
 import 'package:cyberneom/ui/pages/drawer/frequencies/frequency-page.dart';
 import 'package:cyberneom/ui/pages/neom-generator/neom-generator-page.dart';
 import 'package:cyberneom/ui/pages/neommates/neommate-details/neommate-details-page.dart';
+import 'package:cyberneom/ui/pages/onboarding/required-permissions-page.dart';
 import 'package:cyberneom/ui/pages/profile/neom-profile-details-page.dart';
 import 'package:cyberneom/ui/pages/drawer/settings/about-page.dart';
 import 'package:cyberneom/ui/pages/drawer/settings/account-settings-page.dart';
@@ -57,6 +58,11 @@ class NeomAppRoutes {
       name: NeomRouteConstants.ROOT,
       page: () => NeomRoot(),
       transition: Transition.zoom
+    ),
+    GetPage(
+      name: NeomRouteConstants.INTRO_REQUIRED_PERMISSIONS,
+      page: () => RequiredPermissionsPage(),
+      transition: Transition.zoom,
     ),
     GetPage(
       name: NeomRouteConstants.INTRO_LOCALE,

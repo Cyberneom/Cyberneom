@@ -100,8 +100,8 @@ class NeomProfileController extends GetxController implements NeomProfileService
     logger.d("");
     try {
 
-      Position newPosition =  await GeoLocatorServiceImpl().getCurrentGpsPosition();
-      if(await NeomProfileFirestore().updateGpsPosition(neomUserController.neomUser!.id, neomProfile.id, newPosition)){
+      Position newPosition =  await GeoLocatorServiceImpl().getCurrentPosition();
+      if(await NeomProfileFirestore().updatePosition(neomUserController.neomUser!.id, neomProfile.id, newPosition)){
         neomProfile.position = newPosition;
         location = await GeoLocatorServiceImpl().getAddressSimple(neomProfile.position!);
       }

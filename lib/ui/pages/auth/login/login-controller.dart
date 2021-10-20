@@ -124,7 +124,7 @@ class LoginController extends GetxController implements LoginService {
 
         if (neomUserController.isNewUser && neomUserController.neomUser!.id.isNotEmpty) {
           authStatus = AuthStatus.LOGGED_IN;
-          Get.offAndToNamed(NeomRouteConstants.INTRO_LOCALE);
+          Get.offAndToNamed(NeomRouteConstants.INTRO_REQUIRED_PERMISSIONS);
         } else {
           Get.offAllNamed(NeomRouteConstants.ROOT);
         }
