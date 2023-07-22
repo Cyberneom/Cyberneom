@@ -1,6 +1,0 @@
-
-abstract class TimelineService {
-
-
-
-}

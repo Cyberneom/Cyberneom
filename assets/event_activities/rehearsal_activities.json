@@ -1,0 +1,98 @@
+[
+	{
+      "name": "Meditación",
+      "description": "Práctica de concentración y calma mental para alcanzar un estado de serenidad y plenitud."
+    },
+    {
+      "name": "Cánticos",
+      "description": "Repetición de mantras y entonación de melodías sagradas para elevar la vibración espiritual."
+    },
+    {
+      "name": "Yoga",
+      "description": "Combinación de posturas físicas, ejercicios de respiración y meditación para promover la salud y el equilibrio."
+    },
+	{
+		"name": "Mindfulness",
+		"description": "Práctica de atención plena para estar consciente y presente en el momento presente."
+	},
+	{
+		"name": "Pranayama",
+		"description": "Técnicas de control y regulación de la respiración para revitalizar el cuerpo y la mente."
+	},
+    {
+      "name": "Hatha Yoga",
+      "description": "Rama del yoga que se enfoca en las posturas físicas (asanas) y la respiración (pranayama) para equilibrar cuerpo y mente."
+    },
+    {
+      "name": "Vinyasa Yoga",
+      "description": "Flujo continuo de posturas coordinadas con la respiración, creando un movimiento fluido y meditativo."
+    },
+    {
+      "name": "Kundalini Yoga",
+      "description": "Práctica de yoga que se enfoca en el despertar de la energía kundalini a través de asanas, pranayama, canto de mantras y meditación."
+    },
+    {
+      "name": "Restorative Yoga",
+      "description": "Práctica de yoga suave y relajante que utiliza posturas de apoyo con el uso de accesorios para fomentar la relajación y la restauración del cuerpo."
+    },
+    {
+      "name": "AcroYoga",
+      "description": "Fusión de acrobacias, yoga y masaje tailandés que se realiza en pareja o en grupo, combinando la fuerza, el equilibrio y la confianza."
+    },
+    {
+      "name": "Yoga prenatal",
+      "description": "Adaptación del yoga para mujeres embarazadas, enfocándose en posturas seguras, ejercicios de respiración y relajación para promover la salud materna y el bienestar del bebé."
+    },
+	{
+		"name": "Yoga para niños",
+		"description": "Introducción al yoga para niños a través de juegos, historias y posturas adaptadas a su edad, promoviendo la concentración."
+	},
+	{
+		"name": "Reiki",
+		"description": "Terapia energética basada en la imposición de manos para canalizar la energía vital universal."
+	},
+	{
+		"name": "Tai Chi",
+		"description": "Arte marcial chino caracterizado por movimientos fluidos y suaves que promueven la armonía y el equilibrio."
+	},
+	{
+		"name": "Qi Gong",
+		"description": "Práctica de movimientos suaves, respiración y meditación para cultivar y equilibrar la energía vital."
+	},
+	{
+		"name": "Mandala",
+		"description": "Creación y contemplación de patrones geométricos y simétricos para alcanzar un estado de concentración y paz interior."
+	},
+	{
+		"name": "Biodanza",
+		"description": "Sistema de integración y desarrollo humano que utiliza la música, el movimiento y el contacto para fomentar la expresión y conexión emocional."
+	},
+	{
+		"name": "Caminatas conscientes",
+		"description": "Práctica de caminar en plena conciencia, prestando atención a cada paso y conectando con la naturaleza."
+	},
+	{
+		"name": "Práctica de gratitud",
+		"description": "Cultivar la gratitud a través de la reflexión y la expresión de agradecimiento hacia uno mismo y los demás."
+	},
+	{
+		"name": "Visualización creativa",
+		"description": "Práctica de crear imágenes mentales positivas y vívidas para manifestar deseos y metas personales."
+	},
+	{
+		"name": "Meditación guiada",
+		"description": "Práctica de meditación en la que se sigue la guía de un instructor para alcanzar un estado de relajación y claridad mental."
+	},
+	{
+		"name": "Chi Nei Tsang",
+		"description": "Masaje y manipulación del abdomen para liberar bloqueos energéticos y promover la salud de los órganos internos."
+	},
+	{
+		"name": "Práctica de sonoterapia",
+		"description": "Escuchar música y frecuencias específicas para armonizar y equilibrar el cuerpo, la mente y el espíritu."
+	},
+	{
+		"name": "Aikido",
+		"description": "Arte marcial japonés que utiliza movimientos circulares y la energía del oponente para neutralizar y redirigir la agresión."
+	}
+]

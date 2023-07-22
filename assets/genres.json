@@ -1,0 +1,248 @@
+[
+	{
+		"name": "Meditación",
+		"description": "Práctica de concentración y calma mental para alcanzar un estado de serenidad y plenitud."
+	},
+	{
+		"name": "Cánticos",
+		"description": "Repetición de mantras y entonación de melodías sagradas para elevar la vibración espiritual."
+	},
+	{
+		"name": "Yoga",
+		"description": "Combinación de posturas físicas, ejercicios de respiración y meditación para promover la salud y el equilibrio."
+	},
+	{
+		"name": "Reiki",
+		"description": "Técnica de sanación energética que utiliza la imposición de manos para canalizar la energía vital."
+	},
+	{
+		"name": "Mindfulness",
+		"description": "Práctica de atención plena en el momento presente para cultivar la conciencia y reducir el estrés."
+	},
+	{
+		"name": "Tai Chi",
+		"description": "Arte marcial chino caracterizado por movimientos suaves y fluidos que promueven la armonía y el equilibrio."
+	},
+	{
+		"name": "Círculo de tambores",
+		"description": "Encuentro comunitario donde se tocan tambores y otros instrumentos para conectar con ritmos primordiales y celebrar la vida."
+	},
+	{
+		"name": "Terapia de sonido",
+		"description": "Experiencia terapéutica que utiliza instrumentos musicales y vibracionales para equilibrar y armonizar el cuerpo y la mente."
+	},
+	{
+		"name": "Danza expresiva",
+		"description": "Movimiento libre y espontáneo del cuerpo como forma de autoexpresión, liberación emocional y conexión con el ser interior."
+	},
+	{
+		"name": "Ceremonia de cacao",
+		"description": "Ritual sagrado que involucra la ingesta de cacao puro para abrir el corazón, conectarse con la energía del amor y expandir la conciencia."
+	},
+	{
+		"name": "Taller de mandalas",
+		"description": "Actividad creativa donde se dibujan y colorelan mandalas como herramienta de introspección, relajación y sanación."
+	},
+	{
+		"name": "Gratitud",
+		"description": "Ejercicios y reflexiones enfocados en cultivar la gratitud como una forma de apreciar la vida y generar bienestar emocional."
+	},
+	{
+		"name": "Silencio",
+		"description": "Experiencia de desconexión del ruido y la comunicación verbal para explorar la quietud interna y profundizar en la autoconciencia."
+	},
+	{
+		"name": "Festival de yoga",
+		"description": "Evento que reúne a la comunidad del yoga para practicar, aprender y celebrar a través de clases, talleres y actividades relacionadas."
+	},
+
+		{
+			"name": "Respiración consciente",
+			"description": "Técnicas de respiración enfocadas en oxigenar el cuerpo, reducir el estrés y promover la relajación."
+		},
+		{
+			"name": "Terapia de masajes",
+			"description": "Manipulación de tejidos blandos para aliviar tensiones musculares, mejorar la circulación y estimular el bienestar físico y mental."
+		},
+		{
+			"name": "Terapia de acupuntura",
+			"description": "Inserción de agujas delgadas en puntos específicos del cuerpo para equilibrar la energía y promover la salud y el alivio de síntomas."
+		},
+		{
+			"name": "Terapia de aromaterapia",
+			"description": "Utilización de aceites esenciales naturales para estimular el sistema olfativo y promover la relajación, el equilibrio emocional y la sanación."
+		},
+		{
+			"name": "Terapia de color",
+			"description": "Aplicación de colores específicos para influir en el estado de ánimo, equilibrar la energía y promover la armonía."
+		},
+		{
+			"name": "Hipnoterapia",
+			"description": "Técnica terapéutica que utiliza la hipnosis para acceder al subconsciente y trabajar en la resolución de problemas, cambios de comportamiento y sanación emocional."
+		},
+		{
+			"name": "Terapia de cristales",
+			"description": "Utilización de cristales y piedras semipreciosas para equilibrar y armonizar los centros energéticos del cuerpo y promover la sanación."
+		},
+		{
+			"name": "Nutrición consciente",
+			"description": "Enfoque en la alimentación saludable, equilibrada y consciente, teniendo en cuenta los aspectos nutricionales y el impacto en el bienestar físico y mental."
+		},
+		{
+			"name": "Terapia de flores de Bach",
+			"description": "Uso de esencias florales para equilibrar las emociones, promover la sanación y el crecimiento personal."
+		},
+		{
+			"name": "Terapia de biomagnetismo",
+			"description": "Aplicación de imanes en puntos específicos del cuerpo para equilibrar el campo magnético y promover la salud y el bienestar."
+		},
+		{
+			"name": "Terapia de sonido binaural",
+			"description": "Utilización de frecuencias sonoras específicas para influir en las ondas cerebrales y promover estados de relajación, concentración o meditación."
+		},
+		{
+			"name": "Terapia de liberación emocional (EFT)",
+			"description": "Técnica que combina la acupresión con la psicología para liberar bloqueos emocionales y promover la resolución de problemas."
+		},
+		{
+			"name": "Terapia de digitopuntura",
+			"description": "Estimulación de puntos específicos en el cuerpo utilizando presión con los dedos para aliviar el estrés, el dolor y promover la salud."
+		},
+
+
+			{
+				"name": "Terapia de movimiento ocular (EMDR)",
+				"description": "Técnica terapéutica que utiliza movimientos oculares para procesar traumas y promover la sanación emocional."
+			},
+			{
+				"name": "Terapia de reprogramación mental",
+				"description": "Métodos para reprogramar patrones de pensamiento negativos y limitantes, promoviendo una mentalidad positiva y empoderadora."
+			},
+			{
+				"name": "Terapia de liberación miofascial",
+				"description": "Técnica de liberación de la fascia para aliviar tensiones y mejorar la movilidad y el bienestar físico."
+			},
+			{
+				"name": "Terapia de risa",
+				"description": "Utilización de la risa como herramienta terapéutica para liberar tensiones, mejorar el estado de ánimo y promover la salud."
+			},
+			{
+				"name": "Terapia de escritura terapéutica",
+				"description": "Utilización de la escritura como medio de exploración y expresión de emociones, promoviendo la autoconciencia y el crecimiento personal."
+			},
+			{
+				"name": "Terapia de visualización guiada",
+				"description": "Práctica de imaginar escenas y situaciones positivas para promover la relajación, la visualización de metas y la manifestación de deseos."
+			},
+			{
+				"name": "Terapia de magnetoterapia",
+				"description": "Utilización de campos magnéticos para estimular la curación y promover la salud en diversos trastornos y condiciones."
+			},
+			{
+				"name": "Terapia de reflexología",
+				"description": "Aplicación de presión en puntos específicos de los pies y las manos para estimular órganos y sistemas del cuerpo, promoviendo la salud y el equilibrio."
+			},
+			{
+				"name": "Terapia de hipnosis clínica",
+				"description": "Utilización de la hipnosis para acceder al subconsciente y trabajar en cambios terapéuticos, como superar adicciones o gestionar el dolor."
+			},
+			{
+				"name": "Terapia de equilibrio energético",
+				"description": "Utilización de diversas técnicas (como Reiki, Qi Gong o Terapia Pránica) para equilibrar el flujo energético del cuerpo y promover la salud."
+			},
+
+
+			{
+				"name": "Terapia de sanación chamánica",
+				"description": "Métodos tradicionales de sanación que involucran la conexión con la naturaleza, los espíritus y la energía universal para promover la armonía y el bienestar."
+			},
+			{
+				"name": "Terapia de reconexión",
+				"description": "Proceso de reconectar con la propia esencia y propósito de vida, explorando aspectos espirituales y buscando la plenitud y realización personal."
+			},
+			{
+				"name": "Terapia de canalización",
+				"description": "Comunicación con seres de luz, guías espirituales u otras entidades superiores para recibir orientación, sabiduría y apoyo en el camino de vida."
+			},
+			{
+				"name": "Terapia de sanación de vidas pasadas",
+				"description": "Exploración y liberación de bloqueos, patrones y traumas que provienen de experiencias en vidas pasadas, permitiendo la curación en el presente."
+			},
+			{
+				"name": "Terapia de geometría sagrada",
+				"description": "Utilización de patrones geométricos sagrados y símbolos ancestrales para equilibrar la energía, promover la sanación y elevar la conciencia."
+			},
+			{
+				"name": "Terapia de constelaciones familiares",
+				"description": "Método terapéutico que busca liberar dinámicas familiares disfuncionales y encontrar la armonía a través de la representación simbólica de los miembros de la familia."
+			},
+			{
+				"name": "Terapia de conexión con la naturaleza",
+				"description": "Prácticas y rituales que fomentan la conexión profunda con la naturaleza, honrando sus ciclos y buscando armonía con el entorno natural."
+			},
+			{
+				"name": "Terapia de feng shui",
+				"description": "Arte ancestral chino de armonización de espacios para promover el flujo de energía positiva, equilibrio y bienestar en el entorno habitado."
+			},
+			{
+				"name": "Terapia de reiki angélico",
+				"description": "Método de sanación que combina la energía del reiki con la guía y asistencia de los ángeles para promover la sanación en todos los niveles."
+			},
+			{
+				"name": "Terapia de conexión con el ser interior",
+				"description": "Prácticas y técnicas que permiten la conexión profunda con la esencia interna, la sabiduría interna y el poder personal para promover la autotransformación y el crecimiento."
+			},
+	{
+		"name": "Danza del vientre",
+		"description": "Danza que se originó en el Medio Oriente y se caracteriza por movimientos fluidos y ondulantes del torso y las caderas."
+	},
+	{
+		"name": "Danza de los cinco ritmos",
+		"description": "Práctica de movimiento que involucra cinco ritmos: fluidez, estacidez, caos, lyrical y quietud, para explorar la expresión corporal y la conexión con uno mismo."
+	},
+	{
+		"name": "Danza expresiva",
+		"description": "Forma de danza terapéutica que promueve la autoexpresión y la liberación emocional a través del movimiento auténtico y libre."
+	},
+	{
+		"name": "Danza africana",
+		"description": "Danzas tradicionales de diferentes regiones de África, que suelen incluir movimientos enérgicos, ritmos vibrantes y la celebración de la comunidad."
+	},
+	{
+		"name": "Danza improvisada",
+		"description": "Forma de danza en la que los movimientos se crean en el momento, sin coreografía previa, permitiendo la libre expresión y la conexión con el cuerpo y el entorno."
+	},
+	{
+		"name": "Danza sagrada",
+		"description": "Danza ritual o ceremonial que se realiza como una forma de devoción, conexión espiritual o celebración de lo divino."
+	},
+	{
+		"name": "Danza de la energía",
+		"description": "Práctica de danza que busca movilizar y equilibrar la energía del cuerpo a través de movimientos conscientes y fluidos."
+	},
+	{
+		"name": "Danza de contacto improvisación",
+		"description": "Forma de danza en la que los bailarines exploran el contacto físico, el equilibrio y la improvisación, utilizando el peso y la resistencia del cuerpo."
+	},
+	{
+		"name": "Danza meditativa",
+		"description": "Danza suave y fluida que se realiza con atención plena y presencia en el momento presente, promoviendo la relajación y la conexión con uno mismo."
+	},
+	{
+		"name": "Danza elemental",
+		"description": "Danza inspirada en los elementos de la naturaleza (tierra, agua, fuego, aire) y sus cualidades, utilizada como una forma de conexión y armonización con el entorno."
+	},
+	{
+		"name": "Danza de la alegría",
+		"description": "Danza enérgica y jubilosa que se realiza como una expresión de celebración, felicidad y vitalidad."
+	},
+	{
+		"name": "Danza celestial",
+		"description": "Danza que busca conectar con la esencia divina y elevar la vibración a través de movimientos suaves, gráciles y conectados con la respiración."
+	},
+	{
+		"name": "Danza de la naturaleza",
+		"description": "Danza inspirada en los movimientos y patrones de la naturaleza, que busca honrar y conectar con el mundo natural."
+	},
+]
+
