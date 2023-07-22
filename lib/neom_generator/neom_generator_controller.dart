@@ -1,8 +1,6 @@
 import 'dart:async';
 
-import 'package:cyberneom/neom_frequencies/frequencies/ui/frequency_controller.dart';
 import 'package:cyberneom/neom_generator/domain/use_cases/neom_generator_service.dart';
-import 'package:cyberneom/neom_generator/chamber_preset_details_controller.dart';
 import 'package:cyberneom/neom_generator/vr/neom-360-viewer-controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -19,6 +17,7 @@ import 'package:neom_commons/core/utils/app_utilities.dart';
 import 'package:neom_commons/core/utils/constants/app_page_id_constants.dart';
 import 'package:neom_commons/core/utils/constants/app_translation_constants.dart';
 import 'package:neom_commons/core/utils/enums/app_item_state.dart';
+import 'package:neom_frequencies/frequencies/ui/frequency_controller.dart';
 import 'package:surround_sound/surround_sound.dart';
 
 class NeomGeneratorController extends GetxController implements NeomGeneratorService {

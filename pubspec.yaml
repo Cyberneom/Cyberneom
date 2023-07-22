@@ -2,7 +2,7 @@ name: cyberneom
 description: Guided meditation with your own voice
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 0.9.0+4
+version: 1.0.0+5
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -20,6 +20,9 @@ dependencies:
   neom_commerce:
     git:
       url: https://github.com/emmanuel-montoya/neom_commerce.git
+  neom_frequencies:
+    git:
+      url: https://github.com/Cyberneom/neom_frequencies.git
   neom_home:
     git:
       url: https://github.com/Cyberneom/neom_home.git
@@ -62,17 +65,12 @@ dependencies:
   neom_jobs:
     git:
       url: https://github.com/emmanuel-montoya/neom_jobs.git
-  neom_frequencies:
-    git:
-      url: https://github.com/emmanuel-montoya/neom_frequencies.git
+
+  sleek_circular_slider: ^2.0.1
+  flutter_custom_tabs: 1.0.4
+  flutter_launcher_icons: ^0.13.1
 
   surround_sound: ^0.3.2
-  sleek_circular_slider: ^2.0.1
-#  panorama: ^0.4.1
-#  video_360: ^0.0.8
-#  split_view: ^3.2.1
-  flutter_custom_tabs: 1.0.4
-#  vr_player: ^0.2.0
 
   #First we need permission.RECORD_AUDIO and Privacy Policy
   #sound_stream: 0.3.0s
@@ -86,8 +84,10 @@ dependencies:
   #flutter_fft: ^1.0.2+6
 
   #Virtual Reality Experimental
-
-  flutter_launcher_icons: ^0.13.1
+#  vr_player: ^0.2.0
+#  panorama: ^0.4.1
+#  video_360: ^0.0.8
+#  split_view: ^3.2.1
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,4 @@
-import 'package:cyberneom/neom_frequencies/frequencies/frequency_routes.dart';
+
 import 'package:cyberneom/neom_generator/neom_generator_page.dart';
 import 'package:get/get.dart';
 import 'package:neom_admin/admin/admin_routes.dart';
@@ -7,6 +7,7 @@ import 'package:neom_commons/auth/auth_routes.dart';
 import 'package:neom_commons/core/core_routes.dart';
 import 'package:neom_commons/core/utils/constants/app_route_constants.dart';
 import 'package:neom_events/events/events_routes.dart';
+import 'package:neom_frequencies/frequencies/frequency_routes.dart';
 import 'package:neom_home/home/home_routes.dart';
 import 'package:neom_inbox/inbox/inbox_routes.dart';
 import 'package:neom_instruments/instruments/instruments_routes.dart';

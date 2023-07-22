@@ -1243,7 +1243,7 @@ packages:
       path: "../neom_admin"
       relative: true
     source: path
-    version: "1.0.1"
+    version: "1.0.2"
   neom_bands:
     dependency: "direct main"
     description:
@@ -1257,7 +1257,7 @@ packages:
       path: "../neom_booking"
       relative: true
     source: path
-    version: "1.0.1"
+    version: "1.0.2"
   neom_commerce:
     dependency: "direct main"
     description:
@@ -1278,7 +1278,7 @@ packages:
       path: "../neom_events"
       relative: true
     source: path
-    version: "1.0.3"
+    version: "1.0.5"
   neom_frequencies:
     dependency: "direct main"
     description:
@@ -1299,14 +1299,14 @@ packages:
       path: "../neom_inbox"
       relative: true
     source: path
-    version: "1.0.1"
+    version: "1.0.2"
   neom_instruments:
     dependency: "direct main"
     description:
       path: "../neom_instruments"
       relative: true
     source: path
-    version: "1.0.1"
+    version: "1.0.3"
   neom_itemlists:
     dependency: "direct main"
     description:
@@ -1320,7 +1320,7 @@ packages:
       path: "../neom_jobs"
       relative: true
     source: path
-    version: "1.0.1"
+    version: "1.0.2"
   neom_notifications:
     dependency: "direct main"
     description:
@@ -1336,14 +1336,14 @@ packages:
       path: "../neom_onboarding"
       relative: true
     source: path
-    version: "1.0.4"
+    version: "1.0.5"
   neom_posts:
     dependency: "direct main"
     description:
       path: "../neom_posts"
       relative: true
     source: path
-    version: "1.0.2"
+    version: "1.0.3"
   neom_profile:
     dependency: "direct main"
     description:
@@ -1357,14 +1357,14 @@ packages:
       path: "../neom_requests"
       relative: true
     source: path
-    version: "1.0.1"
+    version: "1.0.2"
   neom_timeline:
     dependency: "direct main"
     description:
       path: "../neom_timeline"
       relative: true
     source: path
-    version: "1.0.2"
+    version: "1.0.3"
   oauth2:
     dependency: transitive
     description:

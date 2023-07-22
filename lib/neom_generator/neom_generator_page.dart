@@ -215,7 +215,7 @@ class NeomGeneratorPage extends StatelessWidget {
                                                       empty: CoreUtilities.ratingImage(AppAssets.heartBorder),
                                                     ),
                                                     itemPadding: const EdgeInsets.symmetric(horizontal: 1.0),
-                                                    itemSize: 12,
+                                                    itemSize: 10,
                                                     onRatingUpdate: (rating) {
                                                       _.logger.i("New Rating set to $rating");
                                                     },
@@ -292,8 +292,6 @@ class NeomGeneratorPage extends StatelessWidget {
                                 )],
                             ).show();
                           }
-
-
                           Navigator.pop(context);
                         },
                       ),
@@ -307,38 +305,39 @@ class NeomGeneratorPage extends StatelessWidget {
         ],
       ),),
         ),
-      floatingActionButton: true ? null : Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-        FloatingActionButton(
-          heroTag: "",
-          backgroundColor: Colors.white12,
-          mini: true,
-          child: Icon(FontAwesomeIcons.vrCardboard, size: 12,color: Colors.white,),
-          onPressed: ()=>{
-            // Get.to(() => PanoramaView())
-          },
-        ),
-        FloatingActionButton(
-          heroTag: " ",
-          backgroundColor: Colors.white12,
-          mini: true,
-          child: Icon(FontAwesomeIcons.globe, size: 12,color: Colors.white,),
-          onPressed: ()=> {
-            // Get.to(() => VideoSection())
-          },
-        ),
-          FloatingActionButton(
-            heroTag: " _",
-            backgroundColor: Colors.white12,
-            mini: true,
-            child: Icon(FontAwesomeIcons.chrome, size: 12,color: Colors.white,),
-            onPressed: ()=> {
-              _.neom360viewerController.launchChromeVRView(context, url: 'https://larkintuckerllc.github.io/hello-react-360/')
-            },
-          )
-      ],
-      )
+      //TODO EXPERIMENTAL FEATURES TO MOVE NEOM CHAMBER 2D TO A 3D VERSION TO USE IT WITH SMARTPHONE VR
+      // floatingActionButton: Row(
+      //   mainAxisAlignment: MainAxisAlignment.end,
+      //   children: [
+      //   FloatingActionButton(
+      //     heroTag: "",
+      //     backgroundColor: Colors.white12,
+      //     mini: true,
+      //     child: Icon(FontAwesomeIcons.vrCardboard, size: 12,color: Colors.white,),
+      //     onPressed: ()=>{
+      //       // Get.to(() => PanoramaView())
+      //     },
+      //   ),
+      //   FloatingActionButton(
+      //     heroTag: " ",
+      //     backgroundColor: Colors.white12,
+      //     mini: true,
+      //     child: Icon(FontAwesomeIcons.globe, size: 12,color: Colors.white,),
+      //     onPressed: ()=> {
+      //       // Get.to(() => VideoSection())
+      //     },
+      //   ),
+      //     FloatingActionButton(
+      //       heroTag: " _",
+      //       backgroundColor: Colors.white12,
+      //       mini: true,
+      //       child: Icon(FontAwesomeIcons.chrome, size: 12,color: Colors.white,),
+      //       onPressed: ()=> {
+      //         _.neom360viewerController.launchChromeVRView(context, url: 'https://larkintuckerllc.github.io/hello-react-360/')
+      //       },
+      //     )
+      // ],
+      // )
     ),
     );
   }
