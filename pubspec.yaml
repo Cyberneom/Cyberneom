@@ -1,93 +1,78 @@
 name: cyberneom
 description: Guided meditation with your own voice
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-# The following defines the version and build number for your application.
-# A version number is three numbers separated by dots, like 1.2.43
-# followed by an optional build number separated by a +.
-# Both the version and the builder number may be overridden in flutter
-# build by specifying --build-name and --build-number, respectively.
-# In Android, build-name is used as versionName while build-number used as versionCode.
-# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
-# Read more about iOS versioning at
-# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 0.9.0+4
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  flutter_localizations:
-    sdk: flutter
 
-  rxdart: ^0.26.0
-  get: 4.1.4
+  neom_booking:
+    git:
+      url: https://github.com/emmanuel-montoya/neom_booking.git
+  neom_commons:
+    git:
+      url: https://github.com/Cyberneom/neom_commons.git
+  neom_commerce:
+    git:
+      url: https://github.com/emmanuel-montoya/neom_commerce.git
+  neom_home:
+    git:
+      url: https://github.com/Cyberneom/neom_home.git
+  neom_timeline:
+    git:
+      url: https://github.com/Cyberneom/neom_timeline.git
+  neom_posts:
+    git:
+      url: https://github.com/Cyberneom/neom_posts.git
+  neom_profile:
+    git:
+      url: https://github.com/Cyberneom/neom_profile.git
+  neom_bands:
+    git:
+      url: https://github.com/emmanuel-montoya/neom_bands.git
+  neom_instruments:
+    git:
+      url: https://github.com/Cyberneom/neom_instruments.git
+  neom_itemlists:
+    git:
+      url: https://github.com/Cyberneom/neom_itemlists.git
+  neom_inbox:
+    git:
+      url: https://github.com/Cyberneom/neom_inbox.git
+  neom_events:
+    git:
+      url: https://github.com/Cyberneom/neom_events.git
+  neom_onboarding:
+    git:
+      url: https://github.com/Cyberneom/neom_onboarding.git
+  neom_admin:
+    git:
+      url: https://github.com/Cyberneom/neom_admin.git
+  neom_requests:
+    git:
+      url: https://github.com/Cyberneom/neom_requests.git
+  neom_notifications:
+    git:
+      url: https://github.com/Cyberneom/neom_notifications.git
+  neom_jobs:
+    git:
+      url: https://github.com/emmanuel-montoya/neom_jobs.git
+  neom_frequencies:
+    git:
+      url: https://github.com/emmanuel-montoya/neom_frequencies.git
 
-  google_fonts: 2.0.0
-  font_awesome_flutter: 9.1.0
-  transparent_image: 2.0.0
-  marquee: 2.1.0
-
-  google_mobile_ads: 0.12.1+1
-  firebase_core: 1.3.0
-  cloud_firestore: 2.3.0
-  firebase_storage: 9.0.0
-  firebase_auth: 2.0.0
-  firebase_analytics: 8.1.2
-  firebase_messaging: 10.0.3
-
-  flutter_login_facebook: 1.0.1
-  auth_buttons: ^1.0.1+3
-  flutter_facebook_auth: 3.3.3+1
-
-  http: 0.13.3
-
-  rflutter_alert: 2.0.2
-  logger: 1.0.0
-  enum_to_string: 2.0.1
-
-  geolocator: 7.6.0
-  geocoding:  2.0.0
-  flutter_rating_bar: 4.0.0
-
-  image: 3.0.2
-  animator: 3.0.0
-  image_picker: 0.7.4
-  path_provider: ^2.0.2
-  timeago: 3.0.2
-  cached_network_image: ^3.0.0
-  flutter_svg: 0.22.0
-  video_player: 2.1.1
-  video_compress: 3.0.0
-
-  catcher: 0.6.6
-
-  cupertino_icons: 1.0.3
-  url_launcher: 6.0.3
-
-  google_sign_in: 5.1.0
-
-  intl: 0.17.0
-  scroll_snap_list: 0.8.0
-
-  oauth2: 2.0.0
-  pedantic: 1.11.0
-  shared_preferences: ^2.0.6
-
-  #DATE PICKERS
-  syncfusion_flutter_datepicker: ^19.2.47
-  flutter_datetime_picker: ^1.5.1
-
-  share: ^2.0.4
-  carousel_slider: ^4.0.0
-
-  surround_sound: ^0.3.1
-  english_words: ^4.0.0
-
+  surround_sound: ^0.3.2
   sleek_circular_slider: ^2.0.1
-  uuid: ^3.0.4
+#  panorama: ^0.4.1
+#  video_360: ^0.0.8
+#  split_view: ^3.2.1
+  flutter_custom_tabs: 1.0.4
+#  vr_player: ^0.2.0
 
   #First we need permission.RECORD_AUDIO and Privacy Policy
   #sound_stream: 0.3.0s
@@ -101,82 +86,94 @@ dependencies:
   #flutter_fft: ^1.0.2+6
 
   #Virtual Reality Experimental
-  panorama: ^0.4.1
-  video_360: ^0.0.3
-  split_view: ^3.1.0
 
-  flutter_custom_tabs: 1.0.3
-
-
-
-
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: 0.9.1
+
+  flutter_lints: ^2.0.1
+  build_runner: ^2.1.11
+  dependency_validator: ^3.2.0
+
+dependency_overrides:
+  neom_admin:
+    path: ../neom_admin
+  neom_bands:
+    path: ../neom_bands
+  neom_booking:
+    path: ../neom_booking
+  neom_commons:
+    path: ../neom_commons
+  neom_commerce:
+    path: ../neom_commerce
+  neom_events:
+    path: ../neom_events
+  neom_frequencies:
+    path: ../neom_frequencies
+  neom_home:
+    path: ../neom_home
+  neom_jobs:
+    path: ../neom_jobs
+  neom_inbox:
+    path: ../neom_inbox
+  neom_instruments:
+    path: ../neom_instruments
+  neom_itemlists:
+    path: ../neom_itemlists
+  neom_posts:
+    path: ../neom_posts
+  neom_profile:
+    path: ../neom_profile
+  neom_requests:
+    path: ../neom_requests
+  neom_timeline:
+    path: ../neom_timeline
+  neom_onboarding:
+    path: ../neom_onboarding
+  intl: 0.18.1
+
+flutter_test:
+  sdk: flutter
+
 flutter_icons:
-  image_path: assets/IconCyberneom.png
+  image_path: assets/appIcon.png
   android: true
   ios: true
+  adaptive_icon_foreground: "assets/appIcon.png"
 
-
-# For information on the generic Dart part of this file, see the
-# following page: https://www.dartlang.org/tools/pub/pubspec
-
-# The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
 
-  # To add assets to your application, add an assets section, like this:
-  # assets:
-  #  - images/a_dot_burr.jpeg
-  #  - images/a_dot_ham.jpeg
-
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/assets-and-images/#resolution-aware.
-
-  # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/assets-and-images/#from-packages
-
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
   fonts:
     - family: Open-Sans
       fonts:
-        - asset: assets/font/OpenSans-Regular.ttf
+        - asset: assets/fonts/OpenSans-Regular.ttf
           weight: 400
-        - asset: assets/font/OpenSans-Light.ttf
+        - asset: assets/fonts/OpenSans-Light.ttf
           weight: 300
-        - asset: assets/font/OpenSans-SemiBold.ttf
+        - asset: assets/fonts/OpenSans-SemiBold.ttf
           weight: 600
-        - asset: assets/font/OpenSans-Bold.ttf
+        - asset: assets/fonts/OpenSans-Bold.ttf
           weight: 700
-        - asset: assets/font/OpenSans-ExtraBold.ttf
+        - asset: assets/fonts/OpenSans-ExtraBold.ttf
           weight: 800
 
-
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/custom-fonts/#from-packages
   assets:
     - assets/
-    - assets/font/
-    - assets/logo/
-    - assets/third-party-logo/
-    - assets/image/
-    - assets/frequency-presets.json
+    - assets/elements/
+    - assets/fonts/
+    - assets/images/
+    - assets/images/events/
+    - assets/images/rating/
+    - assets/logos/
+    - assets/logos/third-party/
+    - assets/sounds/
+    - assets/event_activities/
+    - assets/properties.json
+    - assets/frequencies.json
+

@@ -1,58 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<key>NSAppTransportSecurity</key>
 <dict>
-  <key>NSAllowsArbitraryLoads</key>
-  <true/>
-</dict>
-<dict>
-    <!-- Add these permissions for ios -->
-	<key>NSCameraUsageDescription</key>
-	<string>Used to record videos playing music or photos</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Used to capture audio for videos taken</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Used to upload Images</string>
-    <key>CFBundleURLTypes</key>
-    <array>
-        <!--
-        <dict>
-        ... Some other CFBundleURLTypes definition.
-        </dict>
-        -->
-        <dict>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <!--
-                  Replace "000000000000" with your Facebook App ID here.
-                  **NOTE**: The scheme needs to start with `fb` and then your ID.
-                -->
-                <string>fb000000000000</string>
-            </array>
-        </dict>
-    </array>
-    <key>NSLocationAlwaysUsageDescription</key>
-    <string>Needed to access location</string>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>Needed to access location</string>
-    <key>FacebookAppID</key>
-    <!-- Replace "000000000000" with your Facebook App ID here. -->
-    <string>570241033975630</string>
-    <key>FacebookDisplayName</key>
-    <!-- Replace "YOUR_APP_NAME" with your Facebook App name. -->
-    <string>cyberneom</string>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-        <string>fbapi</string>
-        <string>fb-messenger-share-api</string>
-        <string>fbauth2</string>
-        <string>fbshareextension</string>
-    </array>
-    <key>GADApplicationIdentifier</key>
-    <string>ca-app-pub-9248844542810621~4699252247</string>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>Cyberneom</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -67,6 +20,20 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string></string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.444807211272-97fv1n3f4c87qf2edkfnl1d8ocf4a30v</string>
+				<string>fb320536515949494</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -89,6 +56,38 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
+	<true/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+    <string>Turning on location service allow us to show you when mates are nearby and also to provide news of events happening near you.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>The app gets photos from your library in order to add images to your profile, posts, comments and events.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>The app take photos with your camera in order to add images to your profile, posts, comments and events.</string>
+    <key>FacebookAppID</key>
+    <string>320536515949494</string>
+    <key>FacebookClientToken</key>
+    <string>cf147b202f7794a3faac37d4406b4273</string>
+    <key>FacebookDisplayName</key>
+    <string>Cyberneom</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>fbapi</string>
+      <string>fbapi20130214</string>
+      <string>fbapi20130410</string>
+      <string>fbapi20130702</string>
+      <string>fbapi20131010</string>
+      <string>fbapi20131219</string>
+      <string>fbapi20140410</string>
+      <string>fbapi20140116</string>
+      <string>fbapi20150313</string>
+      <string>fbapi20150629</string>
+      <string>fbapi20160328</string>
+      <string>fbauth</string>
+      <string>fb-messenger-share-api</string>
+      <string>fbauth2</string>
+      <string>fbshareextension</string>
+    </array>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 </dict>
 </plist>

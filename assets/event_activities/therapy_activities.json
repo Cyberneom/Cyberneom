@@ -1,0 +1,130 @@
+[
+	{
+		"name": "Reiki",
+		"description": "Una terapia energética que utiliza la imposición de manos para canalizar la energía universal y promover la sanación física, emocional y espiritual."
+	},
+	{
+		"name": "Acupuntura",
+		"description": "Una terapia que consiste en la inserción de agujas delgadas en puntos específicos del cuerpo para equilibrar el flujo de energía y aliviar diversos trastornos de salud."
+	},
+	{
+		"name": "Masaje Terapéutico",
+		"description": "Una terapia manual que utiliza diversas técnicas de manipulación de tejidos blandos para aliviar el dolor, reducir la tensión muscular y promover la relajación y el bienestar general."
+	},
+	{
+		"name": "Aromaterapia",
+		"description": "Una terapia que utiliza aceites esenciales derivados de plantas para promover la salud y el bienestar, a través de la inhalación, masajes o baños aromáticos."
+	},
+	{
+		"name": "Reflexología",
+		"description": "Una terapia que se basa en la estimulación de puntos específicos en los pies, manos u orejas para promover la relajación, aliviar el estrés y estimular la capacidad de autocuración del cuerpo."
+	},
+	{
+		"name": "Musicoterapia",
+		"description": "Una terapia que utiliza la música y el sonido para promover el bienestar emocional, reducir el estrés, mejorar la comunicación y favorecer la expresión creativa."
+	},
+	{
+		"name": "Cromoterapia",
+		"description": "Una terapia que utiliza los colores y la luz para armonizar los centros energéticos del cuerpo, equilibrar las emociones y promover la sanación en todos los niveles."
+	},
+	{
+		"name": "Rebirthing",
+		"description": "Una terapia que se centra en la respiración consciente y conectada para liberar bloqueos emocionales, traumas del pasado y promover una mayor vitalidad y bienestar."
+	},
+	{
+		"name": "Naturopatía",
+		"description": "Una terapia que se basa en la utilización de métodos naturales, como la nutrición, plantas medicinales, suplementos y técnicas de desintoxicación, para fomentar la salud y prevenir enfermedades."
+	},
+	{
+		"name": "Hipnoterapia",
+		"description": "Una terapia que utiliza técnicas de hipnosis para acceder al subconsciente y trabajar con creencias limitantes, traumas o patrones negativos, con el objetivo de promover cambios positivos en la vida de una persona."
+	},
+	{
+		"name": "Quiropráctica",
+		"description": "Una terapia que se enfoca en el diagnóstico y tratamiento de los trastornos del sistema musculoesquelético, especialmente de la columna vertebral, mediante ajustes manuales y técnicas específicas."
+	},
+	{
+		"name": "Terapia Floral",
+		"description": "Una terapia que utiliza esencias florales para equilibrar las emociones, abordar desequilibrios energéticos y promover la armonía y el bienestar emocional."
+	},
+	{
+		"name": "Masaje Thai",
+		"description": "Una terapia de masaje que combina presiones, estiramientos y movilizaciones para liberar tensiones musculares, mejorar la flexibilidad y promover un flujo de energía equilibrado."
+	},
+	{
+		"name": "Yoga Terapéutico",
+		"description": "Una terapia que utiliza posturas de yoga, respiración consciente y técnicas de relajación para aliviar dolencias físicas, reducir el estrés y promover el equilibrio y la salud integral."
+	},
+	{
+		"name": "Meditación Guiada",
+		"description": "Una terapia que utiliza la meditación guiada para promover la relajación, la claridad mental, la conexión espiritual y el bienestar emocional."
+	},
+	{
+		"name": "Terapia Craneosacral",
+		"description": "Una terapia suave y no invasiva que trabaja con el ritmo del líquido cefalorraquídeo para liberar bloqueos y restablecer el equilibrio en el sistema craneosacral."
+	},
+	{
+		"name": "Masaje Shiatsu",
+		"description": "Una terapia de masaje originaria de Japón que utiliza presiones y estiramientos en puntos específicos del cuerpo para promover la relajación, aliviar la tensión muscular y mejorar la circulación de la energía vital."
+	},
+	{
+		"name": "Sanación Reconectiva",
+		"description": "Una terapia que trabaja con frecuencias de energía y luz para equilibrar y sanar el cuerpo, la mente y el espíritu, promoviendo una sensación de bienestar y plenitud."
+	},
+	{
+		"name": "Constelaciones Familiares",
+		"description": "Una terapia que trabaja con las dinámicas familiares y sistémicas para identificar y resolver conflictos, traumas o patrones inconscientes que afectan la vida de una persona."
+	},
+	{
+		"name": "Masaje Ayurvédico",
+		"description": "Una terapia de masaje basada en los principios de la medicina ayurvédica que utiliza aceites medicados y técnicas específicas para equilibrar los doshas, aliviar el estrés y promover la salud y la vitalidad."
+	},
+	{
+		"name": "Sonido",
+		"description": "Una terapia que utiliza instrumentos y vibraciones sonoras para inducir estados de relajación profunda, equilibrar el sistema energético y promover la sanación a nivel físico, mental y espiritual."
+	},
+	{
+		"name": "EFT (Técnicas de Liberación Emocional)",
+		"description": "Una terapia que combina la acupuntura sin agujas con la psicología moderna para liberar emociones negativas, superar traumas y promover una mayor estabilidad emocional y bienestar."
+	},
+	{
+		"name": "Polaridad",
+		"description": "Una terapia que trabaja con el flujo de energía en el cuerpo a través de toques suaves, estiramientos y técnicas de polaridad para restablecer el equilibrio y promover la salud integral."
+	},
+	{
+		"name": "Respiración",
+		"description": "Una terapia que utiliza técnicas de respiración consciente y profunda para liberar bloqueos emocionales, mejorar la oxigenación celular y promover la relajación y el bienestar."
+	},
+	{
+		"name": "Regresión",
+		"description": "Una terapia que utiliza técnicas de hipnosis para explorar vidas pasadas o experiencias traumáticas del pasado, con el fin de comprender y sanar aspectos presentes en la vida de una persona."
+	},
+	{
+		"name": "Quiropraxia Energética",
+		"description": "Una terapia que combina la quiropraxia tradicional con técnicas energéticas para alinear la columna vertebral, liberar bloqueos energéticos y promover una mejor salud y bienestar."
+	},
+	{
+		"name": "Masaje de Piedras Calientes",
+		"description": "Una terapia de masaje que utiliza piedras calientes colocadas estratégicamente en el cuerpo para relajar los músculos, aliviar la tensión y promover la circulación sanguínea y energética."
+	},
+	{
+		"name": "Liberación Somatoemocional",
+		"description": "Una terapia que trabaja con el sistema craniosacral y el cuerpo para liberar traumas emocionales y físicos almacenados en los tejidos y promover la sanación integral."
+	},
+	{
+		"name": "Tapping",
+		"description": "Una terapia que combina la acupresión con la psicología para liberar bloqueos emocionales y superar traumas mediante la estimulación de puntos específicos en el cuerpo."
+	},
+	{
+		"name": "Biomagnetismo",
+		"description": "Una terapia que utiliza imanes de diferentes polaridades para equilibrar el pH del cuerpo, eliminar patógenos y restaurar la salud y el bienestar."
+	},
+	{
+		"name": "Liberación Traumática",
+		"description": "Una terapia que trabaja con el sistema nervioso y el cuerpo para liberar traumas y promover la integración y la sanación de experiencias traumáticas."
+	},
+	{
+		"name": "Energetización",
+		"description": "Una terapia que utiliza técnicas de energización y equilibrio energético para promover el bienestar físico, emocional y espiritual."
+	}
+]
