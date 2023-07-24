@@ -1,5 +1,3 @@
-
-import 'package:cyberneom/neom_generator/neom_generator_page.dart';
 import 'package:get/get.dart';
 import 'package:neom_admin/admin/admin_routes.dart';
 import 'package:neom_commerce/commerce/commerce_routes.dart';
@@ -19,6 +17,7 @@ import 'package:neom_profile/mates/mate_routes.dart';
 import 'package:neom_profile/profile/profile_routes.dart';
 import 'package:neom_requests/neom_requests.dart';
 import 'package:neom_timeline/neom_timeline.dart';
+import 'package:neom_generator/neom_generator/neom_generator_routes.dart';
 
 import 'root.dart';
 
@@ -29,11 +28,6 @@ class AppRoutes {
       GetPage(
           name: AppRouteConstants.root,
           page: () => const Root(),
-          transition: Transition.zoom
-      ),
-      GetPage(
-          name: AppRouteConstants.generator,
-          page: () => NeomGeneratorPage(),
           transition: Transition.zoom
       ),
     ...AdminRoutes.routes,
@@ -48,6 +42,7 @@ class AppRoutes {
     ...FrequencyRoutes.routes,
     ...MatesRoutes.routes,
     ...NotificationsRoutes.routes,
+    ...NeomGeneratorRoutes.routes,
     ...OnBoardingRoutes.routes,
     ...PostsRoutes.routes,
     ...ProfileRoutes.routes,

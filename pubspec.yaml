@@ -2,7 +2,7 @@ name: cyberneom
 description: Guided meditation with your own voice
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+5
+version: 1.0.0+6
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -20,9 +20,15 @@ dependencies:
   neom_commerce:
     git:
       url: https://github.com/emmanuel-montoya/neom_commerce.git
+  neom_events:
+    git:
+      url: https://github.com/Cyberneom/neom_events.git
   neom_frequencies:
     git:
       url: https://github.com/Cyberneom/neom_frequencies.git
+  neom_generator:
+    git:
+      url: https://github.com/Cyberneom/neom_generator.git
   neom_home:
     git:
       url: https://github.com/Cyberneom/neom_home.git
@@ -47,9 +53,6 @@ dependencies:
   neom_inbox:
     git:
       url: https://github.com/Cyberneom/neom_inbox.git
-  neom_events:
-    git:
-      url: https://github.com/Cyberneom/neom_events.git
   neom_onboarding:
     git:
       url: https://github.com/Cyberneom/neom_onboarding.git
@@ -66,28 +69,7 @@ dependencies:
     git:
       url: https://github.com/emmanuel-montoya/neom_jobs.git
 
-  sleek_circular_slider: ^2.0.1
-  flutter_custom_tabs: 1.0.4
   flutter_launcher_icons: ^0.13.1
-
-  surround_sound: ^0.3.2
-
-  #First we need permission.RECORD_AUDIO and Privacy Policy
-  #sound_stream: 0.3.0s
-  #noise_meter: ^3.0.2
-
-  #Tonic is a Flutter-compatible Dart package that models components of music theory.
-  #Used for Neom Harmony
-  #tonic: ^0.2.4
-
-  #AudioProcessing
-  #flutter_fft: ^1.0.2+6
-
-  #Virtual Reality Experimental
-#  vr_player: ^0.2.0
-#  panorama: ^0.4.1
-#  video_360: ^0.0.8
-#  split_view: ^3.2.1
 
 dev_dependencies:
   flutter_test:
@@ -112,6 +94,8 @@ dependency_overrides:
     path: ../neom_events
   neom_frequencies:
     path: ../neom_frequencies
+  neom_generator:
+    path: ../neom_generator
   neom_home:
     path: ../neom_home
   neom_jobs:
