@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>spotify</string>
+    </array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -29,10 +33,17 @@
 			<string></string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.444807211272-97fv1n3f4c87qf2edkfnl1d8ocf4a30v</string>
-				<string>fb320536515949494</string>
+				<string>com.googleusercontent.apps.144129075582-dqkkc3e0v9bkmmimhfugcennmgr0fn68</string>
 			</array>
 		</dict>
+		  <dict>
+            <key>CFBundleURLName</key>
+            <string>com.spotify.iOS-SDK-Quick-Start</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+              <string>spotify-ios-quick-start</string>
+            </array>
+          </dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
@@ -63,6 +74,8 @@
     <string>The app gets photos from your library in order to add images to your profile, posts, comments and events.</string>
     <key>NSCameraUsageDescription</key>
     <string>The app take photos with your camera in order to add images to your profile, posts, comments and events.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>Your location is used to provide personalized and relevant content, as well as to offer nearby services and events. We respect your privacy and will never share your location data with third parties.</string>
     <key>FacebookAppID</key>
     <string>320536515949494</string>
     <key>FacebookClientToken</key>
@@ -87,7 +100,13 @@
       <string>fbauth2</string>
       <string>fbshareextension</string>
     </array>
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>remote-notification</string>
+    </array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 </dict>
 </plist>

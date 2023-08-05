@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Cyberneom</string>
-    <string name="facebook_app_id">320536515949494</string>
-    <string name="facebook_client_token">cf147b202f7794a3faac37d4406b4273</string>
 </resources>
