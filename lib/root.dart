@@ -73,7 +73,10 @@ class Root extends StatelessWidget {
               minAppVersion: NeomConstants.lastStableVersion,
             ),
             child: (_.authStatus == AuthStatus.waiting) ?
-            const SplashPage() : _.selectRootPage(homePage: const HomePage(), appLastStableBuild: NeomConstants.lastStableBuild)
+            const SplashPage() : _.selectRootPage(
+                homePage: const HomePage(),
+                appLastStableBuild: NeomConstants.lastStableBuild
+            ),
         )
       )
     );

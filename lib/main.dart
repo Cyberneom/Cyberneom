@@ -1,20 +1,27 @@
-import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:logger/logger.dart';
+import 'package:metadata_god/metadata_god.dart';
 import 'package:neom_commons/core/app_flavour.dart';
 import 'package:neom_commons/core/data/implementations/push_notification_service.dart';
 import 'package:neom_commons/core/utils/app_color.dart';
 import 'package:neom_commons/core/utils/app_theme.dart';
+import 'package:neom_commons/core/utils/app_utilities.dart';
 import 'package:neom_commons/core/utils/constants/app_route_constants.dart';
 import 'package:neom_commons/core/utils/constants/app_translation_constants.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:neom_music_player/data/implementations/app_hive_controller.dart';
+import 'package:neom_music_player/data/providers/neom_audio_provider.dart';
+import 'package:neom_music_player/domain/use_cases/neom_audio_handler.dart';
+import 'package:neom_music_player/utils/constants/app_hive_constants.dart';
 
 import 'app_routes.dart';
 import 'app_es_translations.dart';
@@ -41,12 +48,12 @@ void main() async {
 
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
-  if(kDebugMode && Platform.isAndroid) {
+  if(kDebugMode) {
     //await JobsFirestore().distributeItemmates();
   }
 
+  await initMusicPlayerModule();
   runApp(const MyApp());
-
 }
   
 class MyApp extends StatelessWidget {
@@ -99,4 +106,30 @@ class MyApp extends StatelessWidget {
     );
   }
 
+}
+
+Future<void> initMusicPlayerModule() async {
+  try {
+    await Hive.initFlutter();
+    for (final box in AppHiveConstants.hiveBoxes) {
+      await AppHiveController.openHiveBox(
+        box[AppHiveConstants.name].toString(),
+        limit: box[AppHiveConstants.limit] as bool? ?? false,
+      );
+    }
+    AppHiveController().onInit();
+    MetadataGod.initialize();
+
+    final neomAudioProvider = NeomAudioProvider();
+    final NeomAudioHandler audioHandler = await neomAudioProvider.getAudioHandler();
+    GetIt.I.registerSingleton<NeomAudioHandler>(audioHandler);
+    // await JustAudioBackground.init(
+    //   androidNotificationChannelId: 'com.gigmeout.letsgig.channel.audio',
+    //   androidNotificationChannelName: 'Gigmeout',
+    //   androidNotificationOngoing: true,
+    // );
+    // GetIt.I.registerSingleton<MiniPlayer>(MiniPlayer());
+  } catch (e) {
+    AppUtilities.logger.e(e.toString());
+  }
 }

@@ -10,6 +10,7 @@ import 'package:neom_home/home/home_routes.dart';
 import 'package:neom_inbox/inbox/inbox_routes.dart';
 import 'package:neom_instruments/instruments/instruments_routes.dart';
 import 'package:neom_itemlists/itemlists/itemlists_routes.dart';
+import 'package:neom_music_player/music_player_routes.dart';
 import 'package:neom_notifications/neom_notifications.dart';
 import 'package:neom_onboarding/neom_onboarding.dart';
 import 'package:neom_posts/posts/posts_routes.dart';
@@ -48,6 +49,7 @@ class AppRoutes {
     ...ProfileRoutes.routes,
     ...RequestsRoutes.routes,
     ...TimelineRoutes.routes,
+    ...MusicPlayerRoutes.routes,
     ];
 
     return appRoutes;

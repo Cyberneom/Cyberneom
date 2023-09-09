@@ -2,7 +2,7 @@ name: cyberneom
 description: Guided meditation with your own voice
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.1.0+13
+version: 1.2.0+14
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -11,15 +11,9 @@ dependencies:
   flutter:
     sdk: flutter
 
-  neom_booking:
-    git:
-      url: https://github.com/emmanuel-montoya/neom_booking.git
   neom_commons:
     git:
       url: https://github.com/Cyberneom/neom_commons.git
-  neom_commerce:
-    git:
-      url: https://github.com/emmanuel-montoya/neom_commerce.git
   neom_events:
     git:
       url: https://github.com/Cyberneom/neom_events.git
@@ -68,8 +62,17 @@ dependencies:
   neom_jobs:
     git:
       url: https://github.com/emmanuel-montoya/neom_jobs.git
-
+  neom_booking:
+    git:
+      url: https://github.com/emmanuel-montoya/neom_booking.git
+  neom_commerce:
+    git:
+      url: https://github.com/emmanuel-montoya/neom_commerce.git
+  neom_music_player:
+    git:
+      url: https://github.com/Cyberneom/neom_music_player.git
   flutter_launcher_icons: ^0.13.1
+  surround_frequency_generator: ^1.0.0
 
 dev_dependencies:
   flutter_test:
@@ -116,8 +119,8 @@ dependency_overrides:
     path: ../neom_timeline
   neom_onboarding:
     path: ../neom_onboarding
-  surround_frequency_generator:
-    path: ../surround_frequency_generator
+  neom_music_player:
+    path: ../neom_music_player
   intl: 0.18.1
 
 
