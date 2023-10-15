@@ -2,7 +2,7 @@ name: cyberneom
 description: Guided meditation with your own voice
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.2.0+14
+version: 1.2.1+15
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -121,8 +121,9 @@ dependency_overrides:
     path: ../neom_onboarding
   neom_music_player:
     path: ../neom_music_player
-  intl: 0.18.1
-
+  flutter_rust_bridge: 1.82.3
+  uuid: 4.1.0
+  http: 1.1.0
 
 flutter_test:
   sdk: flutter
@@ -134,9 +135,6 @@ flutter_icons:
   adaptive_icon_foreground: "assets/appIcon.png"
 
 flutter:
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
 
   fonts:
@@ -160,10 +158,12 @@ flutter:
     - assets/images/
     - assets/images/events/
     - assets/images/rating/
+    - assets/images/release_upload/
+    - assets/images/music_player/
+    - assets/images/music_player/xtras/
     - assets/logos/
     - assets/logos/third-party/
     - assets/sounds/
     - assets/event_activities/
     - assets/properties.json
     - assets/frequencies.json
-

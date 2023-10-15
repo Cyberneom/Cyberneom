@@ -245,9 +245,10 @@ class AppEnTranslations extends Translations {
       'itemlistName': 'Neom chamber name',
       'description': 'Description',
       'title': 'Title',
-      'myFirstItemlistName': "My First Neom chamber",
-      'myFirstItemlistDesc': "This is where you would add your frequencies. You already have one frequency you may already know.",
-      'myFirstItemlistFanDesc': "This is where you would add the frequencies you usually listen. You already have one frequency you may already know.",
+      'myFavorites': "Mis favoritos",
+      'myFavItemlistName': "Mis favoritos",
+      'myFavItemlistDesc': "Aquí es donde agregarás las canciones que sueles practicar o escuchar",
+      'myFavItemlistFanDesc': "Aquí es donde agregarás las canciones que sueles escuchar",
       'createEventHeader': '¿Ready to play? ¡Cool!',
       'createEventPlace': 'Select the event place & date',
       'createEventNameDesc': 'Any name or description for this event?',
@@ -1525,6 +1526,7 @@ class AppEnTranslations extends Translations {
       'barter': 'Trueque',
       'barters': 'Trueques',
       'bartersNetwork': 'Red de trueques',
+      'publicList': 'Lista pública',
 
     },
   };

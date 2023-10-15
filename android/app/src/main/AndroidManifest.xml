@@ -71,17 +71,6 @@
                    android:pathPrefix="/play"
                    android:scheme="app" />
            </intent-filter>
-<!--           <intent-filter android:autoVerify="true">-->
-<!--               <action android:name="android.intent.action.VIEW" />-->
-
-<!--               <category android:name="android.intent.category.BROWSABLE" />-->
-<!--               <category android:name="android.intent.category.DEFAULT" />-->
-
-<!--               <data android:scheme="http" />-->
-<!--               <data android:scheme="https" />-->
-<!--               <data android:host="jiosaavn.com" />-->
-<!--               <data android:host="www.jiosaavn.com" />-->
-<!--           </intent-filter>-->
            <intent-filter android:autoVerify="true">
                <action android:name="android.intent.action.VIEW" />
 

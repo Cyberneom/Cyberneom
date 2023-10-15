@@ -24,7 +24,7 @@ import 'package:neom_music_player/domain/use_cases/neom_audio_handler.dart';
 import 'package:neom_music_player/utils/constants/app_hive_constants.dart';
 
 import 'app_routes.dart';
-import 'app_es_translations.dart';
+import 'localization/app_es_translations.dart';
 import 'root.dart';
 import 'root_binding.dart';
 

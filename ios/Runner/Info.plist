@@ -76,12 +76,6 @@
     <string>The app take photos with your camera in order to add images to your profile, posts, comments and events.</string>
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
     <string>Your location is used to provide personalized and relevant content, as well as to offer nearby services and events. We respect your privacy and will never share your location data with third parties.</string>
-    <key>FacebookAppID</key>
-    <string>320536515949494</string>
-    <key>FacebookClientToken</key>
-    <string>cf147b202f7794a3faac37d4406b4273</string>
-    <key>FacebookDisplayName</key>
-    <string>Cyberneom</string>
     <key>LSApplicationQueriesSchemes</key>
     <array>
       <string>fbapi</string>
