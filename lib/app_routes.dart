@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:neom_admin/admin/admin_routes.dart';
+import 'package:neom_audio_player/neom_audio_player_routes.dart';
+import 'package:neom_calendar/calendar/calendar_routes.dart';
 import 'package:neom_commerce/commerce/commerce_routes.dart';
 import 'package:neom_commons/auth/auth_routes.dart';
 import 'package:neom_commons/core/core_routes.dart';
@@ -10,7 +12,6 @@ import 'package:neom_home/home/home_routes.dart';
 import 'package:neom_inbox/inbox/inbox_routes.dart';
 import 'package:neom_instruments/instruments/instruments_routes.dart';
 import 'package:neom_itemlists/itemlists/itemlists_routes.dart';
-import 'package:neom_music_player/music_player_routes.dart';
 import 'package:neom_notifications/neom_notifications.dart';
 import 'package:neom_onboarding/neom_onboarding.dart';
 import 'package:neom_posts/posts/posts_routes.dart';
@@ -33,6 +34,7 @@ class AppRoutes {
       ),
     ...AdminRoutes.routes,
     ...AuthRoutes.routes,
+    ...CalendarRoutes.routes,
     ...CommerceRoutes.routes,
     ...CoreRoutes.routes,
     ...EventsRoutes.routes,
@@ -49,7 +51,7 @@ class AppRoutes {
     ...ProfileRoutes.routes,
     ...RequestsRoutes.routes,
     ...TimelineRoutes.routes,
-    ...MusicPlayerRoutes.routes,
+    ...NeomAudioPlayerRoutes.routes,
     ];
 
     return appRoutes;

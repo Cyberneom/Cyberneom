@@ -2,10 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-      <string>spotify</string>
-    </array>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -33,22 +31,55 @@
 			<string></string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.144129075582-dqkkc3e0v9bkmmimhfugcennmgr0fn68</string>
+				<string>com.googleusercontent.apps.444807211272-97fv1n3f4c87qf2edkfnl1d8ocf4a30v</string>
+				<string>fb320536515949494</string>
 			</array>
 		</dict>
-		  <dict>
-            <key>CFBundleURLName</key>
-            <string>com.spotify.iOS-SDK-Quick-Start</string>
-            <key>CFBundleURLSchemes</key>
-            <array>
-              <string>spotify-ios-quick-start</string>
-            </array>
-          </dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>FlutterDeepLinkingEnabled</key>
+	<true/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fbapi20130214</string>
+		<string>fbapi20130410</string>
+		<string>fbapi20130702</string>
+		<string>fbapi20131010</string>
+		<string>fbapi20131219</string>
+		<string>fbapi20140410</string>
+		<string>fbapi20140116</string>
+		<string>fbapi20150313</string>
+		<string>fbapi20150629</string>
+		<string>fbapi20160328</string>
+		<string>fbauth</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+		<string>stripe</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>$(PROJECT_NAME) requires access to media library</string>
+	<key>NSCameraUsageDescription</key>
+	<string>The app take photos with your camera in order to add images to your profile, posts, comments and events.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Location is used to provide local, personalized and relevant content, as well as to offer nearby services and events. We respect your privacy and will never share your location data with third parties.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Turning on location service allow us to show relevant content and also to provide news of events happening near your zone.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>As the neom chambers would detect and show the base frequency of the user's voice mic access is needed.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>The app gets photos from your library in order to add images to your profile, posts, comments and events.</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -68,39 +99,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
-	<key>NSLocationWhenInUseUsageDescription</key>
-    <string>Turning on location service allow us to show you when mates are nearby and also to provide news of events happening near you.</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>The app gets photos from your library in order to add images to your profile, posts, comments and events.</string>
-    <key>NSCameraUsageDescription</key>
-    <string>The app take photos with your camera in order to add images to your profile, posts, comments and events.</string>
-    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>Your location is used to provide personalized and relevant content, as well as to offer nearby services and events. We respect your privacy and will never share your location data with third parties.</string>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-      <string>fbapi</string>
-      <string>fbapi20130214</string>
-      <string>fbapi20130410</string>
-      <string>fbapi20130702</string>
-      <string>fbapi20131010</string>
-      <string>fbapi20131219</string>
-      <string>fbapi20140410</string>
-      <string>fbapi20140116</string>
-      <string>fbapi20150313</string>
-      <string>fbapi20150629</string>
-      <string>fbapi20160328</string>
-      <string>fbauth</string>
-      <string>fb-messenger-share-api</string>
-      <string>fbauth2</string>
-      <string>fbshareextension</string>
-    </array>
-    <key>UIBackgroundModes</key>
-    <array>
-        <string>remote-notification</string>
-    </array>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+    <string>$(PROJECT_NAME) requires access to media library</string>
 </dict>
 </plist>

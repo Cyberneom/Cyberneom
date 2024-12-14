@@ -2,10 +2,11 @@ name: cyberneom
 description: Guided meditation with your own voice
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.2.1+15
+version: 1.3.1+17
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: ">=3.4.0 <4.0.0"
+  flutter: ">=3.19.0"
 
 dependencies:
   flutter:
@@ -13,10 +14,10 @@ dependencies:
 
   neom_commons:
     git:
-      url: https://github.com/Cyberneom/neom_commons.git
+      url: git@github.com:Cyberneom/neom_commons.git
   neom_events:
     git:
-      url: https://github.com/Cyberneom/neom_events.git
+      url: git@github.com:Cyberneom/neom_events.git
   neom_frequencies:
     git:
       url: https://github.com/Cyberneom/neom_frequencies.git
@@ -25,105 +26,68 @@ dependencies:
       url: https://github.com/Cyberneom/neom_generator.git
   neom_home:
     git:
-      url: https://github.com/Cyberneom/neom_home.git
+      url: git@github.com:Cyberneom/neom_home.git
   neom_timeline:
     git:
-      url: https://github.com/Cyberneom/neom_timeline.git
+      url: git@github.com:Cyberneom/neom_timeline.git
   neom_posts:
     git:
-      url: https://github.com/Cyberneom/neom_posts.git
+      url: git@github.com:Cyberneom/neom_posts.git
   neom_profile:
     git:
-      url: https://github.com/Cyberneom/neom_profile.git
+      url: git@github.com:Cyberneom/neom_profile.git
   neom_bands:
     git:
-      url: https://github.com/emmanuel-montoya/neom_bands.git
+      url: git@github.com:emmanuel-montoya/neom_bands.git
   neom_instruments:
     git:
-      url: https://github.com/Cyberneom/neom_instruments.git
+      url: git@github.com:Cyberneom/neom_instruments.git
   neom_itemlists:
     git:
-      url: https://github.com/Cyberneom/neom_itemlists.git
+      url: git@github.com:Cyberneom/neom_itemlists.git
   neom_inbox:
     git:
-      url: https://github.com/Cyberneom/neom_inbox.git
+      url: git@github.com:Cyberneom/neom_inbox.git
   neom_onboarding:
     git:
-      url: https://github.com/Cyberneom/neom_onboarding.git
+      url: git@github.com:Cyberneom/neom_onboarding.git
   neom_admin:
     git:
-      url: https://github.com/Cyberneom/neom_admin.git
+      url: git@github.com:Cyberneom/neom_admin.git
   neom_requests:
     git:
-      url: https://github.com/Cyberneom/neom_requests.git
+      url: git@github.com:Cyberneom/neom_requests.git
   neom_notifications:
     git:
-      url: https://github.com/Cyberneom/neom_notifications.git
+      url: git@github.com:Cyberneom/neom_notifications.git
+  neom_calendar:
+    git:
+      url: git@github.com:Cyberneom/neom_calendar.git
   neom_jobs:
     git:
-      url: https://github.com/emmanuel-montoya/neom_jobs.git
+      url: git@github.com:emmanuel-montoya/neom_jobs.git
   neom_booking:
     git:
-      url: https://github.com/emmanuel-montoya/neom_booking.git
+      url: git@github.com:emmanuel-montoya/neom_booking.git
   neom_commerce:
     git:
-      url: https://github.com/emmanuel-montoya/neom_commerce.git
-  neom_music_player:
+      url: git@github.com:emmanuel-montoya/neom_commerce.git
+  neom_audio_player:
     git:
-      url: https://github.com/Cyberneom/neom_music_player.git
+      url: https://github.com/Cyberneom/neom_audio_player.git
   flutter_launcher_icons: ^0.13.1
   surround_frequency_generator: ^1.0.0
+
+  #USED FOR NeomMusicWidget.kt
+  home_widget: ^0.3.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^2.0.1
+  flutter_lints: ^4.0.0
   build_runner: ^2.1.11
   dependency_validator: ^3.2.0
-
-dependency_overrides:
-  neom_admin:
-    path: ../neom_admin
-  neom_bands:
-    path: ../neom_bands
-  neom_booking:
-    path: ../neom_booking
-  neom_commons:
-    path: ../neom_commons
-  neom_commerce:
-    path: ../neom_commerce
-  neom_events:
-    path: ../neom_events
-  neom_frequencies:
-    path: ../neom_frequencies
-  neom_generator:
-    path: ../neom_generator
-  neom_home:
-    path: ../neom_home
-  neom_jobs:
-    path: ../neom_jobs
-  neom_inbox:
-    path: ../neom_inbox
-  neom_instruments:
-    path: ../neom_instruments
-  neom_itemlists:
-    path: ../neom_itemlists
-  neom_posts:
-    path: ../neom_posts
-  neom_profile:
-    path: ../neom_profile
-  neom_requests:
-    path: ../neom_requests
-  neom_timeline:
-    path: ../neom_timeline
-  neom_onboarding:
-    path: ../neom_onboarding
-  neom_music_player:
-    path: ../neom_music_player
-  flutter_rust_bridge: 1.82.3
-  uuid: 4.1.0
-  http: 1.1.0
 
 flutter_test:
   sdk: flutter

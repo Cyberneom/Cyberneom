@@ -1,0 +1,41 @@
+dependency_overrides:
+  neom_admin:
+    path: ../neom_admin
+  neom_bands:
+    path: ../neom_bands
+  neom_booking:
+    path: ../neom_booking
+  neom_commons:
+    path: ../neom_commons
+  neom_commerce:
+    path: ../neom_commerce
+  neom_events:
+    path: ../neom_events
+  neom_home:
+    path: ../neom_home
+  neom_inbox:
+    path: ../neom_inbox
+  neom_instruments:
+    path: ../neom_instruments
+  neom_itemlists:
+    path: ../neom_itemlists
+  neom_jobs:
+    path: ../neom_jobs
+  neom_audio_player:
+    path: ../neom_audio_player
+  neom_onboarding:
+    path: ../neom_onboarding
+  neom_posts:
+    path: ../neom_posts
+  neom_profile:
+    path: ../neom_profile
+  neom_requests:
+    path: ../neom_requests
+  neom_timeline:
+    path: ../neom_timeline
+  neom_generator:
+    path: ../neom_generator
+  neom_calendar:
+    path: ../neom_calendar
+#  uuid: 4.4.0
+#  rxdart: 0.28.0

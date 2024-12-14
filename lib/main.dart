@@ -10,7 +10,10 @@ import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:logger/logger.dart';
-import 'package:metadata_god/metadata_god.dart';
+import 'package:neom_audio_player/data/implementations/app_hive_controller.dart';
+import 'package:neom_audio_player/data/providers/neom_audio_provider.dart';
+import 'package:neom_audio_player/domain/use_cases/neom_audio_handler.dart';
+import 'package:neom_audio_player/utils/constants/app_hive_constants.dart';
 import 'package:neom_commons/core/app_flavour.dart';
 import 'package:neom_commons/core/data/implementations/push_notification_service.dart';
 import 'package:neom_commons/core/utils/app_color.dart';
@@ -18,10 +21,6 @@ import 'package:neom_commons/core/utils/app_theme.dart';
 import 'package:neom_commons/core/utils/app_utilities.dart';
 import 'package:neom_commons/core/utils/constants/app_route_constants.dart';
 import 'package:neom_commons/core/utils/constants/app_translation_constants.dart';
-import 'package:neom_music_player/data/implementations/app_hive_controller.dart';
-import 'package:neom_music_player/data/providers/neom_audio_provider.dart';
-import 'package:neom_music_player/domain/use_cases/neom_audio_handler.dart';
-import 'package:neom_music_player/utils/constants/app_hive_constants.dart';
 
 import 'app_routes.dart';
 import 'localization/app_es_translations.dart';
@@ -38,13 +37,9 @@ void main() async {
     DeviceOrientation.portraitDown
   ]);
 
-  await Firebase.initializeApp();
 
-  await PushNotificationService.initNotifications(debug: kDebugMode);
-  PushNotificationService.actionStreamListener();
-  FirebaseMessaging.onMessage.listen(PushNotificationService.onMessageHandler);
-  FirebaseMessaging.onMessageOpenedApp.listen(PushNotificationService.onMessageOpenApp);
-  FirebaseMessaging.onBackgroundMessage(PushNotificationService.backgroundHandler);
+  await Firebase.initializeApp();
+  await notificationsInvoker();
 
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
@@ -52,7 +47,9 @@ void main() async {
     //await JobsFirestore().distributeItemmates();
   }
 
-  await initMusicPlayerModule();
+  await AppFlavour.readProperties();
+  initHive();
+  initAudioPlayerModule();
   runApp(const MyApp());
 }
   
@@ -60,9 +57,8 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     initializeDateFormatting(AppTranslationConstants.es);
-    AppFlavour.readProperties(context);
     return GetMaterialApp(
       localeListResolutionCallback: (locales, supportedLocales) {
         for (var locale in locales!) {
@@ -88,8 +84,6 @@ class MyApp extends StatelessWidget {
       supportedLocales: const [
         Locale('es'), // Spanish, Mexico
         Locale('en'), // English, United States
-        Locale('fr'), // French, France
-        Locale('de'), // German, Germany
       ],
       defaultTransition: Transition.upToDown,
       debugShowCheckedModeBanner: false,
@@ -108,27 +102,36 @@ class MyApp extends StatelessWidget {
 
 }
 
-Future<void> initMusicPlayerModule() async {
-  try {
-    await Hive.initFlutter();
-    for (final box in AppHiveConstants.hiveBoxes) {
-      await AppHiveController.openHiveBox(
-        box[AppHiveConstants.name].toString(),
-        limit: box[AppHiveConstants.limit] as bool? ?? false,
-      );
-    }
-    AppHiveController().onInit();
-    MetadataGod.initialize();
+Future<void> notificationsInvoker() async {
+  NotificationSettings notificationSettings = await PushNotificationService.initNotifications(debug: kDebugMode);
+  AppUtilities.logger.i(notificationSettings.authorizationStatus == AuthorizationStatus.authorized ?
+  'Notification permission granted' : 'Notification permission denied');
 
-    final neomAudioProvider = NeomAudioProvider();
-    final NeomAudioHandler audioHandler = await neomAudioProvider.getAudioHandler();
-    GetIt.I.registerSingleton<NeomAudioHandler>(audioHandler);
-    // await JustAudioBackground.init(
-    //   androidNotificationChannelId: 'com.gigmeout.letsgig.channel.audio',
-    //   androidNotificationChannelName: 'Gigmeout',
-    //   androidNotificationOngoing: true,
-    // );
-    // GetIt.I.registerSingleton<MiniPlayer>(MiniPlayer());
+  PushNotificationService.actionStreamListener();
+  FirebaseMessaging.onMessage.listen(PushNotificationService.onMessageHandler);
+  FirebaseMessaging.onMessageOpenedApp.listen(PushNotificationService.onMessageOpenApp);
+  FirebaseMessaging.onBackgroundMessage(PushNotificationService.backgroundHandler);
+}
+
+Future<void> initHive() async {
+  await Hive.initFlutter();
+  for (final box in AppHiveConstants.hiveBoxes) {
+    await AppHiveController.openHiveBox(
+      box[AppHiveConstants.name].toString(),
+      limit: box[AppHiveConstants.limit] as bool? ?? false,
+    );
+  }
+  AppHiveController().onInit();
+
+}
+
+Future<void> initAudioPlayerModule() async {
+  try {
+    GetIt.I.registerLazySingletonAsync<NeomAudioHandler>(() async {
+      final neomAudioProvider = NeomAudioProvider();
+      final NeomAudioHandler audioHandler = await neomAudioProvider.getAudioHandler();
+      return audioHandler;
+    });
   } catch (e) {
     AppUtilities.logger.e(e.toString());
   }

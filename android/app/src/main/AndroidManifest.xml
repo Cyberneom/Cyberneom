@@ -3,6 +3,7 @@
     package="com.cyberneom.neom">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -10,11 +11,11 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
    <application
-       android:label="Cyberneom"
-       android:name="${applicationName}"
+       android:label="@string/app_name"
        android:icon="@mipmap/ic_launcher"
        android:usesCleartextTraffic="true"
        android:requestLegacyExternalStorage="true">
+
        <receiver android:name="NeomMusicWidget"
            android:exported="true">
            <intent-filter>
@@ -71,24 +72,24 @@
                    android:pathPrefix="/play"
                    android:scheme="app" />
            </intent-filter>
-           <intent-filter android:autoVerify="true">
-               <action android:name="android.intent.action.VIEW" />
+<!--           <intent-filter android:autoVerify="true">-->
+<!--               <action android:name="android.intent.action.VIEW" />-->
 
-               <category android:name="android.intent.category.BROWSABLE" />
-               <category android:name="android.intent.category.DEFAULT" />
+<!--               <category android:name="android.intent.category.BROWSABLE" />-->
+<!--               <category android:name="android.intent.category.DEFAULT" />-->
 
-               <data android:scheme="https" />
-               <data android:host="*spotify.com" />
-           </intent-filter>
-           <intent-filter android:autoVerify="true">
-               <action android:name="android.intent.action.VIEW" />
+<!--               <data android:scheme="https" />-->
+<!--               <data android:host="*spotify.com" />-->
+<!--           </intent-filter>-->
+<!--           <intent-filter android:autoVerify="true">-->
+<!--               <action android:name="android.intent.action.VIEW" />-->
 
-               <category android:name="android.intent.category.BROWSABLE" />
-               <category android:name="android.intent.category.DEFAULT" />
+<!--               <category android:name="android.intent.category.BROWSABLE" />-->
+<!--               <category android:name="android.intent.category.DEFAULT" />-->
 
-               <data android:scheme="https" />
-               <data android:host="*youtube.com" />
-           </intent-filter>
+<!--               <data android:scheme="https" />-->
+<!--               <data android:host="*youtube.com" />-->
+<!--           </intent-filter>-->
            <intent-filter>
                <action android:name="android.intent.action.GET_CONTENT" />
 
@@ -129,102 +130,18 @@
                <data android:scheme="http" />
                <data android:scheme="https" />
                <data android:host="*" />
-               <data android:pathPattern=".*\\.3ga" />
-               <data android:pathPattern=".*\\.a52" />
                <data android:pathPattern=".*\\.aac" />
-               <data android:pathPattern=".*\\.ac3" />
-               <data android:pathPattern=".*\\.adt" />
-               <data android:pathPattern=".*\\.adts" />
-               <data android:pathPattern=".*\\.aif" />
-               <data android:pathPattern=".*\\.aifc" />
-               <data android:pathPattern=".*\\.aiff" />
-               <data android:pathPattern=".*\\.amr" />
-               <data android:pathPattern=".*\\.aob" />
-               <data android:pathPattern=".*\\.ape" />
-               <data android:pathPattern=".*\\.awb" />
-               <data android:pathPattern=".*\\.caf" />
-               <data android:pathPattern=".*\\.dts" />
                <data android:pathPattern=".*\\.flac" />
-               <data android:pathPattern=".*\\.it" />
-               <data android:pathPattern=".*\\.m4a" />
-               <data android:pathPattern=".*\\.m4b" />
-               <data android:pathPattern=".*\\.m4p" />
-               <data android:pathPattern=".*\\.mid" />
-               <data android:pathPattern=".*\\.mka" />
-               <data android:pathPattern=".*\\.mlp" />
-               <data android:pathPattern=".*\\.mod" />
-               <data android:pathPattern=".*\\.mpa" />
-               <data android:pathPattern=".*\\.mp1" />
-               <data android:pathPattern=".*\\.mp2" />
                <data android:pathPattern=".*\\.mp3" />
-               <data android:pathPattern=".*\\.mpc" />
-               <data android:pathPattern=".*\\.mpga" />
-               <data android:pathPattern=".*\\.oga" />
                <data android:pathPattern=".*\\.ogg" />
-               <data android:pathPattern=".*\\.oma" />
                <data android:pathPattern=".*\\.opus" />
-               <data android:pathPattern=".*\\.ra" />
-               <data android:pathPattern=".*\\.ram" />
-               <data android:pathPattern=".*\\.rmi" />
-               <data android:pathPattern=".*\\.s3m" />
-               <data android:pathPattern=".*\\.spx" />
-               <data android:pathPattern=".*\\.tta" />
-               <data android:pathPattern=".*\\.voc" />
-               <data android:pathPattern=".*\\.vqf" />
-               <data android:pathPattern=".*\\.w64" />
                <data android:pathPattern=".*\\.wav" />
-               <data android:pathPattern=".*\\.wma" />
-               <data android:pathPattern=".*\\.wv" />
-               <data android:pathPattern=".*\\.xa" />
-               <data android:pathPattern=".*\\.xm" />
-               <data android:pathPattern=".*\\.3GA" />
-               <data android:pathPattern=".*\\.A52" />
                <data android:pathPattern=".*\\.AAC" />
-               <data android:pathPattern=".*\\.AC3" />
-               <data android:pathPattern=".*\\.ADT" />
-               <data android:pathPattern=".*\\.ADTS" />
-               <data android:pathPattern=".*\\.AIF" />
-               <data android:pathPattern=".*\\.AIFC" />
-               <data android:pathPattern=".*\\.AIFF" />
-               <data android:pathPattern=".*\\.AMR" />
-               <data android:pathPattern=".*\\.AOB" />
-               <data android:pathPattern=".*\\.APE" />
-               <data android:pathPattern=".*\\.AWB" />
-               <data android:pathPattern=".*\\.CAF" />
-               <data android:pathPattern=".*\\.DTS" />
                <data android:pathPattern=".*\\.FLAC" />
-               <data android:pathPattern=".*\\.IT" />
-               <data android:pathPattern=".*\\.M4A" />
-               <data android:pathPattern=".*\\.M4B" />
-               <data android:pathPattern=".*\\.M4P" />
-               <data android:pathPattern=".*\\.MID" />
-               <data android:pathPattern=".*\\.MKA" />
-               <data android:pathPattern=".*\\.MLP" />
-               <data android:pathPattern=".*\\.MOD" />
-               <data android:pathPattern=".*\\.MPA" />
-               <data android:pathPattern=".*\\.MP1" />
-               <data android:pathPattern=".*\\.MP2" />
                <data android:pathPattern=".*\\.MP3" />
-               <data android:pathPattern=".*\\.MPC" />
-               <data android:pathPattern=".*\\.MPGA" />
-               <data android:pathPattern=".*\\.OGA" />
                <data android:pathPattern=".*\\.OGG" />
-               <data android:pathPattern=".*\\.OMA" />
                <data android:pathPattern=".*\\.OPUS" />
-               <data android:pathPattern=".*\\.RA" />
-               <data android:pathPattern=".*\\.RAM" />
-               <data android:pathPattern=".*\\.RMI" />
-               <data android:pathPattern=".*\\.S3M" />
-               <data android:pathPattern=".*\\.SPX" />
-               <data android:pathPattern=".*\\.TTA" />
-               <data android:pathPattern=".*\\.VOC" />
-               <data android:pathPattern=".*\\.VQF" />
-               <data android:pathPattern=".*\\.W64" />
                <data android:pathPattern=".*\\.WAV" />
-               <data android:pathPattern=".*\\.WMA" />
-               <data android:pathPattern=".*\\.WV" />
-               <data android:pathPattern=".*\\.XA" />
-               <data android:pathPattern=".*\\.XM" />
            </intent-filter>
            <intent-filter>
                <action android:name="android.intent.action.SEND" />
