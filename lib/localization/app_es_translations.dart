@@ -178,7 +178,7 @@ class AppEsTranslations extends Translations {
       'itemlistTitle': 'Título de cámara Neom',
       'itemlistDesc': 'Descripción de cámara Neom',
       'createEventPlace': '¿Donde será el evento? ¿Fecha?',
-      'createEventNameDesc': '¿Cuál es el nombre del evento? Agrega una imagen que lo represente y su cuota de recuperación.',
+      'createEventNameDesc': '¿Cuál es el nombre del evento? Agrega una imagen que lo represente.',
       'createEventCoverGenres': 'Elige tu portada favorita y selecciona los géneros para este evento',
       'specifyEventPlace': "Especifica el lugar donde será el evento",
       'specifyEventDate': "Especifica la fecha del evento",
@@ -1366,6 +1366,14 @@ class AppEsTranslations extends Translations {
       'messages': 'Mensajes',
       'searchProfileItemmates': 'Encuentra perfiles para compartir tus meditaciones y pensamientos',
 
+      'adminCenter': "Admin Center",
+      'createSponsor': "Crear Patrocinador",
+      'usersDirectory': 'Directorio de Usuarios',
+      'seeAnalytics': 'Ver analíticas',
+      'runAnalyticsJobs': 'Actualizar analíticas (5 min)',
+      'runProfileJobs': 'Actualizar enlace de usuarios (10 min)',
+
+      'findsYourVoiceFrequency': 'Encuentra la frequencia de tu voz'
     },
   };
 

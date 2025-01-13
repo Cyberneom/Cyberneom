@@ -37,5 +37,3 @@ dependency_overrides:
     path: ../neom_generator
   neom_calendar:
     path: ../neom_calendar
-#  uuid: 4.4.0
-#  rxdart: 0.28.0
