@@ -10,15 +10,15 @@ import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:logger/logger.dart';
-import 'package:neom_audio_player/data/implementations/app_hive_controller.dart';
 import 'package:neom_audio_player/data/providers/neom_audio_provider.dart';
 import 'package:neom_audio_player/domain/use_cases/neom_audio_handler.dart';
-import 'package:neom_audio_player/utils/constants/app_hive_constants.dart';
 import 'package:neom_commons/core/app_flavour.dart';
+import 'package:neom_commons/core/data/implementations/app_hive_controller.dart';
 import 'package:neom_commons/core/data/implementations/push_notification_service.dart';
 import 'package:neom_commons/core/utils/app_color.dart';
 import 'package:neom_commons/core/utils/app_theme.dart';
 import 'package:neom_commons/core/utils/app_utilities.dart';
+import 'package:neom_commons/core/utils/constants/app_hive_constants.dart';
 import 'package:neom_commons/core/utils/constants/app_route_constants.dart';
 import 'package:neom_commons/core/utils/constants/app_translation_constants.dart';
 
@@ -48,8 +48,6 @@ void main() async {
   }
 
   await AppFlavour.readProperties();
-  initHive();
-  initAudioPlayerModule();
   runApp(const MyApp());
 }
   
@@ -111,28 +109,4 @@ Future<void> notificationsInvoker() async {
   FirebaseMessaging.onMessage.listen(PushNotificationService.onMessageHandler);
   FirebaseMessaging.onMessageOpenedApp.listen(PushNotificationService.onMessageOpenApp);
   FirebaseMessaging.onBackgroundMessage(PushNotificationService.backgroundHandler);
-}
-
-Future<void> initHive() async {
-  await Hive.initFlutter();
-  for (final box in AppHiveConstants.hiveBoxes) {
-    await AppHiveController.openHiveBox(
-      box[AppHiveConstants.name].toString(),
-      limit: box[AppHiveConstants.limit] as bool? ?? false,
-    );
-  }
-  AppHiveController().onInit();
-
-}
-
-Future<void> initAudioPlayerModule() async {
-  try {
-    GetIt.I.registerLazySingletonAsync<NeomAudioHandler>(() async {
-      final neomAudioProvider = NeomAudioProvider();
-      final NeomAudioHandler audioHandler = await neomAudioProvider.getAudioHandler();
-      return audioHandler;
-    });
-  } catch (e) {
-    AppUtilities.logger.e(e.toString());
-  }
 }

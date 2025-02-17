@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:neom_admin/admin/admin_routes.dart';
 import 'package:neom_audio_player/neom_audio_player_routes.dart';
+import 'package:neom_booking/booking/booking_routes.dart';
 import 'package:neom_calendar/calendar/calendar_routes.dart';
 import 'package:neom_commerce/commerce/commerce_routes.dart';
 import 'package:neom_commons/auth/auth_routes.dart';
@@ -34,6 +35,7 @@ class AppRoutes {
       ),
     ...AdminRoutes.routes,
     ...AuthRoutes.routes,
+    ...BookingRoutes.routes,
     ...CalendarRoutes.routes,
     ...CommerceRoutes.routes,
     ...CoreRoutes.routes,

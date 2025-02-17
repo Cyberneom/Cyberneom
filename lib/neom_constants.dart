@@ -1,8 +1,8 @@
 class NeomConstants {
 
-  static const String appVersion = "1.3.1";
-  static const String lastStableVersion = "1.3.1";
-  static const int build = 17;
-  static const int lastStableBuild = 17;
+  static const String appVersion = "1.4.0";
+  static const String lastStableVersion = "1.4.0";
+  static const int build = 18;
+  static const int lastStableBuild = 18;
 
 }

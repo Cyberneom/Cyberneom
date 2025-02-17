@@ -46,7 +46,7 @@ class Root extends StatelessWidget {
           context: context,
           builder: (context) => AlertDialog(
             backgroundColor: AppColor.getMain(),
-            title: const Text(AppConstants.appTitle),
+            title: Text(AppConstants.appTitle.tr),
             content:  Text(AppTranslationConstants.wantToCloseApp.tr),
             actions: <Widget>[
               TextButton(
