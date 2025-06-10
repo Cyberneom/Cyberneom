@@ -1,3 +1,4 @@
+import 'package:cyberneom/localization/app_translations.dart';
 import 'package:cyberneom/neom_constants.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -20,7 +21,6 @@ import 'package:neom_notifications/notifications/data/implementations/push_notif
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'app_routes.dart';
-import 'localization/app_es_translations.dart';
 import 'root.dart';
 import 'root_binding.dart';
 
@@ -78,7 +78,7 @@ class MyApp extends StatelessWidget {
       },
       binds: RootBinding().dependencies(),
       enableLog: true,
-      translations: AppEsTranslations(),
+      translations: AppTranslations(),
       locale: const Locale('es'), // Spanish, Mexico
       fallbackLocale: const Locale('es'), // Spanish, Mexico
       supportedLocales: const [

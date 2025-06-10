@@ -1,10 +1,8 @@
-import 'package:get/get.dart';
+import 'package:neom_commons/core/utils/constants/app_translation_constants.dart';
 
-class AppEsTranslations extends Translations {
+class AppEsTranslations {
 
-  @override
-  Map<String, Map<String, String>> get keys => {
-    'es': {
+  static Map<String, String> keys = {
       'english': 'Inglés',
       'spanish': 'Español',
       'french': 'Francés',
@@ -13,7 +11,7 @@ class AppEsTranslations extends Translations {
       'yes': 'Si',
       'no': 'No',
       'appTitle': 'Cyberneom',
-      'appCoin': 'NeomCoin',
+      'appCoin': 'Neom Coin',
       'slogan': 'Tecnología, bienestar y fe',
       'googleLogin': 'Iniciar con Google',
       'facebookLogin': 'Iniciar con Facebook',
@@ -31,7 +29,6 @@ class AppEsTranslations extends Translations {
       'frequencySelection': 'Selección de Frecuencias',
       'introInstrumentMsg': 'Selecciona al menos un instrumento',
       'fun': 'Curiosidad',
-      'professional': 'Profesional',
       'composition': 'Investigación',
       'any': 'Cualquiera',
       'musician': 'Meditador',
@@ -919,7 +916,6 @@ class AppEsTranslations extends Translations {
       "albumArtist": "Artista del álbum",
       "alphabetical": "Alfabético",
       "alreadyInQueue": "Ya en la cola",
-      "artist": "Artista",
       "autoBack": "Copia de seguridad automática",
       "autoBackSub": "Copia de seguridad automática de los datos",
       "autoplay": "Reproducción automática",
@@ -983,7 +979,7 @@ class AppEsTranslations extends Translations {
       "enforceRepeatSub": "Mantener la misma opción de repetir para cada sesión",
       "enterPlaylistLink": "Enlace de Lista de Reproducción",
       "export": "Exportar",
-      "failedCreateBackup": "Falló la creación de la Copia de Seguridad",
+
       "failedExport": "Fallo al exportar",
       "exitConfirm": "Presione atrás nuevamente para salir de la aplicación",
       "favorites": "Favoritos",
@@ -1021,7 +1017,6 @@ class AppEsTranslations extends Translations {
       "getStarted": "Comenzar",
       "gmail": "Gmail",
       "guest": "Invitado",
-
       "failedDelete": "Fallo al eliminar",
       "downingAlbum": "Descargando el álbum",
       "enterName": "Entre su nombre",
@@ -1095,13 +1090,13 @@ class AppEsTranslations extends Translations {
       "nothingPlaying": "No reproduciendo nada",
       "nothingTo": "Nada que",
       "nowPlaying": "Reproduciendo ahora",
-
       "others": "Otros",
       "play": "Reproducir",
       "playNext": "Escuchar a continuación",
       "playSomething": "Ir y escuchar algo",
       "playlistShareText": "¡Mira mi lista de reproducción!",
       "playlists": "Listas de reproducción",
+
       "rememberChoice": "Recordar elección",
       "removed": "Eliminado",
       "removedFromFav": "Eliminado de Favoritos",
@@ -1191,6 +1186,7 @@ class AppEsTranslations extends Translations {
       "importJioSaavn": "Importar desde JioSaavn",
       "useBlurForNowPlayingSub": "Se usará menor opacidad para el fondo de la sección Reproduciendo Ahora",
       "topCharts": "Listas de Éxitos",
+
       "resetOnSkip": "Botón anterior reinicia meditación",
       "resetOnSkipSub": "Ir al comienzo de la meditación en vez de saltar a la anterior",
       "ytDownQualitySub": "Mayor calidad usa más espacio de almacenamiento",
@@ -1311,6 +1307,7 @@ class AppEsTranslations extends Translations {
       'verifyProfile': 'Verificar Perfil',
       'music': 'Música',
       'meditation': 'Meditación',
+      'meditations': 'Meditaciones',
       'chamberPresetAdded': 'Neom Preset agregado',
       'audioLibrary': 'Audioteca',
 
@@ -1391,8 +1388,6 @@ class AppEsTranslations extends Translations {
       'updateUserRoleMsgSame': 'El rol elegido es el mismo que el anterior',
       'updateUserRoleSuccess': 'El rol de usuario ha sido actualizado satisfactoriamente.',
       'initial': 'Iniciado',
-      'premium': 'Premium',
-      'platinum': 'Platino',
       'toChange': 'Cambiar',
       'toUpdate': 'Actualizar',
       'updateProfileType': 'Actualizar tipo de perfil',
@@ -1420,9 +1415,100 @@ class AppEsTranslations extends Translations {
       'recentReleases': 'Últimos lanzamientos',
       'thanksForYourAttention': '¡Gracias por tu atención!',
       'createEventWithFlyer': 'Crear evento solo con cartel',
+
       'waveLength': '\u03BB',
-      'period': 'Periodo'
-    },
+      'period': 'Periodo',
+
+      'emailNotFound': 'El email proporcionado no está asociado a ninguna cuenta.',
+      'profileTypeRelatedWithASubscriptionMsg': 'El tipo de perfil está relacionado con una suscripción activa. Para cambiar el tipo de perfil es necesario cancelar la suscripción primero.',
+      'profileTypeRelatedWithAFacilityOrPlaceMsg': 'El tipo de perfil ya se ha relacionado con una instalación o un lugar. Para cambiar el tipo de perfil contacte a soporte@cyberneom.xyz.',
+      "facilityType": "Tipo de instalación",
+      "facilityAdded": "Instalación agregada",
+      "placeType": "Tipo de lugar",
+      "placeAdded": "Lugar agregado",
+      'nupale': 'NUPALE',
+      'casete': 'CASETE',
+      'clipEditor': 'Editor de Clip',
+
+      "clipPhrase1": "El código fuente del nuevo sonido.",
+      "clipPhrase2": "El futuro del audio se sintetiza aquí.",
+      "clipPhrase3": "Nuevas frecuencias, espectros por descubrir.",
+      "clipPhrase4": "Donde los nuevos creadores compilan su futuro.",
+      "clipPhrase5": "El pulso independiente en su estado más puro.",
+      "clipPhrase6": "Decodifica artistas antes del mainstream.",
+      "clipPhrase7": "Sonido generado con pasión.",
+      "clipPhrase8": "Frecuencias que nacen desde el bit.",
+      "clipPhrase9": "Donde cada artista inicia su data-stream.",
+      "clipPhrase10": "La escena sónica que redefine el sistema.",
+      "clipPhrase11": "Frecuencias transmitiendo cerca de ti.",
+      "clipPhrase12": "Desde tu nodo local al network global.",
+      "clipPhrase13": "Señales locales, impacto universal.",
+      "clipPhrase14": "El talento que vibra en tu sector.",
+      "clipPhrase15": "Sincroniza con creadores de tu red.",
+      "clipPhrase16": "Sonido desde la matriz de tu ciudad.",
+      "clipPhrase17": "Escanea las ondas sonoras cercanas.",
+      "clipPhrase18": "Donde la escena local se vuelve data.",
+      "clipPhrase19": "Inicia la nueva secuencia.",
+      "clipPhrase20": "Atrévete a procesar un sonido diferente.",
+      "clipPhrase21": "Conecta con cada pulso sónico.",
+      "clipPhrase22": "El input que tu sistema necesitaba.",
+      "clipPhrase23": "Explora. Decodifica. Conecta.",
+      "clipPhrase24": "Tu próximo track favorito está en la red.",
+      "clipPhrase25": "Siente la energía del código puro.",
+      "clipPhrase26": "Dale señal a lo auténticamente nuevo.",
+      "clipPhrase27": "La música que hackea el sistema.",
+      "clipPhrase28": "Donde nace la nueva autenticidad sónica.",
+      "clipPhrase29": "Pasión que se compila en música.",
+      "clipPhrase30": "Cada clip, un paquete de datos con alma.",
+
+      'searchProfiles': 'Encuentra perfiles de meditadores, maestros y más',
+      'searchBands': 'Encuentra colectivos para seguir sus pasos',
+      'searchEvents': 'Encuentra eventos cerca de ti',
+      'searchItems': 'Encuentra meditaciones en nuestro catálogo',
+      'searchAny': 'Encuentra perfiles, meditaciones, eventos y más..',
+
+      AppTranslationConstants.searchRecipientProfile: 'Buscar perfil destinatario',
+      AppTranslationConstants.writeProfileName: 'Escribe el nombre del perfil…',
+      AppTranslationConstants.noResults: 'Sin resultados',
+      AppTranslationConstants.oneMonthFreeCouponDesc: 'Cupón para obtener un mes de suscripción gratis',
+      AppTranslationConstants.potentialConflict: 'Posible conflicto',
+      AppTranslationConstants.suggestedCouponCode: 'Código de cupón sugerido',
+      AppTranslationConstants.similarProfileExists: 'Existe un perfil similar con un código parecido.',
+      AppTranslationConstants.keepCode: 'Mantener código',
+      AppTranslationConstants.changeManually: 'Cambiar manualmente',
+      AppTranslationConstants.validationError: 'Error de validación',
+      AppTranslationConstants.fillRequiredFields: 'Por favor, completa los campos obligatorios.',
+      AppTranslationConstants.error: 'Error',
+      AppTranslationConstants.somethingWentWrong: 'Algo salió mal. Inténtalo de nuevo.',
+      AppTranslationConstants.couponAlreadyUsed: 'El cupón ya ha sido utilizado por este email',
+      AppTranslationConstants.testPeriod: 'Periodo de prueba',
+      AppTranslationConstants.top10nupale: 'Top 10 Meditaciones Más Escuchadas',
+      AppTranslationConstants.nupaleAnalytics: 'Informes CASETE',
+      AppTranslationConstants.readingSessions: 'Sesiones de escucha',
+      AppTranslationConstants.reportsAndAnalytics: 'Informes y Analíticas',
+      AppTranslationConstants.plan: 'Plan',
+
+      ///Nombres de planes
+      AppTranslationConstants.freemium: 'Gratuito',
+      AppTranslationConstants.freeMonth: 'Mes Gratis',
+      AppTranslationConstants.basic: 'Cyberneom',
+      AppTranslationConstants.student: 'Estudiante',
+      AppTranslationConstants.family: 'Familiar',
+      AppTranslationConstants.connect: 'Conecta',
+      AppTranslationConstants.creator: 'Lánzate',
+      AppTranslationConstants.ambassador: 'Embajador',
+      AppTranslationConstants.artist: 'Artista',
+      AppTranslationConstants.professional: 'Profesional',
+      AppTranslationConstants.premium: 'Premium',
+      AppTranslationConstants.publish: 'Grábate',
+      AppTranslationConstants.platinum: 'Platino',
+
+      AppTranslationConstants.coupon: 'cupón',
+      AppTranslationConstants.verified: 'verificado',
+      AppTranslationConstants.appMember: 'Miembro Cyberneom',
+      AppTranslationConstants.walletNotActive: 'Tu cartera no está activa.',
+      AppTranslationConstants.contactSupportForActivation: 'Por favor, contacta a soporte para más información.\n\nsoporte@cyberneom.xyz',
+
   };
 
 }
