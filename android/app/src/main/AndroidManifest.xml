@@ -4,11 +4,13 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
 
    <application
        android:label="@string/app_name"
@@ -16,7 +18,8 @@
        android:usesCleartextTraffic="true"
        android:requestLegacyExternalStorage="true">
 
-       <receiver android:name="NeomMusicWidget"
+       <receiver
+           android:name="NeomMusicWidget"
            android:exported="true">
            <intent-filter>
                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -55,54 +58,30 @@
 
            <intent-filter android:autoVerify="true">
                <action android:name="android.intent.action.VIEW" />
-
                <category android:name="android.intent.category.DEFAULT" />
                <category android:name="android.intent.category.BROWSABLE" />
-
                <data android:scheme="cyberneom" />
            </intent-filter>
+
            <intent-filter android:autoVerify="true">
                <action android:name="android.intent.action.VIEW" />
-
                <category android:name="android.intent.category.DEFAULT" />
                <category android:name="android.intent.category.BROWSABLE" />
-
-               <data
-                   android:host="cyberneom"
+               <data android:host="cyberneom"
                    android:pathPrefix="/play"
                    android:scheme="app" />
            </intent-filter>
-<!--           <intent-filter android:autoVerify="true">-->
-<!--               <action android:name="android.intent.action.VIEW" />-->
 
-<!--               <category android:name="android.intent.category.BROWSABLE" />-->
-<!--               <category android:name="android.intent.category.DEFAULT" />-->
-
-<!--               <data android:scheme="https" />-->
-<!--               <data android:host="*spotify.com" />-->
-<!--           </intent-filter>-->
-<!--           <intent-filter android:autoVerify="true">-->
-<!--               <action android:name="android.intent.action.VIEW" />-->
-
-<!--               <category android:name="android.intent.category.BROWSABLE" />-->
-<!--               <category android:name="android.intent.category.DEFAULT" />-->
-
-<!--               <data android:scheme="https" />-->
-<!--               <data android:host="*youtube.com" />-->
-<!--           </intent-filter>-->
            <intent-filter>
                <action android:name="android.intent.action.GET_CONTENT" />
-
                <category android:name="android.intent.category.DEFAULT" />
-
                <data android:mimeType="audio/*" />
            </intent-filter>
+
            <intent-filter>
                <action android:name="android.intent.action.VIEW" />
-
                <category android:name="android.intent.category.DEFAULT" />
                <category android:name="android.intent.category.BROWSABLE" />
-
                <data android:scheme="" />
                <data android:scheme="file" />
                <data android:scheme="ftp" />
@@ -117,12 +96,11 @@
                <data android:mimeType="application/x-ogg" />
                <data android:mimeType="application/itunes" />
            </intent-filter>
+
            <intent-filter>
                <action android:name="android.intent.action.VIEW" />
-
                <category android:name="android.intent.category.DEFAULT" />
                <category android:name="android.intent.category.BROWSABLE" />
-
                <data android:scheme="" />
                <data android:scheme="file" />
                <data android:scheme="ftp" />
@@ -143,27 +121,25 @@
                <data android:pathPattern=".*\\.OPUS" />
                <data android:pathPattern=".*\\.WAV" />
            </intent-filter>
+
            <intent-filter>
                <action android:name="android.intent.action.SEND" />
-
                <category android:name="android.intent.category.DEFAULT" />
-
                <data android:mimeType="text/plain" />
            </intent-filter>
+
            <intent-filter>
                <action android:name="android.intent.action.SEND" />
-
                <category android:name="android.intent.category.DEFAULT" />
-
                <data android:mimeType="application/json" />
            </intent-filter>
+
            <intent-filter>
                <action android:name="android.intent.action.SEND_MULTIPLE" />
-
                <category android:name="android.intent.category.DEFAULT" />
-
                <data android:mimeType="application/json" />
            </intent-filter>
+
            <intent-filter>
                <action android:name="android.intent.action.VIEW" />
                <category android:name="android.intent.category.DEFAULT" />
@@ -176,6 +152,7 @@
                <data android:host="*" />
                <data android:pathPattern=".*\\.json" />
            </intent-filter>
+
            <intent-filter>
                <action android:name="es.antonborri.home_widget.action.LAUNCH" />
            </intent-filter>
@@ -188,18 +165,11 @@
        <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID"
            android:value="ca-app-pub-9248844542810621~4699252247"/>
 
-       <activity android:name="com.facebook.CustomTabActivity"
-           android:exported="true">
-           <intent-filter>
-               <action android:name="android.intent.action.VIEW" />
-               <category android:name="android.intent.category.DEFAULT" />
-               <category android:name="android.intent.category.BROWSABLE" />
-           </intent-filter>
-       </activity>
        <activity
            android:name="com.yalantis.ucrop.UCropActivity"
            android:screenOrientation="portrait"
            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
        <meta-data android:name="com.google.android.geo.API_KEY"
            android:value="AIzaSyCr2yQKePG9aW6q3U9u2yDG4iFQxKvuHRE"/>
 
@@ -230,5 +200,4 @@
            android:permission="android.permission.BIND_JOB_SERVICE" android:exported="true"/>
 
     </application>
-
 </manifest>

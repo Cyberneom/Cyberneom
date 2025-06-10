@@ -1,10 +1,14 @@
 dependency_overrides:
   neom_admin:
     path: ../neom_admin
+  neom_audio_player:
+    path: ../neom_audio_player
   neom_bands:
     path: ../neom_bands
   neom_booking:
     path: ../neom_booking
+  neom_calendar:
+    path: ../neom_calendar
   neom_commons:
     path: ../neom_commons
   neom_commerce:
@@ -21,8 +25,10 @@ dependency_overrides:
     path: ../neom_itemlists
   neom_jobs:
     path: ../neom_jobs
-  neom_audio_player:
-    path: ../neom_audio_player
+  neom_media_player:
+    path: ../neom_media_player
+  neom_notifications:
+    path: ../neom_notifications
   neom_onboarding:
     path: ../neom_onboarding
   neom_posts:
@@ -31,9 +37,15 @@ dependency_overrides:
     path: ../neom_profile
   neom_requests:
     path: ../neom_requests
+  neom_releases:
+    path: ../neom_releases
+  neom_search:
+    path: ../neom_search
   neom_timeline:
     path: ../neom_timeline
+  intl: ^0.20.2 # Forzar la versión de intl
+
   neom_generator:
     path: ../neom_generator
-  neom_calendar:
-    path: ../neom_calendar
+  neom_frequencies:
+    path: ../neom_frequencies

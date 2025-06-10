@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Users/serzen/src/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/serzen/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/serzen/codebase_flutter/Cyberneom/android/app/.cxx/Debug/3h4r5ak6/x86_64",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/serzen/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/serzen/codebase_flutter/Cyberneom/android/app/.cxx/Debug/3h4r5ak6/x86_64",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}

@@ -2,7 +2,7 @@ name: cyberneom
 description: Guided meditation with your own voice
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.4.0+18
+version: 1.5.0+19
 
 environment:
   sdk: ">=3.4.0 <4.0.0"
@@ -12,91 +12,105 @@ dependencies:
   flutter:
     sdk: flutter
 
-  neom_commons:
+  flutter_localizations:
+    sdk: flutter
+
+  neom_admin:
     git:
-      url: git@github.com:Cyberneom/neom_commons.git
-  neom_events:
+      url: git@github.com:Cyberneom/neom_admin.git
+  neom_audio_player:
     git:
-      url: git@github.com:Cyberneom/neom_events.git
-  neom_frequencies:
-    git:
-      url: https://github.com/Cyberneom/neom_frequencies.git
-  neom_generator:
-    git:
-      url: https://github.com/Cyberneom/neom_generator.git
-  neom_home:
-    git:
-      url: git@github.com:Cyberneom/neom_home.git
-  neom_timeline:
-    git:
-      url: git@github.com:Cyberneom/neom_timeline.git
-  neom_posts:
-    git:
-      url: git@github.com:Cyberneom/neom_posts.git
-  neom_profile:
-    git:
-      url: git@github.com:Cyberneom/neom_profile.git
+      url: https://github.com/Cyberneom/neom_audio_player.git
   neom_bands:
     git:
       url: git@github.com:emmanuel-montoya/neom_bands.git
+  neom_booking:
+    git:
+      url: git@github.com:emmanuel-montoya/neom_booking.git
+  neom_calendar:
+    git:
+      url: git@github.com:Cyberneom/neom_calendar.git
+  neom_commons:
+    git:
+      url: git@github.com:Cyberneom/neom_commons.git
+  neom_commerce:
+    git:
+      url: git@github.com:emmanuel-montoya/neom_commerce.git
+  neom_events:
+    git:
+      url: git@github.com:Cyberneom/neom_events.git
+  neom_home:
+    git:
+      url: git@github.com:Cyberneom/neom_home.git
+  neom_inbox:
+    git:
+      url: git@github.com:Cyberneom/neom_inbox.git
   neom_instruments:
     git:
       url: git@github.com:Cyberneom/neom_instruments.git
   neom_itemlists:
     git:
       url: git@github.com:Cyberneom/neom_itemlists.git
-  neom_inbox:
+  neom_jobs:
     git:
-      url: git@github.com:Cyberneom/neom_inbox.git
-  neom_onboarding:
+      url: https://github.com/emmanuel-montoya/neom_jobs.git
+  neom_media_player:
     git:
-      url: git@github.com:Cyberneom/neom_onboarding.git
-  neom_admin:
-    git:
-      url: git@github.com:Cyberneom/neom_admin.git
-  neom_requests:
-    git:
-      url: git@github.com:Cyberneom/neom_requests.git
+      url: https://github.com/Cyberneom/neom_media_player.git
   neom_notifications:
     git:
       url: git@github.com:Cyberneom/neom_notifications.git
-  neom_calendar:
+  neom_onboarding:
     git:
-      url: git@github.com:Cyberneom/neom_calendar.git
-  neom_jobs:
+      url: git@github.com:Cyberneom/neom_onboarding.git
+  neom_posts:
     git:
-      url: git@github.com:emmanuel-montoya/neom_jobs.git
-  neom_booking:
+      url: git@github.com:Cyberneom/neom_posts.git
+  neom_profile:
     git:
-      url: git@github.com:emmanuel-montoya/neom_booking.git
-  neom_commerce:
+      url: git@github.com:Cyberneom/neom_profile.git
+  neom_releases:
     git:
-      url: git@github.com:emmanuel-montoya/neom_commerce.git
-  neom_audio_player:
+      url: https://github.com/Cyberneom/neom_releases.git
+  neom_requests:
     git:
-      url: https://github.com/Cyberneom/neom_audio_player.git
-  flutter_launcher_icons: ^0.13.1
-  surround_frequency_generator: ^1.0.0
+      url: git@github.com:Cyberneom/neom_requests.git
+  neom_search:
+    git:
+      url: https://github.com/Cyberneom/neom_search.git
+  neom_timeline:
+    git:
+      url: git@github.com:Cyberneom/neom_timeline.git
+
+  neom_frequencies:
+    git:
+      url: https://github.com/Cyberneom/neom_frequencies.git
+  neom_generator:
+    git:
+      url: https://github.com/Cyberneom/neom_generator.git
+
+#  surround_frequency_generator: ^1.0.0
 
   #USED FOR NeomMusicWidget.kt
-  home_widget: ^0.3.0
+  home_widget: ^0.8.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^4.0.0
-  build_runner: ^2.1.11
-  dependency_validator: ^3.2.0
+  flutter_lints: ^5.0.0
+  dependency_validator: ^5.0.2
+  flutter_launcher_icons: ^0.14.3
 
 flutter_test:
   sdk: flutter
 
-flutter_icons:
-  image_path: assets/appIcon.png
+flutter_launcher_icons:
+  image_path: "assets/appIcon.png"
   android: true
   ios: true
-  adaptive_icon_foreground: "assets/appIcon.png"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/icon/icon_foreground.png"
 
 flutter:
   uses-material-design: true
@@ -122,13 +136,13 @@ flutter:
     - assets/images/
     - assets/images/directory/
     - assets/images/events/
-    - assets/images/rating/
-    - assets/images/release_upload/
+    - assets/event_activities/
     - assets/images/music_player/
     - assets/images/music_player/xtras/
+    - assets/images/rating/
+    - assets/images/release_upload/
     - assets/logos/
     - assets/logos/third-party/
     - assets/sounds/
-    - assets/event_activities/
     - assets/properties.json
     - assets/frequencies.json
