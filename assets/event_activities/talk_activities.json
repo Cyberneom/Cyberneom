@@ -1,0 +1,102 @@
+[
+	{
+		"name": "Panel: Neurociencia de la Meditación",
+		"description": "Un debate entre neurocientíficos y meditadores expertos sobre los cambios estructurales en el cerebro (neuroplasticidad) provocados por la práctica sostenida del silencio y la atención plena."
+	},
+	{
+		"name": "Conferencia: Biohacking y Longevidad",
+		"description": "Exploración de las últimas tecnologías y suplementos nootrópicos diseñados para optimizar la biología humana, extender la vida útil y mejorar el rendimiento cognitivo."
+	},
+	{
+		"name": "Coloquio: La Física de la Consciencia",
+		"description": "Diálogo sobre las teorías cuánticas de la mente (Orch-OR), explorando si la consciencia es un producto del cerebro o una propiedad fundamental del universo."
+	},
+	{
+		"name": "Charla: Frecuencias Binaurales y Arrastre Cerebral",
+		"description": "Análisis técnico de cómo los tonos isocrónicos y binaurales pueden inducir estados alterados de consciencia, sueño profundo y ultra-concentración."
+	},
+	{
+		"name": "Mesa Redonda: IA y Espiritualidad",
+		"description": "Debate sobre el surgimiento de la Inteligencia Artificial General y sus implicaciones éticas y espirituales. ¿Pueden las máquinas desarrollar consciencia o alma?"
+	},
+	{
+		"name": "Conferencia: El Eje Intestino-Cerebro",
+		"description": "Una mirada profunda a cómo el microbioma influye en la intuición, el estado de ánimo y la claridad mental, uniendo la nutrición con la salud psíquica."
+	},
+	{
+		"name": "Charla: Epigenética y Trauma Transgeneracional",
+		"description": "Cómo las experiencias de nuestros ancestros marcan nuestro ADN y cómo las prácticas de consciencia pueden 'apagar' marcadores genéticos de estrés."
+	},
+	{
+		"name": "Coloquio: Psicodélicos y Terapia Asistida",
+		"description": "Discusión sobre el renacimiento clínico de los enteógenos (psilocibina, MDMA) para el tratamiento de la depresión, el TEPT y la expansión de la consciencia."
+	},
+	{
+		"name": "Panel: Tecnología de Sueños Lúcidos",
+		"description": "Exploración de dispositivos (máscaras de luz, EEG) y técnicas milenarias para inducir la lucidez onírica y utilizar el sueño como laboratorio de realidad virtual."
+	},
+	{
+		"name": "Conferencia: Geometría Sagrada en la Naturaleza",
+		"description": "Análisis de los patrones matemáticos (Fibonacci, Proporción Áurea) que estructuran desde el ADN hasta las galaxias, y su relación con la armonía visual y sonora."
+	},
+	{
+		"name": "Charla: Coherencia Cardíaca",
+		"description": "La ciencia detrás de la sincronización entre el corazón y el cerebro. Técnicas de biofeedback para gestionar el estrés y acceder a la intuición inteligente."
+	},
+	{
+		"name": "Coloquio: Realidad Virtual (VR) Terapéutica",
+		"description": "Cómo los entornos inmersivos digitales se están utilizando para tratar fobias, gestionar el dolor crónico e inducir estados meditativos profundos."
+	},
+	{
+		"name": "Mesa de Diálogo: Transhumanismo vs. Evolución Consciente",
+		"description": "Un debate filosófico sobre el futuro de la humanidad: ¿fusión con la máquina (Cyborg) o evolución de las capacidades biológicas latentes?"
+	},
+	{
+		"name": "Conferencia: La Ciencia del Sonido (Cimática)",
+		"description": "Demostración visual de cómo las frecuencias sonoras organizan la materia física, validando antiguas tradiciones sobre el poder creador del sonido."
+	},
+	{
+		"name": "Charla: Desintoxicación Digital y Dopamina",
+		"description": "Estrategias neurobiológicas para recuperar la capacidad de atención y el bienestar mental en un mundo hiperconectado y saturado de estímulos."
+	},
+	{
+		"name": "Coloquio: Registros Akáshicos y Campo Cuántico",
+		"description": "Convergiendo la mística antigua con la teoría del campo de punto cero. ¿Existe una base de datos universal de información accesible para la mente humana?"
+	},
+	{
+		"name": "Panel: Agricultura Vibracional",
+		"description": "Cómo el sonido, el magnetismo y la intención afectan el crecimiento de las plantas y la calidad de los alimentos que consumimos."
+	},
+	{
+		"name": "Conferencia: El Poder del Nervio Vago",
+		"description": "Técnicas para estimular el nervio vago y activar el sistema nervioso parasimpático, clave para la relajación, la digestión y la recuperación."
+	},
+	{
+		"name": "Charla: Arquitectura Neuro-Consciente",
+		"description": "Cómo el diseño de nuestros espacios (luz, forma, acústica) impacta directamente en nuestra neuroquímica y bienestar espiritual."
+	},
+	{
+		"name": "Coloquio: Telepatía y Tecnología BCI",
+		"description": "El estado actual de las Interfaces Cerebro-Computadora (Brain-Computer Interfaces) y el futuro de la comunicación directa mente a mente."
+	},
+	{
+		"name": "Mesa Redonda: Astrología y Datos Masivos (Big Data)",
+		"description": "Análisis de correlaciones estadísticas entre ciclos planetarios y eventos históricos o patrones de comportamiento humano a gran escala."
+	},
+	{
+		"name": "Conferencia: Respiración Holotrópica y DMT Endógeno",
+		"description": "Exploración de cómo ciertas técnicas de respiración pueden liberar moléculas psicoactivas naturales en el cerebro para inducir visiones y sanación."
+	},
+	{
+		"name": "Charla: El Futuro de la Medicina Energética",
+		"description": "Discusión sobre tecnologías emergentes (PEMF, Bioresonancia) que tratan el cuerpo como un campo electromagnético en lugar de solo bioquímico."
+	},
+	{
+		"name": "Coloquio: Mitos Modernos y Narrativa Personal",
+		"description": "Cómo las historias que nos contamos a nosotros mismos (neuro-narrativa) moldean nuestra realidad biológica y nuestro destino."
+	},
+	{
+		"name": "Panel: Educación para la Nueva Era",
+		"description": "Propuestas pedagógicas que integran la inteligencia emocional, el mindfulness y el pensamiento sistémico en la formación de las nuevas generaciones."
+	}
+]

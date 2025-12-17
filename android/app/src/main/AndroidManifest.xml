@@ -12,192 +12,188 @@
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
 
-   <application
-       android:label="@string/app_name"
-       android:icon="@mipmap/ic_launcher"
-       android:usesCleartextTraffic="true"
-       android:requestLegacyExternalStorage="true">
+    <application
+        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true"
+        android:enableOnBackInvokedCallback="true">
 
-       <receiver
-           android:name="NeomMusicWidget"
-           android:exported="true">
-           <intent-filter>
-               <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-           </intent-filter>
+        <receiver
+            android:name="NeomMusicWidget"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
 
-           <meta-data
-               android:name="android.appwidget.provider"
-               android:resource="@xml/neom_music_widget_info" />
-       </receiver>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/neom_music_widget_info" />
+        </receiver>
 
-       <activity
-           android:name="com.ryanheise.audioservice.AudioServiceActivity"
-           android:exported="true"
-           android:theme="@style/LaunchTheme"
-           android:windowSoftInputMode="adjustResize">
-           <meta-data
-               android:name="io.flutter.embedding.android.NormalTheme"
-               android:resource="@style/NormalTheme" />
-           <meta-data
-               android:name="io.flutter.embedding.android.SplashScreenDrawable"
-               android:resource="@drawable/launch_background" />
+        <activity
+            android:name="com.ryanheise.audioservice.AudioServiceActivity"
+            android:exported="true"
+            android:theme="@style/LaunchTheme"
+            android:windowSoftInputMode="adjustResize">
+            <meta-data
+                android:name="io.flutter.embedding.android.NormalTheme"
+                android:resource="@style/NormalTheme" />
+            <meta-data
+                android:name="io.flutter.embedding.android.SplashScreenDrawable"
+                android:resource="@drawable/launch_background" />
 
-           <!-- Deep Link -> -->
-           <meta-data
-               android:name="flutter_deeplinking_enabled"
-               android:value="true" />
+            <meta-data
+                android:name="flutter_deeplinking_enabled"
+                android:value="true" />
 
-           <intent-filter>
-               <action android:name="android.intent.action.MAIN" />
-               <action android:name="android.intent.action.MUSIC_PLAYER" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MUSIC_PLAYER" />
 
-               <category android:name="android.intent.category.LAUNCHER" />
-               <category android:name="android.intent.category.APP_MUSIC" />
-               <category android:name="android.intent.category.DEFAULT" />
-           </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.APP_MUSIC" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
 
-           <intent-filter android:autoVerify="true">
-               <action android:name="android.intent.action.VIEW" />
-               <category android:name="android.intent.category.DEFAULT" />
-               <category android:name="android.intent.category.BROWSABLE" />
-               <data android:scheme="cyberneom" />
-           </intent-filter>
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="cyberneom" />
+            </intent-filter>
 
-           <intent-filter android:autoVerify="true">
-               <action android:name="android.intent.action.VIEW" />
-               <category android:name="android.intent.category.DEFAULT" />
-               <category android:name="android.intent.category.BROWSABLE" />
-               <data android:host="cyberneom"
-                   android:pathPrefix="/play"
-                   android:scheme="app" />
-           </intent-filter>
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:host="cyberneom"
+                    android:pathPrefix="/play"
+                    android:scheme="app" />
+            </intent-filter>
 
-           <intent-filter>
-               <action android:name="android.intent.action.GET_CONTENT" />
-               <category android:name="android.intent.category.DEFAULT" />
-               <data android:mimeType="audio/*" />
-           </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.GET_CONTENT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="audio/*" />
+            </intent-filter>
 
-           <intent-filter>
-               <action android:name="android.intent.action.VIEW" />
-               <category android:name="android.intent.category.DEFAULT" />
-               <category android:name="android.intent.category.BROWSABLE" />
-               <data android:scheme="" />
-               <data android:scheme="file" />
-               <data android:scheme="ftp" />
-               <data android:scheme="ftps" />
-               <data android:scheme="sftp" />
-               <data android:scheme="content" />
-               <data android:scheme="http" />
-               <data android:scheme="https" />
-               <data android:scheme="smb" />
-               <data android:mimeType="audio/*" />
-               <data android:mimeType="application/ogg" />
-               <data android:mimeType="application/x-ogg" />
-               <data android:mimeType="application/itunes" />
-           </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="" />
+                <data android:scheme="file" />
+                <data android:scheme="ftp" />
+                <data android:scheme="ftps" />
+                <data android:scheme="sftp" />
+                <data android:scheme="content" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:scheme="smb" />
+                <data android:mimeType="audio/*" />
+                <data android:mimeType="application/ogg" />
+                <data android:mimeType="application/x-ogg" />
+                <data android:mimeType="application/itunes" />
+            </intent-filter>
 
-           <intent-filter>
-               <action android:name="android.intent.action.VIEW" />
-               <category android:name="android.intent.category.DEFAULT" />
-               <category android:name="android.intent.category.BROWSABLE" />
-               <data android:scheme="" />
-               <data android:scheme="file" />
-               <data android:scheme="ftp" />
-               <data android:scheme="content" />
-               <data android:scheme="http" />
-               <data android:scheme="https" />
-               <data android:host="*" />
-               <data android:pathPattern=".*\\.aac" />
-               <data android:pathPattern=".*\\.flac" />
-               <data android:pathPattern=".*\\.mp3" />
-               <data android:pathPattern=".*\\.ogg" />
-               <data android:pathPattern=".*\\.opus" />
-               <data android:pathPattern=".*\\.wav" />
-               <data android:pathPattern=".*\\.AAC" />
-               <data android:pathPattern=".*\\.FLAC" />
-               <data android:pathPattern=".*\\.MP3" />
-               <data android:pathPattern=".*\\.OGG" />
-               <data android:pathPattern=".*\\.OPUS" />
-               <data android:pathPattern=".*\\.WAV" />
-           </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="" />
+                <data android:scheme="file" />
+                <data android:scheme="ftp" />
+                <data android:scheme="content" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:host="*" />
+                <data android:pathPattern=".*\\.aac" />
+                <data android:pathPattern=".*\\.flac" />
+                <data android:pathPattern=".*\\.mp3" />
+                <data android:pathPattern=".*\\.ogg" />
+                <data android:pathPattern=".*\\.opus" />
+                <data android:pathPattern=".*\\.wav" />
+                <data android:pathPattern=".*\\.AAC" />
+                <data android:pathPattern=".*\\.FLAC" />
+                <data android:pathPattern=".*\\.MP3" />
+                <data android:pathPattern=".*\\.OGG" />
+                <data android:pathPattern=".*\\.OPUS" />
+                <data android:pathPattern=".*\\.WAV" />
+            </intent-filter>
 
-           <intent-filter>
-               <action android:name="android.intent.action.SEND" />
-               <category android:name="android.intent.category.DEFAULT" />
-               <data android:mimeType="text/plain" />
-           </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
 
-           <intent-filter>
-               <action android:name="android.intent.action.SEND" />
-               <category android:name="android.intent.category.DEFAULT" />
-               <data android:mimeType="application/json" />
-           </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/json" />
+            </intent-filter>
 
-           <intent-filter>
-               <action android:name="android.intent.action.SEND_MULTIPLE" />
-               <category android:name="android.intent.category.DEFAULT" />
-               <data android:mimeType="application/json" />
-           </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/json" />
+            </intent-filter>
 
-           <intent-filter>
-               <action android:name="android.intent.action.VIEW" />
-               <category android:name="android.intent.category.DEFAULT" />
-               <category android:name="android.intent.category.BROWSABLE" />
-               <data android:scheme="" />
-               <data android:scheme="http" />
-               <data android:scheme="https" />
-               <data android:scheme="file" />
-               <data android:scheme="content" />
-               <data android:host="*" />
-               <data android:pathPattern=".*\\.json" />
-           </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:scheme="file" />
+                <data android:scheme="content" />
+                <data android:host="*" />
+                <data android:pathPattern=".*\\.json" />
+            </intent-filter>
 
-           <intent-filter>
-               <action android:name="es.antonborri.home_widget.action.LAUNCH" />
-           </intent-filter>
-       </activity>
+            <intent-filter>
+                <action android:name="es.antonborri.home_widget.action.LAUNCH" />
+            </intent-filter>
+        </activity>
 
-       <!-- This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data android:name="flutterEmbedding" android:value="2" />
 
-       <!--This is necessary as part of AdMob and Google Ads -->
-       <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID"
-           android:value="ca-app-pub-9248844542810621~4699252247"/>
+        <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-9248844542810621~4699252247"/>
 
-       <activity
-           android:name="com.yalantis.ucrop.UCropActivity"
-           android:screenOrientation="portrait"
-           android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
-       <meta-data android:name="com.google.android.geo.API_KEY"
-           android:value="AIzaSyCr2yQKePG9aW6q3U9u2yDG4iFQxKvuHRE"/>
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyD1PMBCBEeoHW9dKD1-ZOiYQSarNUPJOmE"/>
 
-       <service
-           android:name="com.ryanheise.audioservice.AudioService"
-           android:exported="true">
-           <intent-filter>
-               <action android:name="android.media.browse.MediaBrowserService" />
-           </intent-filter>
-       </service>
+        <service
+            android:name="com.ryanheise.audioservice.AudioService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+        </service>
 
-       <receiver
-           android:name="com.ryanheise.audioservice.MediaButtonReceiver"
-           android:exported="true">
-           <intent-filter>
-               <action android:name="android.intent.action.MEDIA_BUTTON" />
-           </intent-filter>
-       </receiver>
+        <receiver
+            android:name="com.ryanheise.audioservice.MediaButtonReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
 
-       <!-- Used for Background Work -->
-       <receiver android:name="es.antonborri.home_widget.HomeWidgetBackgroundReceiver"
-           android:exported="true">
-           <intent-filter>
-               <action android:name="es.antonborri.home_widget.action.BACKGROUND" />
-           </intent-filter>
-       </receiver>
-       <service android:name="es.antonborri.home_widget.HomeWidgetBackgroundService"
-           android:permission="android.permission.BIND_JOB_SERVICE" android:exported="true"/>
+        <receiver android:name="es.antonborri.home_widget.HomeWidgetBackgroundReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="es.antonborri.home_widget.action.BACKGROUND" />
+            </intent-filter>
+        </receiver>
+        <service android:name="es.antonborri.home_widget.HomeWidgetBackgroundService"
+            android:permission="android.permission.BIND_JOB_SERVICE" android:exported="true"/>
 
     </application>
 </manifest>

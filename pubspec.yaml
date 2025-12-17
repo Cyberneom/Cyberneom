@@ -2,46 +2,58 @@ name: cyberneom
 description: Guided meditation with your own voice
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.5.0+19
+version: 2.0.0+22 # Incrementé un número el build por buena práctica
 
 environment:
-  sdk: ">=3.4.0 <4.0.0"
+  sdk: ">=3.8.0 <4.0.0"
   flutter: ">=3.19.0"
 
 dependencies:
   flutter:
     sdk: flutter
-
   flutter_localizations:
     sdk: flutter
 
+  # --- Core Modules ---
   neom_admin:
     git:
       url: git@github.com:Cyberneom/neom_admin.git
+  neom_analytics:
+    git:
+      url: git@github.com:Cyberneom/neom_analytics.git
   neom_audio_player:
     git:
       url: https://github.com/Cyberneom/neom_audio_player.git
-  neom_bands:
+  neom_auth:
     git:
-      url: git@github.com:emmanuel-montoya/neom_bands.git
-  neom_booking:
+      url: https://github.com/Cyberneom/neom_auth.git
+  neom_bank:
     git:
-      url: git@github.com:emmanuel-montoya/neom_booking.git
+      url: git@github.com:Cyberneom/neom_bank.git
   neom_calendar:
     git:
       url: git@github.com:Cyberneom/neom_calendar.git
+  neom_camera:
+    git:
+      url: git@github.com:Cyberneom/neom_camera.git
+  neom_core:
+    git:
+      url: git@github.com:Cyberneom/neom_core.git
   neom_commons:
     git:
       url: git@github.com:Cyberneom/neom_commons.git
-  neom_commerce:
-    git:
-      url: git@github.com:emmanuel-montoya/neom_commerce.git
   neom_events:
     git:
       url: git@github.com:Cyberneom/neom_events.git
+  neom_genres:
+    git:
+      url: git@github.com:Cyberneom/neom_genres.git
   neom_home:
     git:
       url: git@github.com:Cyberneom/neom_home.git
+  neom_image_editor:
+    git:
+      url: git@github.com:Cyberneom/neom_image_editor.git
   neom_inbox:
     git:
       url: git@github.com:Cyberneom/neom_inbox.git
@@ -51,12 +63,15 @@ dependencies:
   neom_itemlists:
     git:
       url: git@github.com:Cyberneom/neom_itemlists.git
-  neom_jobs:
+  neom_mates:
     git:
-      url: https://github.com/emmanuel-montoya/neom_jobs.git
+      url: https://github.com/Cyberneom/neom_mates.git
   neom_media_player:
     git:
       url: https://github.com/Cyberneom/neom_media_player.git
+  neom_media_upload:
+    git:
+      url: https://github.com/Cyberneom/neom_media_upload.git
   neom_notifications:
     git:
       url: git@github.com:Cyberneom/neom_notifications.git
@@ -78,10 +93,40 @@ dependencies:
   neom_search:
     git:
       url: https://github.com/Cyberneom/neom_search.git
+  neom_settings:
+    git:
+      url: https://github.com/Cyberneom/neom_settings.git
+  neom_stripe:
+    git:
+      url: https://github.com/Cyberneom/neom_stripe.git
   neom_timeline:
     git:
       url: git@github.com:Cyberneom/neom_timeline.git
+  neom_woo:
+    git:
+      url: https://github.com/Cyberneom/neom_woo.git
 
+  # --- Shared Modules (Using emmanuel-montoya forks/repos per Gigmeout) ---
+  neom_bands:
+    git:
+      url: git@github.com:emmanuel-montoya/neom_bands.git
+  neom_booking:
+    git:
+      url: git@github.com:emmanuel-montoya/neom_booking.git
+  neom_commerce:
+    git:
+      url: git@github.com:emmanuel-montoya/neom_commerce.git
+  neom_directory:
+    git:
+      url: git@github.com:emmanuel-montoya/neom_directory.git
+  neom_jobs:
+    git:
+      url: https://github.com/emmanuel-montoya/neom_jobs.git
+
+  # --- Cyberneom Specific Modules ---
+  neom_downloads:
+    git:
+      url: git@github.com:Cyberneom/neom_downloads.git
   neom_frequencies:
     git:
       url: https://github.com/Cyberneom/neom_frequencies.git
@@ -89,21 +134,16 @@ dependencies:
     git:
       url: https://github.com/Cyberneom/neom_generator.git
 
-#  surround_frequency_generator: ^1.0.0
-
-  #USED FOR NeomMusicWidget.kt
+  # --- Third Party ---
   home_widget: ^0.8.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
   dependency_validator: ^5.0.2
-  flutter_launcher_icons: ^0.14.3
-
-flutter_test:
-  sdk: flutter
+  flutter_launcher_icons: ^0.14.4
 
 flutter_launcher_icons:
   image_path: "assets/appIcon.png"
@@ -135,7 +175,7 @@ flutter:
     - assets/fonts/
     - assets/images/
     - assets/images/directory/
-    - assets/images/events/
+    - assets/images/eventType/
     - assets/event_activities/
     - assets/images/music_player/
     - assets/images/music_player/xtras/

@@ -1,0 +1,2 @@
+/Users/serzen/codebase_flutter/Cyberneom/android/app/.cxx/RelWithDebInfo/6x868721/x86/CMakeFiles/edit_cache.dir
+/Users/serzen/codebase_flutter/Cyberneom/android/app/.cxx/RelWithDebInfo/6x868721/x86/CMakeFiles/rebuild_cache.dir

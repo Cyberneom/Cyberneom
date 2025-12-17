@@ -1,5 +1,4 @@
 import 'package:cyberneom/localization/app_translations.dart';
-import 'package:cyberneom/neom_constants.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -10,18 +9,18 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:logger/logger.dart';
-import 'package:neom_commons/core/app_flavour.dart';
-import 'package:neom_commons/core/utils/app_color.dart';
-import 'package:neom_commons/core/utils/app_theme.dart';
-import 'package:neom_commons/core/utils/app_utilities.dart';
-import 'package:neom_commons/core/utils/constants/app_locale_constants.dart';
-import 'package:neom_commons/core/utils/constants/app_route_constants.dart';
-import 'package:neom_commons/core/utils/enums/app_in_use.dart';
-import 'package:neom_notifications/notifications/data/implementations/push_notification_service.dart';
+import 'package:neom_commons/app_flavour.dart';
+import 'package:neom_commons/ui/theme/app_color.dart';
+import 'package:neom_commons/ui/theme/app_theme.dart';
+import 'package:neom_core/app_config.dart';
+import 'package:neom_core/app_properties.dart';
+import 'package:neom_core/utils/constants/app_route_constants.dart';
+import 'package:neom_core/utils/enums/app_in_use.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:neom_core/utils/enums/app_locale.dart';
+import 'package:neom_notifications/data/implementations/push_notification_invoker.dart';
 
 import 'app_routes.dart';
-import 'root.dart';
 import 'root_binding.dart';
 
 void main() async {
@@ -37,17 +36,20 @@ void main() async {
 
     await Firebase.initializeApp();
 
-    FirebaseMessaging.onBackgroundMessage(PushNotificationService.backgroundHandler);
+    FirebaseMessaging.onBackgroundMessage(PushNotificationInvoker.backgroundHandler);
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
     if(kDebugMode) {
       // await JobsFirestore().distributeSongmates();
     }
 
-    AppFlavour(inUse: AppInUse.c, version: NeomConstants.version);
+
+    await AppConfig.instance.initialize(app: AppInUse.c);
+    AppProperties();
+    AppFlavour();
     await Hive.initFlutter();
   } catch (e) {
-    AppUtilities.logger.e(e.toString());
+    AppConfig.logger.e(e.toString());
   }
 
   runApp(const MyApp());
@@ -58,7 +60,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    initializeDateFormatting(AppLocaleConstants.es);
+    initializeDateFormatting(AppLocale.spanish.code);
     return GetMaterialApp(
       localeListResolutionCallback: (locales, supportedLocales) {
         for (var locale in locales!) {
@@ -87,7 +89,7 @@ class MyApp extends StatelessWidget {
       ],
       defaultTransition: Transition.upToDown,
       debugShowCheckedModeBanner: false,
-      home: const Root(),
+
       theme: ThemeData(
         brightness: Brightness.dark,
         fontFamily: AppTheme.fontFamily,
