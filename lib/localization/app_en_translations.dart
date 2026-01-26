@@ -5,6 +5,7 @@ import 'package:neom_commons/utils/constants/translations/common_translation_con
 import 'package:neom_commons/utils/constants/translations/message_translation_constants.dart';
 import 'package:neom_frequencies/utils/constants/frequency_translation_constants.dart';
 import 'package:neom_generator/utils/constants/generator_translation_constants.dart';
+import 'package:neom_vr/utils/constants/vr_translation_constants.dart';
 
 class AppEnTranslations {
 
@@ -542,6 +543,10 @@ class AppEnTranslations {
       GeneratorTranslationConstants.neuroharmony: 'Neuroharmony',
       GeneratorTranslationConstants.coherenceMeter: 'Coherence Meter',
       GeneratorTranslationConstants.hemisfericCoherence: 'Hemispheric Coherence',
+      GeneratorTranslationConstants.neuroFlocking: 'Neuro Flocking',
+      GeneratorTranslationConstants.neuroVR360: 'Neuro VR 360',
+      GeneratorTranslationConstants.neuroVR360Stereo: 'Neuro VR Stereo',
+      GeneratorTranslationConstants.neuroBreathing: 'Neuro Breathing',
 
       ///NEOM_FREQUENCIES
       FrequencyTranslationConstants.addFrequency: 'Add frequency',
@@ -1621,6 +1626,10 @@ class AppEnTranslations {
       BankTranslationConstants.walletNotActive: 'Your wallet is not active.',
       BankTranslationConstants.contactSupportForActivation: 'Please contact support for more information.\n\nsupport@cyberneom.xyz',
       AppTranslationConstants.binauralBeat: 'Binaural Beat',
+      GeneratorTranslationConstants.sessionTime: "Session Time",
+
+    VrTranslationConstants.vrHeadsetMode: 'VR Headset Mode',
+    AppTranslationConstants.virtualReality: 'Virtual Reality',
 
   };
 

@@ -51,6 +51,7 @@ import 'package:neom_settings/setting_routes.dart';
 import 'package:neom_stripe/stripe_routes.dart';
 import 'package:neom_timeline/timeline_routes.dart';
 import 'package:neom_timeline/ui/timeline_page.dart';
+import 'package:neom_vr/vr_routes.dart';
 import 'package:neom_woo/woo_routes.dart';
 
 class AppRoutes {
@@ -62,16 +63,21 @@ class AppRoutes {
           page: () => RootPage(
               rootPage: LoginPage(),
               splashPage: SplashPage(),
-              homePage: HomePage(tabs: getDefaultTabs()),
+              homePage: HomePage(
+                tabs: getDefaultTabs(),
+                miniPlayer: MiniPlayer(),
+              ),
               homeService: Get.find<HomeService>(),
-              miniPlayer: MiniPlayer(),
               previousVersionPage: PreviousVersionPage(), onGoingPage: OnGoingPage(),
               showExitConfirmationDialog: AppAlerts.showExitConfirmationDialog),
           transition: Transition.zoom
       ),
       GetPage(
         name: AppRouteConstants.home,
-        page: () => HomePage(tabs: getDefaultTabs()),
+        page: () => HomePage(
+          tabs: getDefaultTabs(),
+          miniPlayer: MiniPlayer(),
+        ),
         transition: Transition.rightToLeftWithFade,
       ),
       GetPage(
@@ -112,6 +118,7 @@ class AppRoutes {
       ...WooRoutes.routes,
       ...FrequencyRoutes.routes,
       ...GeneratorRoutes.routes,
+      ...VrRoutes.routes,
       // ...NUPALERoutes.routes,
       // ...CaseteRoutes.routes,
     ];

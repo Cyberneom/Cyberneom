@@ -5,6 +5,7 @@ import 'package:neom_media_upload/utils/constants/media_upload_translation_const
 import 'package:neom_commons/utils/constants/translations/common_translation_constants.dart';
 import 'package:neom_frequencies/utils/constants/frequency_translation_constants.dart';
 import 'package:neom_generator/utils/constants/generator_translation_constants.dart';
+import 'package:neom_vr/utils/constants/vr_translation_constants.dart';
 
 class AppEsTranslations {
 
@@ -33,6 +34,11 @@ class AppEsTranslations {
       GeneratorTranslationConstants.neuroharmony: 'Neuroarmonía',
       GeneratorTranslationConstants.coherenceMeter: 'Medidor de coherencia',
       GeneratorTranslationConstants.hemisfericCoherence: 'Coherencia hemisférica',
+      GeneratorTranslationConstants.sessionTime: "Tiempo de la sesión",
+      GeneratorTranslationConstants.neuroFlocking: 'Neuro Flocking',
+      GeneratorTranslationConstants.neuroVR360: 'Neuro VR 360',
+      GeneratorTranslationConstants.neuroVR360Stereo: 'Neuro VR Stereo',
+      GeneratorTranslationConstants.neuroBreathing: 'Neuro Respiración',
 
       ///NEOM_FREQUENCIES
       FrequencyTranslationConstants.addFrequency: 'Agregar frecuencia',
@@ -1590,6 +1596,8 @@ class AppEsTranslations {
       'guestsMax': '# Invitados',
       'viewSummary': 'Ver Resumen',
 
+      VrTranslationConstants.vrHeadsetMode: 'Modo VR Headset',
+      AppTranslationConstants.virtualReality: 'Realidad Virtual',
 
   };
 

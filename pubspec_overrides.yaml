@@ -69,6 +69,8 @@ dependency_overrides:
     path: ../neom_stripe
   neom_timeline:
     path: ../neom_timeline
+  neom_vr:
+    path: ../neom_vr
   neom_woo:
     path: ../neom_woo
   intl: ^0.20.2 # Forzar la versión de intl

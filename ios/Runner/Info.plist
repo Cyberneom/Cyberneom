@@ -70,7 +70,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Turning on location service allow us to show relevant content and also to provide news of events happening near your zone.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>As the neom chambers would detect and show the base frequency of the user's voice mic access is needed.</string>
+	<string>Cyberneom uses the microphone to detect the natural frequency of your voice for sound calibration.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>The app gets photos from your library in order to add images to your profile, posts, comments and events.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
