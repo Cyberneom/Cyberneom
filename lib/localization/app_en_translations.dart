@@ -1630,6 +1630,7 @@ class AppEnTranslations {
 
     VrTranslationConstants.vrHeadsetMode: 'VR Headset Mode',
     AppTranslationConstants.virtualReality: 'Virtual Reality',
+    AppTranslationConstants.attention: 'Attention',
 
   };
 

@@ -1593,7 +1593,7 @@ packages:
       path: "../neom_home"
       relative: true
     source: path
-    version: "1.7.4-dev"
+    version: "1.7.5-dev"
   neom_image_editor:
     dependency: "direct main"
     description:

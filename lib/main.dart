@@ -29,20 +29,29 @@ void main() async {
 
   try {
     WidgetsFlutterBinding.ensureInitialized();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown
-    ]);
 
-    await Firebase.initializeApp();
+    // Orientación solo en móvil (no funciona en web)
+    if (!kIsWeb) {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown
+      ]);
+    }
 
-    FirebaseMessaging.onBackgroundMessage(PushNotificationInvoker.backgroundHandler);
-    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+    await Firebase.initializeApp(
+      options: kIsWeb ? getFirebaseOptions() : null,
+    );
+
+    // Background messaging solo en móvil
+    // Crashlytics solo en móvil (no disponible en web)
+    if (!kIsWeb) {
+      FirebaseMessaging.onBackgroundMessage(PushNotificationInvoker.backgroundHandler);
+      FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+    }
 
     if(kDebugMode) {
       // await JobsFirestore().distributeSongmates();
     }
-
 
     await AppConfig.instance.initialize(app: AppInUse.c);
     AppProperties();
@@ -53,6 +62,7 @@ void main() async {
   }
 
   runApp(const MyApp());
+
 }
   
 class MyApp extends StatelessWidget {
@@ -81,8 +91,10 @@ class MyApp extends StatelessWidget {
       binds: RootBinding().dependencies(),
       enableLog: true,
       translations: AppTranslations(),
-      locale: const Locale('es'), // Spanish, Mexico
-      fallbackLocale: const Locale('es'), // Spanish, Mexico
+      locale: const Locale('es'),
+      // Spanish, Mexico
+      fallbackLocale: const Locale('es'),
+      // Spanish, Mexico
       supportedLocales: const [
         Locale('es'), // Spanish, Mexico
         Locale('en'), // English, United States
@@ -94,7 +106,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
         fontFamily: AppTheme.fontFamily,
         timePickerTheme: TimePickerThemeData(
-          backgroundColor: AppColor.getMain()
+            backgroundColor: AppColor.getMain()
         ),
       ),
       initialRoute: AppRouteConstants.root,
@@ -102,4 +114,16 @@ class MyApp extends StatelessWidget {
     );
   }
 
+}
+
+FirebaseOptions getFirebaseOptions() {
+  return const FirebaseOptions(
+    apiKey: 'AIzaSyBjXsAC6AdS4AzjiP3jDUZCVdGls0ixmfA',
+    appId: '1:144129075582:web:1af560c46ccbd0c411eb2f',
+    messagingSenderId: '144129075582',
+    projectId: 'cyberneom-edd2d',
+    authDomain: 'cyberneom-edd2d.firebaseapp.com',
+    storageBucket: 'cyberneom-edd2d.appspot.com',
+    measurementId: 'G-0HP3HHDQ45',
+  );
 }
