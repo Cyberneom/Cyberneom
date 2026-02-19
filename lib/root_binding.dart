@@ -1,4 +1,5 @@
-import 'package:get/get.dart';
+import 'package:sint/sint.dart';
+
 import 'package:neom_analytics/data/firestore/analytics_firestore.dart';
 import 'package:neom_audio_player/audio_player_invoker.dart';
 import 'package:neom_audio_player/data/implementations/audio_lite_player_controller.dart';
@@ -130,7 +131,7 @@ class RootBinding extends Binding {
       Bind.lazyPut(() => PostUploadController(), fenix: true),
       Bind.lazyPut<PostUploadService>(() => Get.find<PostUploadController>(), fenix: true),
       Bind.lazyPut(() => AppCameraController(), fenix: true),
-      Bind.lazyPut<AppCameraService>(() => Get.put(AppCameraController()), fenix: true),
+      Bind.lazyPut<AppCameraService>(() => Get.find<AppCameraController>(), fenix: true),
       Bind.lazyPut(() => ImageEditorController(), fenix: true),
       Bind.lazyPut<ImageEditorService>(() => Get.find<ImageEditorController>(), fenix: true),
       Bind.lazyPut(() => MediaUploadController(), fenix: true),
@@ -139,7 +140,7 @@ class RootBinding extends Binding {
       Bind.lazyPut(() => MediaPlayerController(), fenix: true),
       Bind.lazyPut<MediaPlayerService>(() => Get.find<MediaPlayerController>(), fenix: true),
 
-      Bind.lazyPut<AnalyticsRepository>(() => AnalyticsFirestore()),
+      Bind.lazyPut<AnalyticsRepository>(() => AnalyticsFirestore(), fenix: true),
       Bind.lazyPut<JobRepository>(() => JobFirestore()),
 
       Bind.lazyPut(() => AppDrawerController(), fenix: true),

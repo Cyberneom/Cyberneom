@@ -1,4 +1,5 @@
-import 'package:get/get.dart';
+import 'package:sint/sint.dart';
+
 
 import 'app_en_translations.dart';
 import 'app_es_translations.dart';

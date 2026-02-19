@@ -5,7 +5,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
+import 'package:sint/sint.dart';
+
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:logger/logger.dart';
@@ -66,12 +67,12 @@ void main() async {
 }
   
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting(AppLocale.spanish.code);
-    return GetMaterialApp(
+    return SintMaterialApp(
       localeListResolutionCallback: (locales, supportedLocales) {
         for (var locale in locales!) {
           if (supportedLocales.contains(locale)) {
@@ -110,7 +111,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       initialRoute: AppRouteConstants.root,
-      getPages: AppRoutes.getAppRoutes(),
+      sintPages: AppRoutes.getAppRoutes(),
     );
   }
 

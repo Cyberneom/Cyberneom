@@ -1,6 +1,7 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:sint/sint.dart';
+
 import 'package:neom_admin/admin_routes.dart';
 import 'package:neom_analytics/analytics_routes.dart';
 import 'package:neom_audio_player/audio_player_routes.dart';
@@ -56,9 +57,9 @@ import 'package:neom_woo/woo_routes.dart';
 
 class AppRoutes {
 
-  static List<GetPage> getAppRoutes() {
-    List<GetPage<dynamic>> appRoutes = [
-      GetPage(
+  static List<SintPage> getAppRoutes() {
+    List<SintPage<dynamic>> appRoutes = [
+      SintPage(
           name: AppRouteConstants.root,
           page: () => RootPage(
               rootPage: LoginPage(),

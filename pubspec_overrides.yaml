@@ -1,82 +1,83 @@
 dependency_overrides:
+  sint:
+    path: ../neom_modules/sint
   neom_admin:
-    path: ../neom_admin
+    path: ../neom_modules/neom_admin
   neom_analytics:
-    path: ../neom_analytics
+    path: ../neom_modules/neom_analytics
   neom_audio_player:
-    path: ../neom_audio_player
+    path: ../neom_modules/neom_audio_player
   neom_auth:
-    path: ../neom_auth
+    path: ../neom_modules/neom_auth
   neom_bands:
-    path: ../neom_bands
+    path: ../neom_modules/neom_bands
   neom_bank:
-    path: ../neom_bank
+    path: ../neom_modules/neom_bank
   neom_booking:
-    path: ../neom_booking
+    path: ../neom_modules/neom_booking
   neom_calendar:
-    path: ../neom_calendar
+    path: ../neom_modules/neom_calendar
   neom_camera:
-    path: ../neom_camera
+    path: ../neom_modules/neom_camera
   neom_core:
-    path: ../neom_core
+    path: ../neom_modules/neom_core
   neom_commons:
-    path: ../neom_commons
+    path: ../neom_modules/neom_commons
   neom_commerce:
-    path: ../neom_commerce
+    path: ../neom_modules/neom_commerce
   neom_directory:
-    path: ../neom_directory
+    path: ../neom_modules/neom_directory
   neom_downloads:
-    path: ../neom_downloads
+    path: ../neom_modules/neom_downloads
   neom_events:
-    path: ../neom_events
-  neom_genres:
-    path: ../neom_genres
-  neom_home:
-    path: ../neom_home
-  neom_image_editor:
-    path: ../neom_image_editor
-  neom_inbox:
-    path: ../neom_inbox
-  neom_instruments:
-    path: ../neom_instruments
-  neom_itemlists:
-    path: ../neom_itemlists
-  neom_jobs:
-    path: ../neom_jobs
-  neom_mates:
-    path: ../neom_mates
-  neom_media_player:
-    path: ../neom_media_player
-  neom_media_upload:
-    path: ../neom_media_upload
-  neom_notifications:
-    path: ../neom_notifications
-  neom_onboarding:
-    path: ../neom_onboarding
-  neom_posts:
-    path: ../neom_posts
-  neom_profile:
-    path: ../neom_profile
-  neom_requests:
-    path: ../neom_requests
-  neom_releases:
-    path: ../neom_releases
-  neom_search:
-    path: ../neom_search
-  neom_settings:
-    path: ../neom_settings
-  neom_stripe:
-    path: ../neom_stripe
-  neom_timeline:
-    path: ../neom_timeline
-  neom_vr:
-    path: ../neom_vr
-  neom_woo:
-    path: ../neom_woo
-  intl: ^0.20.2 # Forzar la versión de intl
-  package_info_plus: 9.0.0
-
-  neom_generator:
-    path: ../neom_generator
+    path: ../neom_modules/neom_events
   neom_frequencies:
-    path: ../neom_frequencies
+    path: ../neom_modules/neom_frequencies
+  neom_generator:
+    path: ../neom_modules/neom_generator
+  neom_genres:
+    path: ../neom_modules/neom_genres
+  neom_home:
+    path: ../neom_modules/neom_home
+  neom_image_editor:
+    path: ../neom_modules/neom_image_editor
+  neom_inbox:
+    path: ../neom_modules/neom_inbox
+  neom_instruments:
+    path: ../neom_modules/neom_instruments
+  neom_itemlists:
+    path: ../neom_modules/neom_itemlists
+  neom_jobs:
+    path: ../neom_modules/neom_jobs
+  neom_mates:
+    path: ../neom_modules/neom_mates
+  neom_media_player:
+    path: ../neom_modules/neom_media_player
+  neom_media_upload:
+    path: ../neom_modules/neom_media_upload
+  neom_notifications:
+    path: ../neom_modules/neom_notifications
+  neom_onboarding:
+    path: ../neom_modules/neom_onboarding
+  neom_posts:
+    path: ../neom_modules/neom_posts
+  neom_profile:
+    path: ../neom_modules/neom_profile
+  neom_requests:
+    path: ../neom_modules/neom_requests
+  neom_releases:
+    path: ../neom_modules/neom_releases
+  neom_search:
+    path: ../neom_modules/neom_search
+  neom_settings:
+    path: ../neom_modules/neom_settings
+  neom_stripe:
+    path: ../neom_modules/neom_stripe
+  neom_timeline:
+    path: ../neom_modules/neom_timeline
+  neom_vr:
+    path: ../neom_modules/neom_vr
+  neom_woo:
+    path: ../neom_modules/neom_woo
+  #intl: ^0.20.2 # Forzar la versión de int
+  #package_info_plus: 9.0.0

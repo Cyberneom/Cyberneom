@@ -205,10 +205,10 @@ packages:
     dependency: transitive
     description:
       name: camera_android_camerax
-      sha256: bc7a96998258adddd0b653dd693b0874537707d58b0489708f2a646e4f124246
+      sha256: "1abae0a9853401ee875d7f99e9ec5083335f0aab6edf6eb9a219756143a1b3a8"
       url: "https://pub.dev"
     source: hosted
-    version: "0.6.27"
+    version: "0.6.29"
   camera_avfoundation:
     dependency: transitive
     description:
@@ -341,10 +341,10 @@ packages:
     dependency: transitive
     description:
       name: cross_file
-      sha256: "701dcfc06da0882883a2657c445103380e53e647060ad8d9dfb710c100996608"
+      sha256: "28bb3ae56f117b5aec029d702a90f57d285cd975c3c5c281eaca38dbc47c5937"
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.5+1"
+    version: "0.3.5+2"
   crypto:
     dependency: transitive
     description:
@@ -429,10 +429,10 @@ packages:
     dependency: transitive
     description:
       name: file_picker
-      sha256: d974b6ba2606371ac71dd94254beefb6fa81185bde0b59bdc1df09885da85fde
+      sha256: "57d9a1dd5063f85fa3107fb42d1faffda52fdc948cefd5fe5ea85267a5fc7343"
       url: "https://pub.dev"
     source: hosted
-    version: "10.3.8"
+    version: "10.3.10"
   file_selector_linux:
     dependency: transitive
     description:
@@ -1017,10 +1017,10 @@ packages:
     dependency: transitive
     description:
       name: google_maps_flutter_android
-      sha256: "6dbbfc697eedd29c3634affb2d6b3e5ecfc4e6e50c8345f4b975cc969c74b582"
+      sha256: "98d7f5354f770f3e993db09fc798d40aeb6a254f04c1c468a94818ec2086e83e"
       url: "https://pub.dev"
     source: hosted
-    version: "2.18.9"
+    version: "2.18.12"
   google_maps_flutter_ios:
     dependency: transitive
     description:
@@ -1209,10 +1209,10 @@ packages:
     dependency: transitive
     description:
       name: image_picker_android
-      sha256: "297e42bd236c4ac4b091d4277292159b3280545e030cae2be3d503f9ecf7e6a1"
+      sha256: "518a16108529fc18657a3e6dde4a043dc465d16596d20ab2abd49a4cac2e703d"
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.13+12"
+    version: "0.8.13+13"
   image_picker_for_web:
     dependency: transitive
     description:
@@ -1225,10 +1225,10 @@ packages:
     dependency: transitive
     description:
       name: image_picker_ios
-      sha256: "956c16a42c0c708f914021666ffcd8265dde36e673c9fa68c81f7d085d9774ad"
+      sha256: b9c4a438a9ff4f60808c9cf0039b93a42bb6c2211ef6ebb647394b2b3fa84588
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.13+3"
+    version: "0.8.13+6"
   image_picker_linux:
     dependency: transitive
     description:
@@ -1294,7 +1294,7 @@ packages:
     source: hosted
     version: "0.4.7"
   intl:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: intl
       sha256: "3df61194eb431efc39c4ceba583b95633a403f46c9fd341e550ce0bfa50e9aa5"
@@ -1329,10 +1329,10 @@ packages:
     dependency: transitive
     description:
       name: json_annotation
-      sha256: "1ce844379ca14835a50d2f019a3099f419082cfdd231cd86a142af94dd5c6bb1"
+      sha256: "805fa86df56383000f640384b282ce0cb8431f1a7a2396de92fb66186d8c57df"
       url: "https://pub.dev"
     source: hosted
-    version: "4.9.0"
+    version: "4.10.0"
   just_audio:
     dependency: transitive
     description:
@@ -1393,10 +1393,10 @@ packages:
     dependency: transitive
     description:
       name: lints
-      sha256: a5e2b223cb7c9c8efdc663ef484fdd95bb243bff242ef5b13e26883547fce9a0
+      sha256: "12f842a479589fea194fe5c5a3095abc7be0c1f2ddfa9a0e76aed1dbd26a87df"
       url: "https://pub.dev"
     source: hosted
-    version: "6.0.0"
+    version: "6.1.0"
   logger:
     dependency: transitive
     description:
@@ -1456,126 +1456,126 @@ packages:
   neom_admin:
     dependency: "direct main"
     description:
-      path: "../neom_admin"
+      path: "../neom_modules/neom_admin"
       relative: true
     source: path
     version: "1.6.0"
   neom_analytics:
     dependency: "direct main"
     description:
-      path: "../neom_analytics"
+      path: "../neom_modules/neom_analytics"
       relative: true
     source: path
     version: "1.2.0"
   neom_audio_player:
     dependency: "direct main"
     description:
-      path: "../neom_audio_player"
+      path: "../neom_modules/neom_audio_player"
       relative: true
     source: path
     version: "2.0.3"
   neom_auth:
     dependency: "direct main"
     description:
-      path: "../neom_auth"
+      path: "../neom_modules/neom_auth"
       relative: true
     source: path
     version: "1.2.1"
   neom_bands:
     dependency: "direct main"
     description:
-      path: "../neom_bands"
+      path: "../neom_modules/neom_bands"
       relative: true
     source: path
     version: "1.5.0"
   neom_bank:
     dependency: "direct main"
     description:
-      path: "../neom_bank"
+      path: "../neom_modules/neom_bank"
       relative: true
     source: path
     version: "1.1.0"
   neom_booking:
     dependency: "direct main"
     description:
-      path: "../neom_booking"
+      path: "../neom_modules/neom_booking"
       relative: true
     source: path
     version: "1.5.0"
   neom_calendar:
     dependency: "direct main"
     description:
-      path: "../neom_calendar"
+      path: "../neom_modules/neom_calendar"
       relative: true
     source: path
     version: "1.5.0"
   neom_camera:
     dependency: "direct main"
     description:
-      path: "../neom_camera"
+      path: "../neom_modules/neom_camera"
       relative: true
     source: path
     version: "1.2.0"
   neom_commerce:
     dependency: "direct main"
     description:
-      path: "../neom_commerce"
+      path: "../neom_modules/neom_commerce"
       relative: true
     source: path
     version: "1.5.0"
   neom_commons:
     dependency: "direct main"
     description:
-      path: "../neom_commons"
+      path: "../neom_modules/neom_commons"
       relative: true
     source: path
-    version: "2.2.2-dev"
+    version: "3.0.0"
   neom_core:
     dependency: "direct main"
     description:
-      path: "../neom_core"
+      path: "../neom_modules/neom_core"
       relative: true
     source: path
-    version: "2.1.5-dev"
+    version: "3.0.0"
   neom_directory:
     dependency: "direct main"
     description:
-      path: "../neom_directory"
+      path: "../neom_modules/neom_directory"
       relative: true
     source: path
     version: "1.2.0"
   neom_downloads:
     dependency: "direct main"
     description:
-      path: "../neom_downloads"
+      path: "../neom_modules/neom_downloads"
       relative: true
     source: path
     version: "1.1.0"
   neom_events:
     dependency: "direct main"
     description:
-      path: "../neom_events"
+      path: "../neom_modules/neom_events"
       relative: true
     source: path
     version: "1.7.1"
   neom_frequencies:
     dependency: "direct main"
     description:
-      path: "../neom_frequencies"
+      path: "../neom_modules/neom_frequencies"
       relative: true
     source: path
-    version: "1.3.1-dev"
+    version: "2.0.0"
   neom_generator:
     dependency: "direct main"
     description:
-      path: "../neom_generator"
+      path: "../neom_modules/neom_generator"
       relative: true
     source: path
-    version: "2.0.0-dev"
+    version: "2.0.0"
   neom_genres:
     dependency: "direct main"
     description:
-      path: "../neom_genres"
+      path: "../neom_modules/neom_genres"
       relative: true
     source: path
     version: "1.1.0"
@@ -1590,42 +1590,42 @@ packages:
   neom_home:
     dependency: "direct main"
     description:
-      path: "../neom_home"
+      path: "../neom_modules/neom_home"
       relative: true
     source: path
     version: "1.7.5-dev"
   neom_image_editor:
     dependency: "direct main"
     description:
-      path: "../neom_image_editor"
+      path: "../neom_modules/neom_image_editor"
       relative: true
     source: path
     version: "1.1.2"
   neom_inbox:
     dependency: "direct main"
     description:
-      path: "../neom_inbox"
+      path: "../neom_modules/neom_inbox"
       relative: true
     source: path
     version: "1.6.0"
   neom_instruments:
     dependency: "direct main"
     description:
-      path: "../neom_instruments"
+      path: "../neom_modules/neom_instruments"
       relative: true
     source: path
     version: "1.4.0"
   neom_itemlists:
     dependency: "direct main"
     description:
-      path: "../neom_itemlists"
+      path: "../neom_modules/neom_itemlists"
       relative: true
     source: path
     version: "1.6.0"
   neom_jobs:
     dependency: "direct main"
     description:
-      path: "../neom_jobs"
+      path: "../neom_modules/neom_jobs"
       relative: true
     source: path
     version: "1.4.0"
@@ -1640,105 +1640,105 @@ packages:
   neom_mates:
     dependency: "direct main"
     description:
-      path: "../neom_mates"
+      path: "../neom_modules/neom_mates"
       relative: true
     source: path
     version: "1.6.1"
   neom_media_player:
     dependency: "direct main"
     description:
-      path: "../neom_media_player"
+      path: "../neom_modules/neom_media_player"
       relative: true
     source: path
     version: "1.3.0"
   neom_media_upload:
     dependency: "direct main"
     description:
-      path: "../neom_media_upload"
+      path: "../neom_modules/neom_media_upload"
       relative: true
     source: path
     version: "1.2.2"
   neom_notifications:
     dependency: "direct main"
     description:
-      path: "../neom_notifications"
+      path: "../neom_modules/neom_notifications"
       relative: true
     source: path
     version: "1.5.0"
   neom_onboarding:
     dependency: "direct main"
     description:
-      path: "../neom_onboarding"
+      path: "../neom_modules/neom_onboarding"
       relative: true
     source: path
     version: "1.5.3"
   neom_posts:
     dependency: "direct main"
     description:
-      path: "../neom_posts"
+      path: "../neom_modules/neom_posts"
       relative: true
     source: path
     version: "1.7.1"
   neom_profile:
     dependency: "direct main"
     description:
-      path: "../neom_profile"
+      path: "../neom_modules/neom_profile"
       relative: true
     source: path
     version: "1.5.2"
   neom_releases:
     dependency: "direct main"
     description:
-      path: "../neom_releases"
+      path: "../neom_modules/neom_releases"
       relative: true
     source: path
     version: "1.3.0"
   neom_requests:
     dependency: "direct main"
     description:
-      path: "../neom_requests"
+      path: "../neom_modules/neom_requests"
       relative: true
     source: path
     version: "1.5.0"
   neom_search:
     dependency: "direct main"
     description:
-      path: "../neom_search"
+      path: "../neom_modules/neom_search"
       relative: true
     source: path
     version: "1.2.0"
   neom_settings:
     dependency: "direct main"
     description:
-      path: "../neom_settings"
+      path: "../neom_modules/neom_settings"
       relative: true
     source: path
     version: "1.1.0"
   neom_stripe:
     dependency: "direct main"
     description:
-      path: "../neom_stripe"
+      path: "../neom_modules/neom_stripe"
       relative: true
     source: path
     version: "1.3.1"
   neom_timeline:
     dependency: "direct main"
     description:
-      path: "../neom_timeline"
+      path: "../neom_modules/neom_timeline"
       relative: true
     source: path
     version: "1.5.3"
   neom_vr:
     dependency: "direct main"
     description:
-      path: "../neom_vr"
+      path: "../neom_modules/neom_vr"
       relative: true
     source: path
     version: "1.1.0"
   neom_woo:
     dependency: "direct main"
     description:
-      path: "../neom_woo"
+      path: "../neom_modules/neom_woo"
       relative: true
     source: path
     version: "1.1.1"
@@ -1767,7 +1767,7 @@ packages:
     source: hosted
     version: "2.2.0"
   package_info_plus:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: package_info_plus
       sha256: f69da0d3189a4b4ceaeb1a3defb0f329b3b352517f52bed4290f83d4f06bc08d
@@ -2066,10 +2066,10 @@ packages:
     dependency: transitive
     description:
       name: shared_preferences_android
-      sha256: "83af5c682796c0f7719c2bbf74792d113e40ae97981b8f266fa84574573556bc"
+      sha256: cbc40be9be1c5af4dab4d6e0de4d5d3729e6f3d65b89d21e1815d57705644a6f
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.18"
+    version: "2.4.20"
   shared_preferences_foundation:
     dependency: transitive
     description:
@@ -2142,6 +2142,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.1"
+  sint:
+    dependency: "direct overridden"
+    description:
+      path: "../neom_modules/sint"
+      relative: true
+    source: path
+    version: "1.0.0"
   sky_engine:
     dependency: transitive
     description: flutter
