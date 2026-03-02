@@ -54,7 +54,9 @@ void main() async {
       // await JobsFirestore().distributeSongmates();
     }
 
-    await AppConfig.instance.initialize(app: AppInUse.c);
+    await AppConfig.instance.initialize(
+      app: AppInUse.c,
+    );
     AppProperties();
     AppFlavour();
     await Hive.initFlutter();

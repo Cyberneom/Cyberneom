@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:sint/sint.dart';
 
 import 'package:neom_analytics/data/firestore/analytics_firestore.dart';
@@ -80,8 +81,9 @@ import 'package:neom_itemlists/ui/itemlist_controller.dart';
 import 'package:neom_jobs/data/firestore/job_firestore.dart';
 import 'package:neom_media_player/ui/media_player_controller.dart';
 import 'package:neom_media_upload/ui/media_upload_controller.dart';
+import 'package:neom_media_upload/ui/media_upload_web_controller.dart';
 import 'package:neom_notifications/data/implementations/push_notification_invoker.dart';
-import 'package:neom_posts/domain/use_cases/post_details_service.dart';
+import 'package:neom_core/domain/use_cases/post_details_service.dart';
 import 'package:neom_posts/ui/details/post_details_controller.dart';
 import 'package:neom_posts/ui/upload/post_upload_controller.dart';
 import 'package:neom_profile/ui/profile_controller.dart';
@@ -130,15 +132,20 @@ class RootBinding extends Binding {
 
       Bind.lazyPut(() => PostUploadController(), fenix: true),
       Bind.lazyPut<PostUploadService>(() => Get.find<PostUploadController>(), fenix: true),
-      Bind.lazyPut(() => AppCameraController(), fenix: true),
-      Bind.lazyPut<AppCameraService>(() => Get.find<AppCameraController>(), fenix: true),
-      Bind.lazyPut(() => ImageEditorController(), fenix: true),
-      Bind.lazyPut<ImageEditorService>(() => Get.find<ImageEditorController>(), fenix: true),
-      Bind.lazyPut(() => MediaUploadController(), fenix: true),
-      Bind.lazyPut<MediaUploadService>(() => Get.find<MediaUploadController>(), fenix: true),
-
-      Bind.lazyPut(() => MediaPlayerController(), fenix: true),
-      Bind.lazyPut<MediaPlayerService>(() => Get.find<MediaPlayerController>(), fenix: true),
+      if (!kIsWeb) ...[
+        Bind.lazyPut(() => AppCameraController(), fenix: true),
+        Bind.lazyPut<AppCameraService>(() => Get.find<AppCameraController>(), fenix: true),
+        Bind.lazyPut(() => ImageEditorController(), fenix: true),
+        Bind.lazyPut<ImageEditorService>(() => Get.find<ImageEditorController>(), fenix: true),
+        Bind.lazyPut(() => MediaUploadController(), fenix: true),
+        Bind.lazyPut<MediaUploadService>(() => Get.find<MediaUploadController>(), fenix: true),
+        Bind.lazyPut(() => MediaPlayerController(), fenix: true),
+        Bind.lazyPut<MediaPlayerService>(() => Get.find<MediaPlayerController>(), fenix: true),
+      ],
+      if (kIsWeb) ...[
+        Bind.lazyPut(() => MediaUploadWebController(), fenix: true),
+        Bind.lazyPut<MediaUploadService>(() => Get.find<MediaUploadWebController>(), fenix: true),
+      ],
 
       Bind.lazyPut<AnalyticsRepository>(() => AnalyticsFirestore(), fenix: true),
       Bind.lazyPut<JobRepository>(() => JobFirestore()),
@@ -152,8 +159,10 @@ class RootBinding extends Binding {
       Bind.lazyPut(() => MateController(), fenix: true),
       Bind.lazyPut<MateService>(() => Get.find<MateController>(), fenix: true),
 
-      Bind.lazyPut(() => PushNotificationInvoker(), fenix: true),
-      Bind.lazyPut<NotificationService>(() => Get.find<PushNotificationInvoker>(), fenix: true),
+      if (!kIsWeb) ...[
+        Bind.lazyPut(() => PushNotificationInvoker(), fenix: true),
+        Bind.lazyPut<NotificationService>(() => Get.find<PushNotificationInvoker>(), fenix: true),
+      ],
 
       Bind.lazyPut(() => BandController(), fenix: true),
       Bind.lazyPut<BandService>(() => Get.find<BandController>(), fenix: true),
@@ -188,10 +197,12 @@ class RootBinding extends Binding {
       Bind.lazyPut(() => ChamberFirestore(), fenix: true),
       Bind.lazyPut<ChamberRepository>(() => Get.find<ChamberFirestore>(), fenix: true),
 
-      Bind.lazyPut(() => GeoLocatorController(), fenix: true),
-      Bind.lazyPut<GeoLocatorService>(() => Get.find<GeoLocatorController>(), fenix: true),
-      Bind.lazyPut(() => MapsController(), fenix: true),
-      Bind.lazyPut<MapsService>(() => Get.find<MapsController>(), fenix: true),
+      if (!kIsWeb) ...[
+        Bind.lazyPut(() => GeoLocatorController(), fenix: true),
+        Bind.lazyPut<GeoLocatorService>(() => Get.find<GeoLocatorController>(), fenix: true),
+        Bind.lazyPut(() => MapsController(), fenix: true),
+        Bind.lazyPut<MapsService>(() => Get.find<MapsController>(), fenix: true),
+      ],
 
       Bind.lazyPut(() => AppHiveController(), fenix: true),
       Bind.lazyPut<AppHiveService>(() => Get.find<AppHiveController>(), fenix: true),
@@ -205,8 +216,10 @@ class RootBinding extends Binding {
       Bind.lazyPut(() => SubscriptionController(), fenix: true),
       Bind.lazyPut<SubscriptionService>(() => Get.find<SubscriptionController>(), fenix: true),
 
-      Bind.lazyPut(() => DownloadController(''), fenix: true),
-      Bind.lazyPut<DownloadService>(() => Get.find<DownloadController>(), fenix: true),
+      if (!kIsWeb) ...[
+        Bind.lazyPut(() => DownloadController(''), fenix: true),
+        Bind.lazyPut<DownloadService>(() => Get.find<DownloadController>(), fenix: true),
+      ],
     ];
   }
 

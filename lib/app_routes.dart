@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:sint/sint.dart';
@@ -93,7 +94,7 @@ class AppRoutes {
       ...BankRoutes.routes,
       ...BookingRoutes.routes,
       ...CalendarRoutes.routes,
-      ...CameraRoutes.routes,
+      if (!kIsWeb) ...CameraRoutes.routes,
       ...CommerceRoutes.routes,
       ...CommonRoutes.routes,
       ...DirectoryRoutes.routes,
@@ -104,7 +105,7 @@ class AppRoutes {
       ...InstrumentRoutes.routes,
       ...MateRoutes.routes,
       ...AudioPlayerRoutes.routes,
-      ...MediaPlayerRoutes.routes,
+      if (!kIsWeb) ...MediaPlayerRoutes.routes,
       ...MediaUploadRoutes.routes,
       ...NotificationRoutes.routes,
       ...OnBoardingRoutes.routes,
@@ -119,7 +120,7 @@ class AppRoutes {
       ...WooRoutes.routes,
       ...FrequencyRoutes.routes,
       ...GeneratorRoutes.routes,
-      ...VrRoutes.routes,
+      if (!kIsWeb) ...VrRoutes.routes,
       // ...NUPALERoutes.routes,
       // ...CaseteRoutes.routes,
     ];

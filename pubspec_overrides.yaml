@@ -11,6 +11,8 @@ dependency_overrides:
     path: ../neom_modules/neom_auth
   neom_bands:
     path: ../neom_modules/neom_bands
+  neom_blog:
+    path: ../neom_modules/neom_blog
   neom_bank:
     path: ../neom_modules/neom_bank
   neom_booking:
@@ -21,10 +23,14 @@ dependency_overrides:
     path: ../neom_modules/neom_camera
   neom_core:
     path: ../neom_modules/neom_core
+  neom_corpus:
+    path: ../neom_modules/neom_corpus
   neom_commons:
     path: ../neom_modules/neom_commons
   neom_commerce:
     path: ../neom_modules/neom_commerce
+  neom_daw:
+    path: ../neom_modules/neom_daw
   neom_directory:
     path: ../neom_modules/neom_directory
   neom_downloads:
@@ -33,10 +39,14 @@ dependency_overrides:
     path: ../neom_modules/neom_events
   neom_frequencies:
     path: ../neom_modules/neom_frequencies
+  neom_games:
+    path: ../neom_modules/neom_games
   neom_generator:
     path: ../neom_modules/neom_generator
   neom_genres:
     path: ../neom_modules/neom_genres
+  neom_ia:
+    path: ../neom_modules/neom_ia
   neom_home:
     path: ../neom_modules/neom_home
   neom_image_editor:
@@ -71,6 +81,8 @@ dependency_overrides:
     path: ../neom_modules/neom_search
   neom_settings:
     path: ../neom_modules/neom_settings
+  neom_sound:
+    path: ../neom_modules/neom_sound
   neom_stripe:
     path: ../neom_modules/neom_stripe
   neom_timeline:
