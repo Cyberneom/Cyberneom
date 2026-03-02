@@ -83,6 +83,8 @@ dependency_overrides:
     path: ../neom_modules/neom_settings
   neom_sound:
     path: ../neom_modules/neom_sound
+  neom_states:
+    path: ../neom_modules/neom_states
   neom_stripe:
     path: ../neom_modules/neom_stripe
   neom_timeline:

@@ -1871,6 +1871,13 @@ packages:
       relative: true
     source: path
     version: "1.0.0"
+  neom_states:
+    dependency: "direct main"
+    description:
+      path: "../neom_modules/neom_states"
+      relative: true
+    source: path
+    version: "1.0.0"
   neom_stripe:
     dependency: "direct main"
     description:

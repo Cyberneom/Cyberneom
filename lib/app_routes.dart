@@ -53,6 +53,7 @@ import 'package:neom_settings/setting_routes.dart';
 import 'package:neom_stripe/stripe_routes.dart';
 import 'package:neom_timeline/timeline_routes.dart';
 import 'package:neom_timeline/ui/timeline_page.dart';
+import 'package:neom_states/neom_states_routes.dart';
 import 'package:neom_vr/vr_routes.dart';
 import 'package:neom_woo/woo_routes.dart';
 
@@ -120,6 +121,7 @@ class AppRoutes {
       ...WooRoutes.routes,
       ...FrequencyRoutes.routes,
       ...GeneratorRoutes.routes,
+      ...StatesRoutes.routes,
       if (!kIsWeb) ...VrRoutes.routes,
       // ...NUPALERoutes.routes,
       // ...CaseteRoutes.routes,

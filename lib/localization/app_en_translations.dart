@@ -26,6 +26,7 @@ import 'package:neom_releases/data/translations/release_en_translations.dart';
 import 'package:neom_requests/data/translations/request_en_translations.dart';
 import 'package:neom_search/data/translations/search_en_translations.dart';
 import 'package:neom_settings/data/translations/setting_en_translations.dart';
+import 'package:neom_states/data/translations/states_en_translations.dart';
 import 'package:neom_vr/data/translations/vr_en_translations.dart';
 
 
@@ -60,6 +61,7 @@ class AppEnTranslations {
     ...RequestEnTranslations.values,
     ...SearchEnTranslations.values,
     ...SettingEnTranslations.values,
+    ...StatesEnTranslations.values,
     ...VrEnTranslations.values,
   };
 

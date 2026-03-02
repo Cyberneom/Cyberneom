@@ -136,6 +136,9 @@ dependencies:
   neom_generator:
     git:
       url: https://github.com/Cyberneom/neom_generator.git
+  neom_states:
+    git:
+      url: https://github.com/Cyberneom/neom_states.git
 
 dev_dependencies:
   flutter_test:
