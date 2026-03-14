@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:neom_ia/neom_ia.dart';
 import 'package:sint/sint.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
@@ -20,6 +21,8 @@ import 'package:neom_core/utils/enums/app_in_use.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:neom_core/utils/enums/app_locale.dart';
 import 'package:neom_notifications/data/implementations/push_notification_invoker.dart';
+import 'package:neom_profile/ui/slug_resolver_page.dart';
+import 'package:sint/navigation/src/router/url_strategy/url_strategy.dart';
 
 import 'app_routes.dart';
 import 'root_binding.dart';
@@ -39,19 +42,18 @@ void main() async {
       ]);
     }
 
-    await Firebase.initializeApp(
+    // Parallelize initialization: Firebase + Hive start at the same time.
+    final firebaseFuture = Firebase.initializeApp(
       options: kIsWeb ? getFirebaseOptions() : null,
     );
+    final hiveFuture = Hive.initFlutter();
 
-    // Background messaging solo en móvil
-    // Crashlytics solo en móvil (no disponible en web)
+    await firebaseFuture;
+
+    // Background messaging + Crashlytics solo en móvil
     if (!kIsWeb) {
       FirebaseMessaging.onBackgroundMessage(PushNotificationInvoker.backgroundHandler);
       FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-    }
-
-    if(kDebugMode) {
-      // await JobsFirestore().distributeSongmates();
     }
 
     await AppConfig.instance.initialize(
@@ -59,10 +61,13 @@ void main() async {
     );
     AppProperties();
     AppFlavour();
-    await Hive.initFlutter();
+    await hiveFuture;
   } catch (e) {
     AppConfig.logger.e(e.toString());
   }
+
+  // Remove # from web URLs for vanity URL support
+  if (kIsWeb) setUrlStrategy();
 
   runApp(const MyApp());
 
@@ -99,8 +104,10 @@ class MyApp extends StatelessWidget {
       fallbackLocale: const Locale('es'),
       // Spanish, Mexico
       supportedLocales: const [
-        Locale('es'), // Spanish, Mexico
-        Locale('en'), // English, United States
+        Locale('es'), // Spanish
+        Locale('en'), // English
+        Locale('fr'), // French
+        Locale('de'), // German
       ],
       defaultTransition: Transition.upToDown,
       debugShowCheckedModeBanner: false,
@@ -112,8 +119,13 @@ class MyApp extends StatelessWidget {
             backgroundColor: AppColor.getMain()
         ),
       ),
+      builder: ItzliGlobalOverlay.builder,
       initialRoute: AppRouteConstants.root,
       sintPages: AppRoutes.getAppRoutes(),
+      unknownRoute: SintPage(
+        name: AppRouteConstants.notFound,
+        page: () => const SlugResolverPage(),
+      ),
     );
   }
 

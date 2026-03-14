@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#000000">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta id="og-title" property="og:title" content="Cyberneom">
+<meta id="og-desc" property="og:description" content="">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cyberneom">
+<meta id="tw-title" name="twitter:title" content="Cyberneom">
+<meta id="tw-desc" name="twitter:description" content="">
+<meta name="twitter:card" content="summary">
+<title>Cyberneom</title>
+<link rel="preconnect" href="https://firestore.googleapis.com" crossorigin>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#000;color:#fff;-webkit-tap-highlight-color:transparent}
+#app{height:100%;display:flex;align-items:center;justify-content:center;position:relative}
+#pulse{position:absolute;inset:0;pointer-events:none;transition:background .8s}
+.step{display:none;flex-direction:column;align-items:center;text-align:center;padding:2rem;max-width:420px;width:100%;z-index:1}
+.step.active{display:flex}
+.icon{font-size:4rem;margin-bottom:1.5rem}
+h1{font-size:1.8rem;font-weight:700;margin-bottom:.5rem}
+.desc{color:rgba(255,255,255,.7);font-size:1rem;line-height:1.5;margin-bottom:2.5rem}
+.hint{display:flex;align-items:center;gap:.5rem;color:rgba(255,255,255,.4);font-size:.9rem;margin-bottom:.5rem}
+.hint svg{width:20px;height:20px;fill:currentColor}
+.hint.warn{color:#ffc107}
+.begin-btn{width:200px;height:56px;border-radius:28px;border:none;font-size:1.1rem;font-weight:700;cursor:pointer;transition:transform .15s}
+.begin-btn:active{transform:scale(.95)}
+.social{color:rgba(255,255,255,.25);font-size:.85rem;margin-top:2rem}
+.limit-msg{color:rgba(255,255,255,.5);font-size:.95rem;line-height:1.6;margin-bottom:1rem}
+.pro-btn{background:#ffc107;color:#000;border:none;padding:.75rem 2rem;border-radius:8px;font-weight:700;font-size:1rem;cursor:pointer}
+/* Player */
+#player .timer{font-size:3rem;font-weight:200;letter-spacing:.1em;opacity:.7}
+#player .progress-wrap{position:fixed;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,.1)}
+#player .progress-bar{height:100%;width:0;transition:width 1s linear}
+#player .pause-icon{font-size:4rem;opacity:0;transition:opacity .3s}
+#player .pause-icon.show{opacity:.5}
+#player .stop-hint{position:fixed;bottom:20px;left:0;right:0;text-align:center;color:rgba(255,255,255,.2);font-size:.8rem}
+/* Afterglow */
+.emoji-row{display:flex;gap:1rem;margin-bottom:3rem}
+.emoji-row span{font-size:2.5rem;cursor:pointer;transition:transform .15s}
+.emoji-row span:active{transform:scale(1.3)}
+.outline-btn{background:none;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);padding:.75rem 1.5rem;border-radius:8px;font-size:.95rem;cursor:pointer;display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem}
+.text-btn{background:none;border:none;color:rgba(255,255,255,.4);font-size:.9rem;cursor:pointer;margin-bottom:2rem}
+.room-box{padding:1rem;border-radius:12px;margin-bottom:1rem;text-align:center}
+.room-box p{color:rgba(255,255,255,.6);font-size:.9rem}
+.room-box a{font-size:.85rem;cursor:pointer}
+.pro-box{padding:1rem;border:1px solid rgba(255,255,255,.08);border-radius:12px;text-align:center}
+.pro-box p{color:rgba(255,255,255,.45);font-size:.9rem;margin-bottom:.75rem}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="pulse"></div>
+
+  <!-- LANDING -->
+  <div id="landing" class="step active">
+    <div class="icon" id="stateIcon"></div>
+    <h1 id="stateName"></h1>
+    <p class="desc" id="stateDesc"></p>
+    <div class="hint"><svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 00-3 3v4a3 3 0 006 0V4a3 3 0 00-3-3zm-1 14.93A7.36 7.36 0 015 9H3a9 9 0 007 8.94V21H8v2h8v-2h-2v-3.07A9 9 0 0021 9h-2a7.36 7.36 0 01-6 6.93z"/></svg><span id="hintHeadphones"></span></div>
+    <div class="hint"><svg viewBox="0 0 24 24"><path d="M12 7a5 5 0 100 10 5 5 0 000-10zm0 8a3 3 0 110-6 3 3 0 010 6zM1 13h2a9 9 0 009 9v2A11 11 0 011 13zm21 0a9 9 0 01-9 9v2a11 11 0 0011-11h-2z"/></svg><span id="hintEyes"></span></div>
+    <div class="hint warn" id="hintSpeakers" style="display:none"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg><span id="hintSpeakersText"></span></div>
+    <div style="height:3rem"></div>
+    <div id="beginWrap"></div>
+    <p class="social" id="socialProof"></p>
+  </div>
+
+  <!-- PLAYER -->
+  <div id="player" class="step">
+    <div class="pause-icon" id="pauseIcon">&#10074;&#10074;</div>
+    <div class="timer" id="timerText">00:00</div>
+    <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+    <p class="stop-hint" id="stopHint"></p>
+  </div>
+
+  <!-- AFTERGLOW -->
+  <div id="afterglow" class="step">
+    <h2 style="margin-bottom:1.5rem" id="feelText"></h2>
+    <div class="emoji-row" id="emojiRow"></div>
+    <button class="outline-btn" id="shareBtn">&#8599; <span id="shareText"></span></button>
+    <button class="text-btn" id="exploreBtn"></button>
+    <div class="room-box" id="roomBox" style="display:none"><p id="roomText"></p><a id="roomJoin"></a></div>
+    <div class="pro-box" id="proBox" style="display:none"><p id="proText"></p><button class="pro-btn" id="proBtn"></button></div>
+  </div>
+</div>
+
+<script>
+// ─── STATE CATALOG ─────────────────────────────────────────
+const S={
+'first-contact':{n:{en:'First Contact',es:'Primer Contacto',fr:'Premier Contact',de:'Erstkontakt'},d:{en:'Close your eyes. The screen strobe creates geometric patterns in your vision.',es:'Cierra los ojos. El destello de la pantalla crea patrones geometricos en tu vision.',fr:'Fermez les yeux. Le stroboscope cree des motifs geometriques.',de:'Schliessen Sie die Augen. Das Stroboskop erzeugt geometrische Muster.'},lf:200,rf:210,dur:300,col:'#6A0DAD',pf:10,ic:'\u2728'},
+'sleep':{n:{en:'Deep Sleep',es:'Sueno Profundo',fr:'Sommeil Profond',de:'Tiefschlaf'},d:{en:'Descend into deep delta sleep. For insomnia relief.',es:'Desciende al sueno profundo delta. Para alivio del insomnio.',fr:'Descendez dans le sommeil profond delta. Contre l\'insomnie.',de:'Gleiten Sie in den tiefen Delta-Schlaf. Gegen Schlaflosigkeit.'},lf:150,rf:153,dur:1200,col:'#0D1B2A',pf:.5,ic:'\uD83C\uDF19',ph:[{t:0,lf:200,rf:210,col:'#1B2838',pf:2},{t:300,lf:180,rf:187,col:'#152030',pf:1},{t:600,lf:160,rf:165,col:'#0F1825',pf:.5},{t:900,lf:150,rf:153,col:'#0D1B2A',pf:.3}]},
+'focus':{n:{en:'Deep Focus',es:'Enfoque Total',fr:'Concentration',de:'Fokus'},d:{en:'40Hz gamma enhancement for study and deep work.',es:'Potenciacion gamma 40Hz para estudio y trabajo profundo.',fr:'Amelioration gamma 40Hz pour l\'etude et le travail.',de:'40Hz Gamma-Verstarkung fur Studium und Arbeit.'},lf:400,rf:440,dur:1500,col:'#F5F5F5',pf:.1,ic:'\uD83E\uDDE0'},
+'calm':{n:{en:'Calm Down',es:'Calma',fr:'Calme',de:'Ruhe'},d:{en:'Alpha descending to theta. Quick anxiety relief.',es:'Alfa descendiendo a theta. Alivio rapido de la ansiedad.',fr:'Alpha descendant vers theta. Soulagement de l\'anxiete.',de:'Alpha absteigend zu Theta. Schnelle Angstlinderung.'},lf:200,rf:210,dur:600,col:'#FF8C00',pf:2,ic:'\uD83C\uDF3F',ph:[{t:0,lf:200,rf:210,col:'#FF8C00',pf:2},{t:240,lf:200,rf:208,col:'#E67300',pf:1.5},{t:420,lf:200,rf:206,col:'#CC5500',pf:1}]},
+'meditate':{n:{en:'Deep Meditation',es:'Meditacion Profunda',fr:'Meditation',de:'Meditation'},d:{en:'7Hz theta binaural. Pure sound, minimal screen.',es:'Binaural theta 7Hz. Sonido puro, pantalla minima.',fr:'Binaural theta 7Hz. Son pur, ecran minimal.',de:'7Hz Theta Binaural. Reiner Klang.'},lf:200,rf:207,dur:900,col:'#1A0A2E',pf:0,ic:'\uD83E\uDDD8',pro:1},
+'energy':{n:{en:'Wake Up',es:'Energia',fr:'Energie',de:'Energie'},d:{en:'Beta ascending to gamma. Morning boost.',es:'Beta ascendiendo a gamma. Impulso matutino.',fr:'Beta montant vers gamma. Boost matinal.',de:'Beta aufsteigend zu Gamma. Morgen-Boost.'},lf:300,rf:320,dur:480,col:'#FF6B00',pf:3,ic:'\u26A1',pro:1,ph:[{t:0,lf:300,rf:320,col:'#FF6B00',pf:3},{t:180,lf:350,rf:375,col:'#FF8800',pf:4},{t:360,lf:400,rf:435,col:'#FFAA00',pf:5}]},
+'create':{n:{en:'Creative Flow',es:'Flujo Creativo',fr:'Flux Creatif',de:'Kreativfluss'},d:{en:'Theta-alpha border. Ideas flow state.',es:'Frontera theta-alfa. Estado de flujo.',fr:'Frontiere theta-alpha. Flux d\'idees.',de:'Theta-Alpha-Grenze. Ideenfluss.'},lf:200,rf:207.5,dur:1200,col:'#2D1B69',pf:.5,ic:'\uD83C\uDFA8',pro:1},
+'relief':{n:{en:'Pain Relief',es:'Alivio del Dolor',fr:'Soulagement',de:'Schmerzlinderung'},d:{en:'Stable alpha 10Hz reduces pain perception.',es:'Alfa estable 10Hz reduce la percepcion del dolor.',fr:'Alpha stable 10Hz reduit la douleur.',de:'Stabiles Alpha 10Hz reduziert Schmerz.'},lf:200,rf:210,dur:900,col:'#2E8B57',pf:0,ic:'\uD83D\uDC9A',pro:1},
+'presence':{n:{en:'The Presence',es:'La Presencia',fr:'La Presence',de:'Die Prasenz'},d:{en:'18.98Hz infrasound. Sensation of invisible presence.',es:'Infrasonido 18.98Hz. Sensacion de presencia invisible.',fr:'Infrason 18.98Hz. Presence invisible.',de:'18.98Hz Infraschall. Unsichtbare Prasenz.'},lf:18.98,rf:18.98,dur:600,col:'#0A0A0A',pf:0,ic:'\uD83D\uDC41',pro:1,spk:1},
+'lucid':{n:{en:'Lucid Dreaming',es:'Sueno Lucido',fr:'Reve Lucide',de:'Klartraum'},d:{en:'Theta 5Hz with gamma bursts. Lucid dream induction.',es:'Theta 5Hz con explosiones gamma. Sueno lucido.',fr:'Theta 5Hz avec eclats gamma. Reve lucide.',de:'Theta 5Hz mit Gamma-Impulsen. Klartraum.'},lf:200,rf:205,dur:1800,col:'#1A0533',pf:0,ic:'\uD83C\uDF1F',pro:1,ph:[{t:0,lf:200,rf:205,col:'#1A0533',pf:0},{t:600,lf:400,rf:440,col:'#2A0A55',pf:3},{t:630,lf:200,rf:205,col:'#1A0533',pf:0},{t:1200,lf:400,rf:440,col:'#2A0A55',pf:3},{t:1230,lf:200,rf:205,col:'#1A0533',pf:0}]},
+'heart':{n:{en:'Heart Sync',es:'Sincronizacion Cardiaca',fr:'Synchro Coeur',de:'Herzsynchro'},d:{en:'7.83Hz Schumann resonance. Earth frequency.',es:'Resonancia Schumann 7.83Hz. Frecuencia de la Tierra.',fr:'Resonance Schumann 7.83Hz. Frequence de la Terre.',de:'7.83Hz Schumann-Resonanz. Erdfrequenz.'},lf:200,rf:207.83,dur:720,col:'#006400',pf:0,ic:'\u2764\uFE0F',pro:1},
+'432':{n:{en:'Universal Harmony',es:'Armonia Universal',fr:'Harmonie Universelle',de:'Universale Harmonie'},d:{en:'432Hz pure tone. The universe frequency.',es:'Tono puro 432Hz. La frecuencia del universo.',fr:'Ton pur 432Hz. La frequence de l\'univers.',de:'432Hz Reinton. Frequenz des Universums.'},lf:432,rf:432,dur:900,col:'#4B0082',pf:0,ic:'\u267E\uFE0F',pro:1},
+'528':{n:{en:'DNA Repair',es:'Reparacion ADN',fr:'Reparation ADN',de:'DNA Reparatur'},d:{en:'528Hz solfeggio. Transformation and miracles.',es:'Solfeggio 528Hz. Transformacion y milagros.',fr:'Solfege 528Hz. Transformation et miracles.',de:'528Hz Solfeggio. Transformation und Wunder.'},lf:528,rf:528,dur:900,col:'#228B22',pf:0,ic:'\uD83E\uDDEC',pro:1}
+};
+
+// ─── I18N ──────────────────────────────────────────────────
+const T={
+en:{headphones:'Put on headphones',eyes:'Close your eyes',begin:'Begin',speakers:'Requires speakers (not headphones)',people:'people tried this today',feel:'How do you feel?',share:'Share this experience',explore:'Explore more states',room:'Right now, {c} people are in the {s} room',join:'Join them',unlock:'Unlock all 13 frequency states with PRO',gopro:'Go PRO',stop:'Hold to stop',paused:'Paused',shareMsg:'I just tried "{n}" on Cyberneom. Close your eyes, put on headphones. {u}',limit:'You already tried this state today.\nCome back tomorrow or upgrade to PRO.',unlockPro:'Unlock PRO'},
+es:{headphones:'Ponte los auriculares',eyes:'Cierra los ojos',begin:'Comenzar',speakers:'Requiere altavoces (no auriculares)',people:'personas lo probaron hoy',feel:'\u00BFComo te sientes?',share:'Comparte esta experiencia',explore:'Explorar mas estados',room:'Ahora mismo, {c} personas estan en la sala {s}',join:'Unete',unlock:'Desbloquea los 13 estados de frecuencia con PRO',gopro:'Ser PRO',stop:'Mantener para detener',paused:'Pausado',shareMsg:'Acabo de probar "{n}" en Cyberneom. Cierra los ojos, ponte auriculares. {u}',limit:'Ya probaste este estado hoy.\nVuelve ma\u00F1ana o sube a PRO.',unlockPro:'Desbloquear PRO'},
+fr:{headphones:'Mettez vos ecouteurs',eyes:'Fermez les yeux',begin:'Commencer',speakers:'Necessite des haut-parleurs',people:'personnes l\'ont essaye',feel:'Comment vous sentez-vous?',share:'Partager cette experience',explore:'Explorer plus d\'etats',room:'En ce moment, {c} personnes dans la salle {s}',join:'Rejoindre',unlock:'Debloquez les 13 etats avec PRO',gopro:'Devenir PRO',stop:'Maintenir pour arreter',paused:'En pause',shareMsg:'J\'ai essaye "{n}" sur Cyberneom. Fermez les yeux, ecouteurs. {u}',limit:'Vous avez deja essaye aujourd\'hui.\nRevenez demain ou passez a PRO.',unlockPro:'Debloquer PRO'},
+de:{headphones:'Kopfhoerer aufsetzen',eyes:'Schliessen Sie die Augen',begin:'Beginnen',speakers:'Lautsprecher erforderlich',people:'Personen haben es versucht',feel:'Wie fuehlen Sie sich?',share:'Erlebnis teilen',explore:'Mehr Zustaende erkunden',room:'Gerade sind {c} Personen im {s}-Raum',join:'Mitmachen',unlock:'Alle 13 Frequenzzustaende mit PRO',gopro:'PRO werden',stop:'Halten zum Stoppen',paused:'Pausiert',shareMsg:'Ich habe "{n}" auf Cyberneom ausprobiert. Augen zu, Kopfhoerer auf. {u}',limit:'Heute bereits ausprobiert.\nKommen Sie morgen wieder oder werden Sie PRO.',unlockPro:'PRO freischalten'}
+};
+
+// ─── FIREBASE (lightweight REST, no SDK) ───────────────────
+const FB='https://firestore.googleapis.com/v1/projects/cyberneom-edd2d/databases/(default)/documents';
+function fbInc(stateId,fields){
+  // Firestore REST commit with FieldTransform increments
+  const transforms=Object.entries(fields).map(([k,v])=>({fieldPath:k,increment:{integerValue:String(v)}}));
+  fetch('https://firestore.googleapis.com/v1/projects/cyberneom-edd2d/databases/(default)/documents:commit',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({writes:[{transform:{document:`projects/cyberneom-edd2d/databases/(default)/documents/state_usage/${stateId}`,fieldTransforms:transforms}}]})
+  }).catch(()=>{});
+}
+function fbGet(stateId){
+  return fetch(`${FB}/state_usage/${stateId}`).then(r=>r.json()).then(d=>{
+    const t=d.fields?.total?.integerValue;
+    return t?parseInt(t):0;
+  }).catch(()=>0);
+}
+
+// ─── AUDIO ENGINE ──────────────────────────────────────────
+let ctx,oscL,oscR,gainL,gainR,merger,master;
+function audioPlay(lf,rf){
+  ctx=new AudioContext();
+  master=ctx.createGain();master.gain.value=0;master.connect(ctx.destination);
+  merger=ctx.createChannelMerger(2);merger.connect(master);
+  gainL=ctx.createGain();gainL.gain.value=1;gainL.connect(merger,0,0);
+  oscL=ctx.createOscillator();oscL.type='sine';oscL.frequency.value=lf;oscL.connect(gainL);oscL.start();
+  gainR=ctx.createGain();gainR.gain.value=1;gainR.connect(merger,0,1);
+  oscR=ctx.createOscillator();oscR.type='sine';oscR.frequency.value=rf;oscR.connect(gainR);oscR.start();
+  // 3s fade in
+  master.gain.setValueAtTime(0,ctx.currentTime);
+  master.gain.linearRampToValueAtTime(.7,ctx.currentTime+3);
+}
+function audioUpdate(lf,rf){if(oscL)oscL.frequency.value=lf;if(oscR)oscR.frequency.value=rf;}
+function audioFadeStop(){
+  if(!master||!ctx)return Promise.resolve();
+  const now=ctx.currentTime;
+  master.gain.setValueAtTime(master.gain.value,now);
+  master.gain.linearRampToValueAtTime(0,now+3);
+  return new Promise(r=>setTimeout(()=>{try{oscL.stop();oscR.stop();}catch(e){}ctx.close().catch(()=>{});ctx=null;r();},3100));
+}
+
+// ─── PULSE ANIMATION ───────────────────────────────────────
+let pulseAF,pulseFq=0,pulseCol='#000';
+function startPulse(col,freq){
+  pulseCol=col;pulseFq=freq;
+  const el=document.getElementById('pulse');
+  if(pulseFq<=0){el.style.background=pulseCol;return;}
+  const start=performance.now();
+  function frame(ts){
+    const t=(ts-start)/1000;
+    const a=.5+.5*Math.sin(2*Math.PI*pulseFq*t);
+    el.style.background=pulseCol;el.style.opacity=a;
+    pulseAF=requestAnimationFrame(frame);
+  }
+  pulseAF=requestAnimationFrame(frame);
+}
+function stopPulse(){if(pulseAF)cancelAnimationFrame(pulseAF);document.getElementById('pulse').style.opacity=1;}
+
+// ─── APP STATE ─────────────────────────────────────────────
+const path=window.location.pathname;
+const params=new URLSearchParams(window.location.search);
+const stateId=path.split('/').filter(Boolean).pop()||'first-contact';
+const lang=params.get('lang')||(navigator.language||'en').slice(0,2);
+const ref=params.get('ref');
+const L=T[lang]||T.en;
+const st=S[stateId]||S['first-contact'];
+let elapsed=0,timer=null,paused=false,phaseTimers=[],holdTimer=null;
+
+// ─── SESSION LIMIT ─────────────────────────────────────────
+function todayKey(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function isLimited(){
+  if(st.pro)return false;
+  const k=`cx_last_${stateId}`;
+  const last=localStorage.getItem(k);
+  if(!last)return false;
+  return last===todayKey();
+}
+function markUsed(){if(!st.pro)localStorage.setItem(`cx_last_${stateId}`,todayKey());}
+
+// ─── INIT LANDING ──────────────────────────────────────────
+function initLanding(){
+  document.title=`${st.n[lang]||st.n.en} — Cyberneom`;
+  document.getElementById('og-title').content=document.title;
+  document.getElementById('og-desc').content=st.d[lang]||st.d.en;
+  document.getElementById('tw-title').content=document.title;
+  document.getElementById('tw-desc').content=st.d[lang]||st.d.en;
+  document.documentElement.lang=lang;
+
+  document.getElementById('stateIcon').textContent=st.ic;
+  document.getElementById('stateName').textContent=st.n[lang]||st.n.en;
+  document.getElementById('stateDesc').textContent=st.d[lang]||st.d.en;
+  document.getElementById('hintHeadphones').textContent=L.headphones;
+  document.getElementById('hintEyes').textContent=L.eyes;
+  if(st.spk){document.getElementById('hintSpeakers').style.display='flex';document.getElementById('hintSpeakersText').textContent=L.speakers;}
+
+  const wrap=document.getElementById('beginWrap');
+  if(isLimited()){
+    wrap.innerHTML=`<p class="limit-msg">${L.limit}</p><button class="pro-btn" onclick="window.open('https://cyberneom.xyz/planes-de-suscripcion','_blank')">${L.unlockPro}</button>`;
+  }else{
+    const txtCol=luminance(st.col)>.5?'#000':'#fff';
+    wrap.innerHTML=`<button class="begin-btn" style="background:${st.col};color:${txtCol}" onclick="begin()">${L.begin}</button>`;
+  }
+
+  // Analytics (fire & forget)
+  const fields={total:1,[`today_${todayKey()}`]:1};
+  fbInc(stateId,fields);
+  if(ref)fbInc(stateId,{[`refs.${ref}`]:1});
+
+  // Social proof
+  fbGet(stateId).then(n=>{
+    if(n>0)document.getElementById('socialProof').textContent=`${fmtCount(n)} ${L.people}`;
+  });
+}
+
+// ─── BEGIN ─────────────────────────────────────────────────
+function begin(){
+  show('player');
+  audioPlay(st.lf,st.rf);
+  startPulse(st.col,st.pf||0);
+  markUsed();
+  elapsed=0;
+  document.getElementById('stopHint').textContent=L.stop;
+  updateTimer();
+  timer=setInterval(()=>{
+    if(!paused){elapsed++;updateTimer();if(elapsed>=st.dur)complete();}
+  },1000);
+  // Schedule phases
+  if(st.ph){
+    st.ph.forEach(p=>{
+      const t=setTimeout(()=>{
+        audioUpdate(p.lf,p.rf);
+        stopPulse();startPulse(p.col,p.pf||0);
+      },p.t*1000);
+      phaseTimers.push(t);
+    });
+  }
+  fbInc(stateId,{[`starts_${todayKey()}`]:1});
+
+  // Tap = pause, hold = stop
+  const pl=document.getElementById('player');
+  pl.onclick=()=>{paused=!paused;document.getElementById('pauseIcon').classList.toggle('show',paused);};
+  pl.onpointerdown=()=>{holdTimer=setTimeout(()=>complete(),800);};
+  pl.onpointerup=()=>{clearTimeout(holdTimer);};
+  pl.onpointerleave=()=>{clearTimeout(holdTimer);};
+}
+
+function updateTimer(){
+  const rem=st.dur-elapsed;
+  const m=String(Math.floor(rem/60)).padStart(2,'0');
+  const s=String(rem%60).padStart(2,'0');
+  document.getElementById('timerText').textContent=`${m}:${s}`;
+  document.getElementById('progressBar').style.width=`${(elapsed/st.dur)*100}%`;
+  document.getElementById('progressBar').style.background=st.col;
+}
+
+// ─── COMPLETE ──────────────────────────────────────────────
+async function complete(){
+  clearInterval(timer);phaseTimers.forEach(clearTimeout);
+  await audioFadeStop();
+  stopPulse();
+  document.getElementById('pulse').style.background='#000';document.getElementById('pulse').style.opacity=1;
+  fbInc(stateId,{[`completions_${todayKey()}`]:1});
+  initAfterglow();
+  show('afterglow');
+}
+
+function initAfterglow(){
+  document.getElementById('feelText').textContent=L.feel;
+  const row=document.getElementById('emojiRow');
+  row.innerHTML='';
+  ['\uD83D\uDE0C','\uD83D\uDE0A','\uD83E\uDD2F','\uD83D\uDE34'].forEach(e=>{
+    const sp=document.createElement('span');sp.textContent=e;
+    sp.onclick=()=>{fbInc(stateId,{[`emotions.${e}`]:1});sp.style.transform='scale(1.3)';};
+    row.appendChild(sp);
+  });
+  document.getElementById('shareText').textContent=L.share;
+  document.getElementById('shareBtn').onclick=()=>{
+    fbInc(stateId,{shares:1});
+    const url=`https://cyberneom.xyz/x/${stateId}`;
+    const msg=L.shareMsg.replace('{n}',st.n[lang]||st.n.en).replace('{u}',url);
+    if(navigator.share)navigator.share({text:msg,url}).catch(()=>{});
+    else navigator.clipboard?.writeText(msg);
+  };
+  document.getElementById('exploreBtn').textContent=L.explore;
+  document.getElementById('exploreBtn').onclick=()=>{window.location.href='/statesExplore';};
+  // PRO upsell for free states
+  if(!st.pro){
+    const box=document.getElementById('proBox');box.style.display='block';
+    document.getElementById('proText').textContent=L.unlock;
+    document.getElementById('proBtn').textContent=L.gopro;
+    document.getElementById('proBtn').onclick=()=>window.open('https://cyberneom.xyz/planes-de-suscripcion','_blank');
+  }
+}
+
+// ─── UTIL ──────────────────────────────────────────────────
+function show(id){document.querySelectorAll('.step').forEach(e=>e.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function fmtCount(n){if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(1)+'K';return String(n);}
+function luminance(hex){const r=parseInt(hex.slice(1,3),16)/255,g=parseInt(hex.slice(3,5),16)/255,b=parseInt(hex.slice(5,7),16)/255;return .299*r+.587*g+.114*b;}
+
+// ─── GO ────────────────────────────────────────────────────
+initLanding();
+</script>
+</body>
+</html>

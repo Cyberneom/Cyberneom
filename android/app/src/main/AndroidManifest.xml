@@ -59,6 +59,35 @@
                     android:scheme="app" />
             </intent-filter>
 
+            <!-- App Links: cyberneom.xyz/x/* state links open in app -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https"
+                    android:host="cyberneom.xyz"
+                    android:pathPrefix="/x/" />
+                <data android:scheme="https"
+                    android:host="www.cyberneom.xyz"
+                    android:pathPrefix="/x/" />
+            </intent-filter>
+
+            <!-- App Links: room and ritual deep links -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https"
+                    android:host="cyberneom.xyz"
+                    android:pathPrefix="/room/" />
+                <data android:scheme="https"
+                    android:host="cyberneom.xyz"
+                    android:pathPrefix="/r/" />
+                <data android:scheme="https"
+                    android:host="cyberneom.xyz"
+                    android:pathPrefix="/statesExplore" />
+            </intent-filter>
+
             <intent-filter>
                 <action android:name="android.intent.action.GET_CONTENT" />
                 <category android:name="android.intent.category.DEFAULT" />

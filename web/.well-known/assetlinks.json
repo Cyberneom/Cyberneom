@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.cyberneom.neom",
+      "sha256_cert_fingerprints": [
+        "TODO:GET_FROM_PLAY_CONSOLE > Setup > App signing > App signing key certificate > SHA-256"
+      ]
+    }
+  }
+]

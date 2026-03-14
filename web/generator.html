@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#000000">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta property="og:title" content="Neom Generator — Cyberneom">
+<meta property="og:description" content="Interactive frequency generator with binaural beats, breathing guide, and neuro states.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cyberneom">
+<title>Neom Generator — Cyberneom</title>
+<link rel="preconnect" href="https://firestore.googleapis.com" crossorigin>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow-y:auto;overflow-x:hidden;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0a0a0f;color:#fff;-webkit-tap-highlight-color:transparent}
+#app{min-height:100%;padding:1rem;max-width:480px;margin:0 auto}
+/* Header */
+.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem}
+.hdr h1{font-size:1.2rem;font-weight:600;letter-spacing:.5px}
+.hdr .lang-sel{background:none;border:1px solid rgba(255,255,255,.15);color:#fff;padding:.25rem .5rem;border-radius:6px;font-size:.8rem;cursor:pointer}
+/* Play button */
+.play-btn{width:64px;height:64px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.5rem;transition:all .2s;margin:0 auto 1rem}
+.play-btn:active{transform:scale(.9)}
+.play-btn.on{animation:glow 2s infinite alternate}
+@keyframes glow{0%{box-shadow:0 0 8px var(--eeg)}100%{box-shadow:0 0 24px var(--eeg)}}
+/* Canvas */
+canvas{width:100%;height:120px;border-radius:12px;background:rgba(255,255,255,.03);margin-bottom:1rem;display:block}
+/* Freq display */
+.freq-display{display:flex;justify-content:space-around;margin-bottom:1rem;text-align:center}
+.freq-display .val{font-size:2rem;font-weight:200;font-family:'Courier New',monospace}
+.freq-display .lbl{font-size:.7rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1px;margin-top:.15rem}
+.eeg-badge{display:inline-block;padding:.2rem .6rem;border-radius:10px;font-size:.7rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-top:.5rem}
+/* Sliders */
+.slider-group{margin-bottom:.8rem}
+.slider-row{display:flex;align-items:center;gap:.6rem;margin-bottom:.3rem}
+.slider-row label{font-size:.75rem;color:rgba(255,255,255,.5);width:50px;text-align:right;flex-shrink:0}
+.slider-row input[type=range]{flex:1;-webkit-appearance:none;height:4px;border-radius:2px;background:rgba(255,255,255,.1);outline:none}
+.slider-row input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#fff;cursor:pointer}
+.slider-row .sv{font-size:.75rem;color:rgba(255,255,255,.6);width:55px;font-family:'Courier New',monospace}
+/* Neuro states */
+.section{margin-bottom:1rem}
+.section-title{font-size:.75rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:.5rem;cursor:pointer;display:flex;align-items:center;gap:.4rem}
+.section-title::before{content:'';display:inline-block;width:6px;height:6px;border-right:1.5px solid rgba(255,255,255,.35);border-bottom:1.5px solid rgba(255,255,255,.35);transform:rotate(-45deg);transition:transform .2s}
+.section-title.open::before{transform:rotate(45deg)}
+.section-body{display:none;padding:.3rem 0}
+.section-body.open{display:block}
+.neuro-row{display:flex;flex-wrap:wrap;gap:.4rem}
+.neuro-btn{padding:.45rem .7rem;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:rgba(255,255,255,.7);font-size:.8rem;cursor:pointer;transition:all .15s}
+.neuro-btn:active{transform:scale(.95)}
+.neuro-btn.active{border-color:var(--eeg);color:#fff;background:rgba(255,255,255,.08)}
+/* Breathing circle */
+.breath-wrap{display:flex;flex-direction:column;align-items:center;gap:.5rem;margin:.5rem 0}
+.breath-circle{width:80px;height:80px;border-radius:50%;border:2px solid;transition:transform .3s ease}
+.breath-label{font-size:.8rem;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.breath-modes{display:flex;gap:.4rem;flex-wrap:wrap}
+.breath-modes button{padding:.3rem .6rem;border-radius:6px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:rgba(255,255,255,.6);font-size:.75rem;cursor:pointer}
+.breath-modes button.active{border-color:var(--eeg);color:#fff}
+/* Toggle */
+.toggle-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem}
+.toggle{width:36px;height:20px;border-radius:10px;background:rgba(255,255,255,.15);cursor:pointer;position:relative;transition:background .2s}
+.toggle.on{background:var(--eeg)}
+.toggle::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left .2s}
+.toggle.on::after{left:18px}
+.toggle-label{font-size:.8rem;color:rgba(255,255,255,.6)}
+/* Footer */
+.footer{text-align:center;padding:1.5rem 0;color:rgba(255,255,255,.2);font-size:.8rem}
+.footer a{color:rgba(255,255,255,.35);text-decoration:none}
+/* Responsive */
+@media(min-width:600px){#app{padding:2rem}canvas{height:160px}}
+</style>
+</head>
+<body>
+<div id="app">
+  <!-- Header -->
+  <div class="hdr">
+    <h1 id="title">Neom Generator</h1>
+    <select class="lang-sel" id="langSel" onchange="setLang(this.value)">
+      <option value="en">EN</option><option value="es">ES</option>
+      <option value="fr">FR</option><option value="de">DE</option>
+    </select>
+  </div>
+
+  <!-- Play button -->
+  <div class="play-btn" id="playBtn" onclick="togglePlay()" style="--eeg:#00CED1;border-color:rgba(255,255,255,.2)">
+    <span id="playIcon">&#9654;</span>
+  </div>
+
+  <!-- Visualization canvas -->
+  <canvas id="viz" width="960" height="240"></canvas>
+
+  <!-- Frequency display -->
+  <div class="freq-display">
+    <div><div class="val" id="freqVal">432</div><div class="lbl" id="freqLbl">Hz</div></div>
+    <div><div class="val" id="beatVal">10</div><div class="lbl" id="beatLbl">Binaural</div></div>
+    <div>
+      <div class="val" id="lrVal">L:432 R:442</div>
+      <div class="lbl">L / R</div>
+      <div class="eeg-badge" id="eegBadge" style="background:#00CED1;color:#000">ALPHA</div>
+    </div>
+  </div>
+
+  <!-- Frequency sliders -->
+  <div class="slider-group">
+    <div class="slider-row">
+      <label id="slFreqLbl">Freq</label>
+      <input type="range" id="slFreq" min="40" max="1500" value="432" step="0.1" oninput="onFreq(this.value)">
+      <span class="sv" id="slFreqV">432.0 Hz</span>
+    </div>
+    <div class="slider-row">
+      <label id="slBeatLbl">Beat</label>
+      <input type="range" id="slBeat" min="-250" max="250" value="10" step="0.1" oninput="onBeat(this.value)">
+      <span class="sv" id="slBeatV">10.0 Hz</span>
+    </div>
+    <div class="slider-row">
+      <label id="slVolLbl">Vol</label>
+      <input type="range" id="slVol" min="0" max="100" value="50" oninput="onVol(this.value)">
+      <span class="sv" id="slVolV">50%</span>
+    </div>
+  </div>
+
+  <!-- Neuro States -->
+  <div class="section">
+    <div class="section-title open" onclick="toggleSection(this)" id="secNeuro">Neuro States</div>
+    <div class="section-body open" id="neuroBody">
+      <div class="neuro-row" id="neuroRow"></div>
+    </div>
+  </div>
+
+  <!-- Breathing -->
+  <div class="section">
+    <div class="section-title" onclick="toggleSection(this)" id="secBreath">Breathing</div>
+    <div class="section-body" id="breathBody">
+      <div class="breath-modes" id="breathModes"></div>
+      <div class="breath-wrap" id="breathWrap" style="display:none">
+        <div class="breath-circle" id="breathCircle" style="border-color:var(--eeg)"></div>
+        <div class="breath-label" id="breathPhaseText"></div>
+      </div>
+      <div class="slider-row" id="breathRateRow" style="display:none">
+        <label id="slBreathRLbl">Rate</label>
+        <input type="range" id="slBreathRate" min="2" max="12" value="6" step="0.5" oninput="onBreathRate(this.value)">
+        <span class="sv" id="slBreathRV">6/min</span>
+      </div>
+      <div class="slider-row" id="breathDepthRow" style="display:none">
+        <label id="slBreathDLbl">Depth</label>
+        <input type="range" id="slBreathDepth" min="0" max="100" value="50" oninput="onBreathDepth(this.value)">
+        <span class="sv" id="slBreathDV">50%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modulation -->
+  <div class="section">
+    <div class="section-title" onclick="toggleSection(this)" id="secMod">Modulation</div>
+    <div class="section-body" id="modBody">
+      <div class="neuro-row" id="modRow"></div>
+      <div id="modSliders" style="display:none">
+        <div class="slider-row" style="margin-top:.4rem">
+          <label id="slModFLbl">Rate</label>
+          <input type="range" id="slModFreq" min="0.1" max="20" value="0.5" step="0.1" oninput="onModFreq(this.value)">
+          <span class="sv" id="slModFV">0.5 Hz</span>
+        </div>
+        <div class="slider-row">
+          <label id="slModDLbl">Depth</label>
+          <input type="range" id="slModDepth" min="0" max="100" value="50" oninput="onModDepth(this.value)">
+          <span class="sv" id="slModDV">50%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Isochronic -->
+  <div class="section">
+    <div class="section-title" onclick="toggleSection(this)" id="secIso">Isochronic Tones</div>
+    <div class="section-body" id="isoBody">
+      <div class="toggle-row">
+        <div class="toggle" id="isoToggle" onclick="toggleIso()"></div>
+        <span class="toggle-label" id="isoLabel">Off</span>
+      </div>
+      <div id="isoSliders" style="display:none">
+        <div class="slider-row">
+          <label id="slIsoFLbl">Pulse</label>
+          <input type="range" id="slIsoFreq" min="0.5" max="40" value="4" step="0.5" oninput="onIsoFreq(this.value)">
+          <span class="sv" id="slIsoFV">4.0 Hz</span>
+        </div>
+        <div class="slider-row">
+          <label id="slIsoDLbl">Duty</label>
+          <input type="range" id="slIsoDuty" min="10" max="90" value="50" oninput="onIsoDuty(this.value)">
+          <span class="sv" id="slIsoDV">50%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Spatial -->
+  <div class="section">
+    <div class="section-title" onclick="toggleSection(this)" id="secSpatial">Spatial Audio</div>
+    <div class="section-body" id="spatialBody">
+      <div class="slider-row">
+        <label>Pan</label>
+        <input type="range" id="slPan" min="-100" max="100" value="0" oninput="onPan(this.value)">
+        <span class="sv" id="slPanV">Center</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <a href="/statesExplore" id="footExplore"></a><br>
+    <span>Cyberneom</span>
+  </div>
+</div>
+
+<script>
+// ─── I18N ──────────────────────────────────────────────────
+const T={
+en:{title:'Neom Generator',freq:'Freq',beat:'Binaural Beat',vol:'Volume',neuro:'Neuro States',breathing:'Breathing',modulation:'Modulation',iso:'Isochronic Tones',spatial:'Spatial Audio',play:'Play',stop:'Stop',off:'Off',on:'On',rate:'Rate',depth:'Depth',pulse:'Pulse',duty:'Duty',pan:'Pan',center:'Center',left:'Left',right:'Right',calm:'Calm',focus:'Focus',sleep:'Sleep',creativity:'Creativity',integration:'Integration',neutral:'Neutral',box:'Box 4-4-4-4',fourSevenEight:'4-7-8',free:'Free',none:'None',fm:'FM',am:'AM',pm:'Phase',inhale:'INHALE',holdIn:'HOLD',exhale:'EXHALE',holdOut:'PAUSE',explore:'Explore frequency states',delta:'DELTA',theta:'THETA',alpha:'ALPHA',beta:'BETA',gamma:'GAMMA'},
+es:{title:'Neom Generador',freq:'Frec',beat:'Beat Binaural',vol:'Volumen',neuro:'Neuro Estados',breathing:'Respiracion',modulation:'Modulacion',iso:'Tonos Isocronicos',spatial:'Audio Espacial',play:'Iniciar',stop:'Detener',off:'Off',on:'On',rate:'Tasa',depth:'Profundidad',pulse:'Pulso',duty:'Ciclo',pan:'Pan',center:'Centro',left:'Izq',right:'Der',calm:'Calma',focus:'Enfoque',sleep:'Sueno',creativity:'Creatividad',integration:'Integracion',neutral:'Neutral',box:'Cuadrada 4-4-4-4',fourSevenEight:'4-7-8',free:'Libre',none:'Ninguna',fm:'FM',am:'AM',pm:'Fase',inhale:'INHALA',holdIn:'SOSTEN',exhale:'EXHALA',holdOut:'PAUSA',explore:'Explorar estados de frecuencia',delta:'DELTA',theta:'THETA',alpha:'ALPHA',beta:'BETA',gamma:'GAMMA'},
+fr:{title:'Neom Generateur',freq:'Freq',beat:'Beat Binaural',vol:'Volume',neuro:'Neuro Etats',breathing:'Respiration',modulation:'Modulation',iso:'Tons Isochroniques',spatial:'Audio Spatial',play:'Demarrer',stop:'Arreter',off:'Off',on:'On',rate:'Taux',depth:'Profondeur',pulse:'Pulse',duty:'Cycle',pan:'Pan',center:'Centre',left:'Gauche',right:'Droite',calm:'Calme',focus:'Focus',sleep:'Sommeil',creativity:'Creativite',integration:'Integration',neutral:'Neutre',box:'Carree 4-4-4-4',fourSevenEight:'4-7-8',free:'Libre',none:'Aucune',fm:'FM',am:'AM',pm:'Phase',inhale:'INSPIREZ',holdIn:'RETENEZ',exhale:'EXPIREZ',holdOut:'PAUSE',explore:'Explorer les etats de frequence',delta:'DELTA',theta:'THETA',alpha:'ALPHA',beta:'BETA',gamma:'GAMMA'},
+de:{title:'Neom Generator',freq:'Freq',beat:'Binauraler Beat',vol:'Lautstarke',neuro:'Neuro Zustande',breathing:'Atmung',modulation:'Modulation',iso:'Isochronische Tone',spatial:'Raumklang',play:'Starten',stop:'Stoppen',off:'Aus',on:'An',rate:'Rate',depth:'Tiefe',pulse:'Puls',duty:'Zyklus',pan:'Pan',center:'Mitte',left:'Links',right:'Rechts',calm:'Ruhe',focus:'Fokus',sleep:'Schlaf',creativity:'Kreativitat',integration:'Integration',neutral:'Neutral',box:'Quadrat 4-4-4-4',fourSevenEight:'4-7-8',free:'Frei',none:'Keine',fm:'FM',am:'AM',pm:'Phase',inhale:'EINATMEN',holdIn:'HALTEN',exhale:'AUSATMEN',holdOut:'PAUSE',explore:'Frequenzzustande erkunden',delta:'DELTA',theta:'THETA',alpha:'ALPHA',beta:'BETA',gamma:'GAMMA'}
+};
+
+// ─── STATE ─────────────────────────────────────────────────
+let lang=(new URLSearchParams(location.search).get('lang')||(navigator.language||'en').slice(0,2));
+if(!T[lang])lang='en';
+let L=T[lang];
+
+let freq=432,beat=10,vol=.5,panX=0;
+let playing=false;
+let breathMode='off'; // off,box,fourSevenEight,free
+let breathRate=6,breathDepth=.5,breathPhase=0;
+let modType='none'; // none,fm,am,pm
+let modFreq=.5,modDepth=.5;
+let isoEnabled=false,isoFreq=4,isoDuty=.5,isoPhase=0;
+let neuroState='neutral';
+
+// Audio
+let ctx,oscL,oscR,gainL,gainR,merger,master,fmOsc,fmGain;
+// Viz
+let vizAF,lastVizTime=0;
+// Breath anim
+let breathAF,breathStartTime=0;
+
+// ─── EEG ───────────────────────────────────────────────────
+const EEG=[
+  {max:4,name:'delta',col:'#4B0082'},
+  {max:8,name:'theta',col:'#6A5ACD'},
+  {max:12,name:'alpha',col:'#00CED1'},
+  {max:30,name:'beta',col:'#FFA500'},
+  {max:999,name:'gamma',col:'#FF4500'}
+];
+function getEEG(b){
+  const ab=Math.abs(b);
+  for(const e of EEG)if(ab<e.max)return e;
+  return EEG[4];
+}
+
+// ─── NEURO STATE PRESETS ──────────────────────────────────
+const NEURO={
+  calm:{breath:'box',breathRate:5.5,breathDepth:.6,mod:'none',iso:true,isoFreq:4,pan:0},
+  focus:{breath:'free',breathRate:7,breathDepth:.3,mod:'fm',modFreq:.3,modDepth:.2,iso:true,isoFreq:14,pan:0},
+  sleep:{breath:'fourSevenEight',breathRate:4,breathDepth:.8,mod:'none',iso:true,isoFreq:2.5,pan:0},
+  creativity:{breath:'free',breathRate:6.5,breathDepth:.4,mod:'fm',modFreq:.6,modDepth:.35,iso:false,pan:0},
+  integration:{breath:'free',breathRate:6,breathDepth:.5,mod:'pm',modFreq:.2,modDepth:.25,iso:false,pan:0},
+  neutral:{breath:'off',mod:'none',iso:false,pan:0}
+};
+
+// ─── FIREBASE (lightweight REST) ──────────────────────────
+const FB_PROJECT='cyberneom-edd2d';
+function fbInc(fields){
+  const transforms=Object.entries(fields).map(([k,v])=>({fieldPath:k,increment:{integerValue:String(v)}}));
+  fetch(`https://firestore.googleapis.com/v1/projects/${FB_PROJECT}/databases/(default)/documents:commit`,{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({writes:[{transform:{document:`projects/${FB_PROJECT}/databases/(default)/documents/generator_usage/web`,fieldTransforms:transforms}}]})
+  }).catch(()=>{});
+}
+
+// ─── AUDIO ENGINE ─────────────────────────────────────────
+function audioStart(){
+  ctx=new AudioContext();
+  master=ctx.createGain();master.gain.value=0;master.connect(ctx.destination);
+  merger=ctx.createChannelMerger(2);merger.connect(master);
+
+  // Left oscillator
+  gainL=ctx.createGain();gainL.gain.value=1;gainL.connect(merger,0,0);
+  oscL=ctx.createOscillator();oscL.type='sine';oscL.frequency.value=freq;oscL.connect(gainL);
+
+  // Right oscillator
+  gainR=ctx.createGain();gainR.gain.value=1;gainR.connect(merger,0,1);
+  oscR=ctx.createOscillator();oscR.type='sine';oscR.frequency.value=freq+beat;oscR.connect(gainR);
+
+  oscL.start();oscR.start();
+
+  // FM modulation oscillator (always present, depth controls effect)
+  fmOsc=ctx.createOscillator();fmOsc.type='sine';fmOsc.frequency.value=modFreq;
+  fmGain=ctx.createGain();fmGain.gain.value=0;
+  fmOsc.connect(fmGain);
+  fmGain.connect(oscL.frequency);
+  fmGain.connect(oscR.frequency);
+  fmOsc.start();
+
+  applyModulation();
+  applySpatial();
+
+  // Fade in
+  master.gain.setValueAtTime(0,ctx.currentTime);
+  master.gain.linearRampToValueAtTime(vol,ctx.currentTime+1.5);
+}
+
+function audioStop(){
+  if(!ctx)return Promise.resolve();
+  const now=ctx.currentTime;
+  master.gain.setValueAtTime(master.gain.value,now);
+  master.gain.linearRampToValueAtTime(0,now+1.5);
+  return new Promise(r=>setTimeout(()=>{
+    try{oscL.stop();oscR.stop();fmOsc.stop();}catch(e){}
+    ctx.close().catch(()=>{});ctx=null;r();
+  },1600));
+}
+
+function applyFreqs(){
+  if(!oscL)return;
+  oscL.frequency.setValueAtTime(freq,ctx.currentTime);
+  oscR.frequency.setValueAtTime(freq+beat,ctx.currentTime);
+}
+
+function applyModulation(){
+  if(!fmOsc)return;
+  fmOsc.frequency.setValueAtTime(modFreq,ctx.currentTime);
+  if(modType==='fm'){
+    fmGain.gain.setValueAtTime(freq*modDepth,ctx.currentTime);
+  }else{
+    fmGain.gain.setValueAtTime(0,ctx.currentTime);
+  }
+}
+
+function applySpatial(){
+  if(!gainL)return;
+  // Equal-power panning
+  const p=panX; // -1 to 1
+  const l=Math.cos((p+1)*Math.PI/4);
+  const r=Math.sin((p+1)*Math.PI/4);
+  gainL.gain.setValueAtTime(l,ctx.currentTime);
+  gainR.gain.setValueAtTime(r,ctx.currentTime);
+}
+
+// ─── BREATHING ENGINE ─────────────────────────────────────
+function getBreathEnvelope(t){
+  if(breathMode==='off')return{env:1,phase:'',progress:0};
+  const cycleSec=60/breathRate;
+  const pos=(t%cycleSec)/cycleSec;
+  let env=1,phaseName='';
+
+  if(breathMode==='box'){
+    if(pos<.25){env=pos*4;phaseName='inhale';}
+    else if(pos<.5){env=1;phaseName='holdIn';}
+    else if(pos<.75){env=1-(pos-.5)*4;phaseName='exhale';}
+    else{env=0;phaseName='holdOut';}
+  }else if(breathMode==='fourSevenEight'){
+    // 4-7-8: inhale 21%, hold 37%, exhale 42%
+    if(pos<.21){env=pos/.21;phaseName='inhale';}
+    else if(pos<.58){env=1;phaseName='holdIn';}
+    else{env=1-(pos-.58)/.42;phaseName='exhale';}
+  }else if(breathMode==='free'){
+    env=(Math.sin(pos*Math.PI*2-Math.PI/2)+1)/2;
+    phaseName=pos<.5?'inhale':'exhale';
+  }
+
+  const mod=1-breathDepth+breathDepth*Math.max(0,env);
+  return{env:mod,phase:phaseName,progress:env};
+}
+
+// ─── ISOCHRONIC ENGINE ───────────────────────────────────
+function getIsoEnvelope(t){
+  if(!isoEnabled)return 1;
+  const cycle=1/isoFreq;
+  const pos=(t%cycle)/cycle;
+  return pos<isoDuty?1:0;
+}
+
+// ─── AM ENGINE ────────────────────────────────────────────
+function getAMEnvelope(t){
+  if(modType!=='am')return 1;
+  return 1-modDepth+modDepth*Math.abs(Math.sin(2*Math.PI*modFreq*t));
+}
+
+// ─── MASTER GAIN LOOP ─────────────────────────────────────
+let gainAF;
+function startGainLoop(){
+  breathStartTime=performance.now()/1000;
+  function tick(){
+    if(!playing)return;
+    const t=performance.now()/1000-breathStartTime;
+    const br=getBreathEnvelope(t);
+    const iso=getIsoEnvelope(t);
+    const am=getAMEnvelope(t);
+    const finalVol=vol*br.env*iso*am;
+    if(master&&ctx)master.gain.setTargetAtTime(finalVol,ctx.currentTime,.02);
+
+    // Update breathing UI
+    updateBreathUI(br);
+
+    gainAF=requestAnimationFrame(tick);
+  }
+  gainAF=requestAnimationFrame(tick);
+}
+function stopGainLoop(){cancelAnimationFrame(gainAF);}
+
+// ─── VISUALIZATION ────────────────────────────────────────
+const vizCanvas=document.getElementById('viz');
+const vizCtx=vizCanvas.getContext('2d');
+
+function startViz(){
+  function draw(ts){
+    if(!playing){vizAF=requestAnimationFrame(draw);return;}
+    const w=vizCanvas.width,h=vizCanvas.height;
+    vizCtx.clearRect(0,0,w,h);
+
+    const t=(ts/1000);
+    const eeg=getEEG(beat);
+
+    // Draw waveform
+    vizCtx.beginPath();
+    vizCtx.strokeStyle=eeg.col;
+    vizCtx.lineWidth=2;
+    const breathVal=getBreathEnvelope(t-breathStartTime);
+    const isoVal=getIsoEnvelope(t-breathStartTime);
+    const amVal=getAMEnvelope(t-breathStartTime);
+
+    for(let x=0;x<w;x++){
+      const xNorm=x/w;
+      const tSample=t+xNorm*.02;
+      const sL=Math.sin(2*Math.PI*freq*tSample);
+      const sR=Math.sin(2*Math.PI*(freq+beat)*tSample);
+      const combined=(sL+sR)*.5*breathVal.env*isoVal*amVal;
+      const y=h/2-combined*h*.4;
+      if(x===0)vizCtx.moveTo(x,y);else vizCtx.lineTo(x,y);
+    }
+    vizCtx.stroke();
+
+    // Beat frequency sine (slow, subtle)
+    vizCtx.beginPath();
+    vizCtx.strokeStyle=eeg.col+'40';
+    vizCtx.lineWidth=1;
+    for(let x=0;x<w;x++){
+      const xNorm=x/w;
+      const beatWave=Math.sin(2*Math.PI*Math.abs(beat)*(t+xNorm*.5));
+      const y=h/2-beatWave*h*.15;
+      if(x===0)vizCtx.moveTo(x,y);else vizCtx.lineTo(x,y);
+    }
+    vizCtx.stroke();
+
+    // Center line
+    vizCtx.beginPath();
+    vizCtx.strokeStyle='rgba(255,255,255,.05)';
+    vizCtx.moveTo(0,h/2);vizCtx.lineTo(w,h/2);
+    vizCtx.stroke();
+
+    vizAF=requestAnimationFrame(draw);
+  }
+  vizAF=requestAnimationFrame(draw);
+}
+function stopViz(){cancelAnimationFrame(vizAF);}
+
+// ─── UI UPDATES ───────────────────────────────────────────
+function updateFreqDisplay(){
+  const lf=freq,rf=freq+beat;
+  document.getElementById('freqVal').textContent=freq.toFixed(1);
+  document.getElementById('beatVal').textContent=beat.toFixed(1);
+  document.getElementById('lrVal').textContent=`L:${lf.toFixed(0)} R:${rf.toFixed(0)}`;
+  const eeg=getEEG(beat);
+  const badge=document.getElementById('eegBadge');
+  badge.textContent=L[eeg.name]||eeg.name.toUpperCase();
+  badge.style.background=eeg.col;
+  badge.style.color=eeg.col==='#FFA500'||eeg.col==='#FF4500'?'#000':'#fff';
+  document.documentElement.style.setProperty('--eeg',eeg.col);
+  document.getElementById('playBtn').style.setProperty('--eeg',eeg.col);
+  if(playing)document.getElementById('playBtn').style.borderColor=eeg.col;
+}
+
+function updateBreathUI(br){
+  if(breathMode==='off')return;
+  const circle=document.getElementById('breathCircle');
+  const scale=.6+br.progress*.6;
+  circle.style.transform=`scale(${scale})`;
+  circle.style.borderColor=getEEG(beat).col;
+  document.getElementById('breathPhaseText').textContent=L[br.phase]||br.phase;
+}
+
+// ─── EVENT HANDLERS ───────────────────────────────────────
+function togglePlay(){
+  if(playing){
+    playing=false;
+    stopGainLoop();
+    audioStop();
+    document.getElementById('playBtn').classList.remove('on');
+    document.getElementById('playBtn').style.borderColor='rgba(255,255,255,.2)';
+    document.getElementById('playIcon').innerHTML='&#9654;';
+  }else{
+    playing=true;
+    audioStart();
+    startGainLoop();
+    document.getElementById('playBtn').classList.add('on');
+    document.getElementById('playBtn').style.borderColor=getEEG(beat).col;
+    document.getElementById('playIcon').innerHTML='&#9632;';
+    fbInc({sessions:1,[`sessions_${todayKey()}`]:1});
+  }
+}
+
+function onFreq(v){freq=parseFloat(v);document.getElementById('slFreqV').textContent=freq.toFixed(1)+' Hz';applyFreqs();applyModulation();updateFreqDisplay();}
+function onBeat(v){beat=parseFloat(v);document.getElementById('slBeatV').textContent=beat.toFixed(1)+' Hz';applyFreqs();updateFreqDisplay();}
+function onVol(v){vol=v/100;document.getElementById('slVolV').textContent=v+'%';if(master&&ctx&&breathMode==='off'&&!isoEnabled&&modType!=='am')master.gain.setTargetAtTime(vol,ctx.currentTime,.05);}
+function onPan(v){panX=v/100;const sv=document.getElementById('slPanV');if(Math.abs(panX)<.05)sv.textContent=L.center;else sv.textContent=(panX<0?L.left:L.right)+' '+Math.abs(v)+'%';applySpatial();}
+
+function onBreathRate(v){breathRate=parseFloat(v);document.getElementById('slBreathRV').textContent=v+'/min';}
+function onBreathDepth(v){breathDepth=v/100;document.getElementById('slBreathDV').textContent=v+'%';}
+
+function onModFreq(v){modFreq=parseFloat(v);document.getElementById('slModFV').textContent=modFreq.toFixed(1)+' Hz';applyModulation();}
+function onModDepth(v){modDepth=v/100;document.getElementById('slModDV').textContent=v+'%';applyModulation();}
+
+function onIsoFreq(v){isoFreq=parseFloat(v);document.getElementById('slIsoFV').textContent=isoFreq.toFixed(1)+' Hz';}
+function onIsoDuty(v){isoDuty=v/100;document.getElementById('slIsoDV').textContent=v+'%';}
+
+// ─── NEURO STATE SELECTION ────────────────────────────────
+function selectNeuro(state){
+  neuroState=state;
+  document.querySelectorAll('#neuroRow .neuro-btn').forEach(b=>b.classList.toggle('active',b.dataset.state===state));
+  const cfg=NEURO[state];if(!cfg)return;
+
+  // Apply breath
+  selectBreath(cfg.breath);
+  if(cfg.breathRate){breathRate=cfg.breathRate;document.getElementById('slBreathRate').value=cfg.breathRate;document.getElementById('slBreathRV').textContent=cfg.breathRate+'/min';}
+  if(cfg.breathDepth!==undefined){breathDepth=cfg.breathDepth;document.getElementById('slBreathDepth').value=cfg.breathDepth*100;document.getElementById('slBreathDV').textContent=Math.round(cfg.breathDepth*100)+'%';}
+
+  // Apply mod
+  selectMod(cfg.mod||'none');
+  if(cfg.modFreq){modFreq=cfg.modFreq;document.getElementById('slModFreq').value=cfg.modFreq;document.getElementById('slModFV').textContent=cfg.modFreq.toFixed(1)+' Hz';}
+  if(cfg.modDepth!==undefined){modDepth=cfg.modDepth;document.getElementById('slModDepth').value=cfg.modDepth*100;document.getElementById('slModDV').textContent=Math.round(cfg.modDepth*100)+'%';}
+  applyModulation();
+
+  // Apply iso
+  isoEnabled=!!cfg.iso;
+  document.getElementById('isoToggle').classList.toggle('on',isoEnabled);
+  document.getElementById('isoLabel').textContent=isoEnabled?L.on:L.off;
+  document.getElementById('isoSliders').style.display=isoEnabled?'block':'none';
+  if(cfg.isoFreq){isoFreq=cfg.isoFreq;document.getElementById('slIsoFreq').value=cfg.isoFreq;document.getElementById('slIsoFV').textContent=cfg.isoFreq.toFixed(1)+' Hz';}
+}
+
+// ─── BREATH MODE SELECTION ────────────────────────────────
+function selectBreath(mode){
+  breathMode=mode;breathPhase=0;breathStartTime=performance.now()/1000;
+  document.querySelectorAll('#breathModes button').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
+  const show=mode!=='off';
+  document.getElementById('breathWrap').style.display=show?'flex':'none';
+  document.getElementById('breathRateRow').style.display=show?'flex':'none';
+  document.getElementById('breathDepthRow').style.display=show?'flex':'none';
+}
+
+// ─── MODULATION TYPE ──────────────────────────────────────
+function selectMod(type){
+  modType=type;
+  document.querySelectorAll('#modRow .neuro-btn').forEach(b=>b.classList.toggle('active',b.dataset.mod===type));
+  document.getElementById('modSliders').style.display=type!=='none'?'block':'none';
+  applyModulation();
+}
+
+// ─── ISOCHRONIC TOGGLE ───────────────────────────────────
+function toggleIso(){
+  isoEnabled=!isoEnabled;
+  document.getElementById('isoToggle').classList.toggle('on',isoEnabled);
+  document.getElementById('isoLabel').textContent=isoEnabled?L.on:L.off;
+  document.getElementById('isoSliders').style.display=isoEnabled?'block':'none';
+}
+
+// ─── SECTION TOGGLE ───────────────────────────────────────
+function toggleSection(el){
+  el.classList.toggle('open');
+  el.nextElementSibling.classList.toggle('open');
+}
+
+// ─── LANGUAGE ─────────────────────────────────────────────
+function setLang(l){
+  lang=l;L=T[lang]||T.en;
+  const params=new URLSearchParams(location.search);params.set('lang',l);
+  history.replaceState(null,'',location.pathname+'?'+params);
+  applyTranslations();
+}
+
+function applyTranslations(){
+  document.getElementById('title').textContent=L.title;
+  document.title=L.title+' — Cyberneom';
+  document.documentElement.lang=lang;
+  document.getElementById('slFreqLbl').textContent=L.freq;
+  document.getElementById('slBeatLbl').textContent=L.beat;
+  document.getElementById('slVolLbl').textContent=L.vol;
+  document.getElementById('secNeuro').childNodes[0].textContent=L.neuro;
+  document.getElementById('secBreath').childNodes[0].textContent=L.breathing;
+  document.getElementById('secMod').childNodes[0].textContent=L.modulation;
+  document.getElementById('secIso').childNodes[0].textContent=L.iso;
+  document.getElementById('secSpatial').childNodes[0].textContent=L.spatial;
+  document.getElementById('footExplore').textContent=L.explore;
+  document.getElementById('isoLabel').textContent=isoEnabled?L.on:L.off;
+  // Rebuild dynamic buttons
+  buildNeuroButtons();
+  buildBreathButtons();
+  buildModButtons();
+  updateFreqDisplay();
+}
+
+// ─── BUILD DYNAMIC UI ────────────────────────────────────
+function buildNeuroButtons(){
+  const row=document.getElementById('neuroRow');row.innerHTML='';
+  ['calm','focus','sleep','creativity','integration','neutral'].forEach(s=>{
+    const b=document.createElement('button');
+    b.className='neuro-btn'+(neuroState===s?' active':'');
+    b.dataset.state=s;
+    b.textContent=L[s]||s;
+    b.onclick=()=>selectNeuro(s);
+    row.appendChild(b);
+  });
+}
+
+function buildBreathButtons(){
+  const row=document.getElementById('breathModes');row.innerHTML='';
+  [['off',L.off],['box',L.box],['fourSevenEight',L.fourSevenEight],['free',L.free]].forEach(([m,label])=>{
+    const b=document.createElement('button');
+    b.className=breathMode===m?'active':'';
+    b.dataset.mode=m;
+    b.textContent=label;
+    b.onclick=()=>selectBreath(m);
+    row.appendChild(b);
+  });
+}
+
+function buildModButtons(){
+  const row=document.getElementById('modRow');row.innerHTML='';
+  [['none',L.none],['fm',L.fm],['am',L.am],['pm',L.pm]].forEach(([m,label])=>{
+    const b=document.createElement('button');
+    b.className='neuro-btn'+(modType===m?' active':'');
+    b.dataset.mod=m;
+    b.textContent=label;
+    b.onclick=()=>selectMod(m);
+    row.appendChild(b);
+  });
+}
+
+// ─── UTIL ─────────────────────────────────────────────────
+function todayKey(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+
+// ─── INIT ─────────────────────────────────────────────────
+document.getElementById('langSel').value=lang;
+applyTranslations();
+updateFreqDisplay();
+startViz();
+</script>
+</body>
+</html>

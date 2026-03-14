@@ -93,6 +93,9 @@ dependencies:
   neom_search:
     git:
       url: https://github.com/Cyberneom/neom_search.git
+  neom_ia:
+    git:
+      url: git@github.com:Cyberneom/neom_ia.git
   neom_settings:
     git:
       url: https://github.com/Cyberneom/neom_settings.git
@@ -187,5 +190,6 @@ flutter:
     - assets/logos/
     - assets/logos/third-party/
     - assets/sounds/
+    - assets/itzli/
     - assets/properties.json
     - assets/frequencies.json
