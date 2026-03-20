@@ -39,6 +39,9 @@ dependencies:
   neom_core:
     git:
       url: git@github.com:Cyberneom/neom_core.git
+  neom_ads:
+    git:
+      url: git@github.com:Open-Neom/neom_ads.git
   neom_commons:
     git:
       url: git@github.com:Cyberneom/neom_commons.git

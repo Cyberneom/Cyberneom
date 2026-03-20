@@ -5,6 +5,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:neom_ads/neom_ads.dart';
+import 'package:neom_timeline/ui/timeline_page.dart';
 import 'package:neom_ia/neom_ia.dart';
 import 'package:sint/sint.dart';
 
@@ -64,6 +66,14 @@ void main() async {
     await hiveFuture;
   } catch (e) {
     AppConfig.logger.e(e.toString());
+  }
+
+  // Initialize AdMob (no-op on web)
+  await AdService.instance.init();
+
+  // Wire ad banner into timeline feed
+  if (AdService.instance.shouldShowAds) {
+    TimelinePage.adWidgetBuilder = () => const AdBannerWidget();
   }
 
   // Remove # from web URLs for vanity URL support

@@ -1,6 +1,8 @@
 dependency_overrides:
   sint:
     path: ../neom_modules/sint
+  neom_ads:
+    path: ../neom_modules/neom_ads
   neom_admin:
     path: ../neom_modules/neom_admin
   neom_analytics:
