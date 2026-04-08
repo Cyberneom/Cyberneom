@@ -1,0 +1,26 @@
+workflows:
+  cyberneom-release-workflow:
+    name: Cyberneom Release Build
+    environment:
+      groups:
+        - github_keys
+        - firebase_credentials
+      flutter: stable
+    scripts:
+      - name: Inyectar Token de GitHub (El Caballo de Troya)
+        script: |
+          git config --global url."https://${GH_PAT}@github.com/".insteadOf "git@github.com:"
+          git config --global url."https://${GH_PAT}@github.com/".insteadOf "ssh://git@github.com/"
+      - name: Limpiar lockfile y caché de Pub
+        script: |
+          find . -name "pubspec.lock" -type f -delete
+          flutter pub cache clean -f || true
+      - name: Instalar Dependencias
+        script: |
+          flutter packages pub get
+      - name: Compilar Android
+        script: |
+          flutter build apk --release
+      - name: Compilar iOS (Sin firma para probar)
+        script: |
+          flutter build ios --release --no-codesign
