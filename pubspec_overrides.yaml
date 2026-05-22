@@ -1,99 +1,139 @@
 dependency_overrides:
+  saia_core:
+    path: ../neom_modules/ai/saia_core
   sint:
-    path: ../neom_modules/sint
+    path: ../neom_modules/framework/sint
   neom_ads:
-    path: ../neom_modules/neom_ads
+    path: ../neom_modules/commerce/neom_ads
   neom_admin:
-    path: ../neom_modules/neom_admin
+    path: ../neom_modules/platform/neom_admin
   neom_analytics:
-    path: ../neom_modules/neom_analytics
+    path: ../neom_modules/analytics/neom_analytics
   neom_audio_player:
-    path: ../neom_modules/neom_audio_player
+    path: ../neom_modules/media/neom_audio_player
   neom_auth:
-    path: ../neom_modules/neom_auth
-  neom_bands:
-    path: ../neom_modules/neom_bands
+    path: ../neom_modules/main/neom_auth
+  neom_collectives:
+    path: ../neom_modules/social/neom_collectives
   neom_blog:
-    path: ../neom_modules/neom_blog
+    path: ../neom_modules/content/neom_blog
   neom_bank:
-    path: ../neom_modules/neom_bank
+    path: ../neom_modules/commerce/neom_bank
   neom_booking:
-    path: ../neom_modules/neom_booking
+    path: ../neom_modules/marketplace/neom_booking
   neom_calendar:
-    path: ../neom_modules/neom_calendar
+    path: ../neom_modules/platform/neom_calendar
+  neom_cloud:
+    path: ../neom_modules/ai/neom_cloud
   neom_camera:
-    path: ../neom_modules/neom_camera
+    path: ../neom_modules/hardware/neom_camera
   neom_core:
-    path: ../neom_modules/neom_core
+    path: ../neom_modules/main/neom_core
   neom_corpus:
-    path: ../neom_modules/neom_corpus
+    path: ../neom_modules/ai/neom_corpus
   neom_commons:
-    path: ../neom_modules/neom_commons
+    path: ../neom_modules/main/neom_commons
   neom_commerce:
-    path: ../neom_modules/neom_commerce
+    path: ../neom_modules/commerce/neom_commerce
   neom_daw:
-    path: ../neom_modules/neom_daw
+    path: ../neom_modules/music/neom_daw
   neom_directory:
-    path: ../neom_modules/neom_directory
+    path: ../neom_modules/marketplace/neom_directory
   neom_downloads:
-    path: ../neom_modules/neom_downloads
+    path: ../neom_modules/media/neom_downloads
   neom_events:
-    path: ../neom_modules/neom_events
+    path: ../neom_modules/social/neom_events
   neom_frequencies:
-    path: ../neom_modules/neom_frequencies
+    path: ../neom_modules/neom/neom_frequencies
   neom_games:
-    path: ../neom_modules/neom_games
+    path: ../neom_modules/engage/neom_games
   neom_generator:
-    path: ../neom_modules/neom_generator
+    path: ../neom_modules/neom/neom_generator
+  neom_inter:
+    path: ../neom_modules/neom/neom_inter
   neom_genres:
-    path: ../neom_modules/neom_genres
+    path: ../neom_modules/platform/neom_genres
   neom_ia:
-    path: ../neom_modules/neom_ia
+    path: ../neom_modules/ai/neom_ia
+  neom_experiences:
+    path: ../neom_modules/neom/neom_experiences
   neom_home:
-    path: ../neom_modules/neom_home
+    path: ../neom_modules/main/neom_home
   neom_image_editor:
-    path: ../neom_modules/neom_image_editor
+    path: ../neom_modules/media/neom_image_editor
   neom_inbox:
-    path: ../neom_modules/neom_inbox
+    path: ../neom_modules/social/neom_inbox
   neom_instruments:
-    path: ../neom_modules/neom_instruments
+    path: ../neom_modules/platform/neom_instruments
   neom_itemlists:
-    path: ../neom_modules/neom_itemlists
+    path: ../neom_modules/content/neom_itemlists
   neom_jobs:
-    path: ../neom_modules/neom_jobs
+    path: ../neom_modules/platform/neom_jobs
   neom_mates:
-    path: ../neom_modules/neom_mates
+    path: ../neom_modules/social/neom_mates
   neom_media_player:
-    path: ../neom_modules/neom_media_player
+    path: ../neom_modules/media/neom_media_player
   neom_media_upload:
-    path: ../neom_modules/neom_media_upload
+    path: ../neom_modules/creator/neom_media_upload
   neom_notifications:
-    path: ../neom_modules/neom_notifications
+    path: ../neom_modules/main/neom_notifications
   neom_onboarding:
-    path: ../neom_modules/neom_onboarding
+    path: ../neom_modules/main/neom_onboarding
   neom_posts:
-    path: ../neom_modules/neom_posts
+    path: ../neom_modules/creator/neom_posts
   neom_profile:
-    path: ../neom_modules/neom_profile
+    path: ../neom_modules/social/neom_profile
   neom_requests:
-    path: ../neom_modules/neom_requests
+    path: ../neom_modules/social/neom_requests
+  neom_books:
+    path: ../neom_modules/content/neom_books
   neom_releases:
-    path: ../neom_modules/neom_releases
+    path: ../neom_modules/creator/neom_releases
   neom_search:
-    path: ../neom_modules/neom_search
+    path: ../neom_modules/content/neom_search
   neom_settings:
-    path: ../neom_modules/neom_settings
+    path: ../neom_modules/main/neom_settings
   neom_sound:
-    path: ../neom_modules/neom_sound
+    path: ../neom_modules/hardware/neom_sound
   neom_states:
-    path: ../neom_modules/neom_states
+    path: ../neom_modules/neom/neom_states
   neom_stripe:
-    path: ../neom_modules/neom_stripe
+    path: ../neom_modules/commerce/neom_stripe
   neom_timeline:
-    path: ../neom_modules/neom_timeline
+    path: ../neom_modules/content/neom_timeline
   neom_vr:
-    path: ../neom_modules/neom_vr
+    path: ../neom_modules/vr/neom_vr
   neom_woo:
-    path: ../neom_modules/neom_woo
-  #intl: ^0.20.2 # Forzar la versión de int
-  #package_info_plus: 9.0.0
+    path: ../neom_modules/commerce/neom_woo
+  neom_creator_analytics:
+    path: ../neom_modules/analytics/neom_creator_analytics
+  neom_erp:
+    path: ../neom_modules/erp/neom_erp
+  neom_kanban:
+    path: ../neom_modules/erp/neom_kanban
+  neom_learning:
+    path: ../neom_modules/engage/neom_learning
+  neom_rooms:
+    path: ../neom_modules/social/neom_rooms
+  neom_sat:
+    path: ../neom_modules/commerce/neom_sat
+  neom_tts:
+    path: ../neom_modules/ai/neom_tts
+  neom_video_editor:
+    path: ../neom_modules/media/neom_video_editor
+  sint_sentinel:
+    path: ../neom_modules/framework/sint_sentinel
+  neom_historic_state:
+    path: ../neom_modules/neom/neom_historic_state
+  neom_biofeedback:
+    path: ../neom_modules/neom/neom_biofeedback
+  neom_eeg:
+    path: ../neom_modules/neom/neom_eeg
+  neom_audio_platform:
+    path: ../neom_modules/media/neom_audio_platform
+  neom_iaas:
+    path: ../neom_modules/ai/neom_iaas
+  neom_par:
+    path: ../neom_modules/neom/neom_par
+  neom_achievements:
+    path: ../neom_modules/creator/neom_achievements

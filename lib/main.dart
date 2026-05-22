@@ -6,9 +6,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:neom_ads/neom_ads.dart';
+import 'package:neom_states/ui/widgets/frequency_quick_start_bar.dart';
 import 'package:neom_timeline/ui/timeline_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:neom_home/ui/home_controller.dart';
 import 'package:neom_ia/neom_ia.dart';
+import 'package:neom_posts/ui/upload/web/post_create_web_modal.dart';
+import 'package:neom_posts/ui/upload/web/text_post_web_modal.dart';
 import 'package:sint/sint.dart';
+import 'package:sint_sentinel/sint_sentinel.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -64,6 +70,15 @@ void main() async {
     AppProperties();
     AppFlavour();
     await hiveFuture;
+
+    // Initialize SAIA secondary Firebase for cross-app memory
+    try {
+      final saiaApp = await SaiaFirebaseOptions.initialize();
+      Sint.lazyPut<SaiaMemoryProvider>(
+        () => SaiaFirestoreMemory(firestore: FirebaseFirestore.instanceFor(app: saiaApp)),
+        fenix: true,
+      );
+    } catch (_) {}
   } catch (e) {
     AppConfig.logger.e(e.toString());
   }
@@ -76,8 +91,21 @@ void main() async {
     TimelinePage.adWidgetBuilder = () => const AdBannerWidget();
   }
 
+  // Wire frequency quick-start bar into timeline header (mobile only — web uses right sidebar)
+  if (!kIsWeb) {
+    TimelinePage.headerWidgetBuilder = () => const FrequencyQuickStartBar();
+  }
+
   // Remove # from web URLs for vanity URL support
-  if (kIsWeb) setUrlStrategy();
+  if (kIsWeb) {
+    setUrlStrategy();
+    HomeController.onWebCreatePost = (context) {
+      PostCreateWebModal.show(context);
+    };
+    HomeController.onWebShareComment = (context) {
+      TextPostWebModal.show(context);
+    };
+  }
 
   runApp(const MyApp());
 
@@ -89,7 +117,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting(AppLocale.spanish.code);
-    return SintMaterialApp(
+    return SentinelApp(
+      config: SentinelConfig.production(),
+      child: SintMaterialApp(
       localeListResolutionCallback: (locales, supportedLocales) {
         for (var locale in locales!) {
           if (supportedLocales.contains(locale)) {
@@ -129,14 +159,14 @@ class MyApp extends StatelessWidget {
             backgroundColor: AppColor.getMain()
         ),
       ),
-      builder: ItzliGlobalOverlay.builder,
+      builder: SaiaGlobalOverlay.builder,
       initialRoute: AppRouteConstants.root,
       sintPages: AppRoutes.getAppRoutes(),
       unknownRoute: SintPage(
         name: AppRouteConstants.notFound,
         page: () => const SlugResolverPage(),
       ),
-    );
+    ));
   }
 
 }

@@ -1,5 +1,8 @@
 # Changelog — Cyberneom
 
+## 2026-05-21
+- General dependency updates, icon assets and web configuration refresh
+
 ## 2026-03-14
 - Integrate Itzli embed chat assistant
 - Add DE/FR translation files

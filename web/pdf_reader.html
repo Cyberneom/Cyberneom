@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EMXI Reader</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #1a1a1a;
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    position: relative;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
+
+  /* Block printing */
+  @media print {
+    body { display: none !important; }
+    html { display: none !important; }
+  }
+
+  /* Bottom bar — overlay, auto-hides */
+  .bottom-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 8px 16px;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.4), transparent);
+    backdrop-filter: blur(8px);
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .bottom-bar.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .bottom-bar button {
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: #fff;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+    font-size: 18px;
+  }
+  .bottom-bar button:hover { background: rgba(255,255,255,0.2); }
+  .bottom-bar button:disabled { opacity: 0.3; cursor: default; }
+  .page-info {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    min-width: 80px;
+    text-align: center;
+  }
+  .zoom-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 16px;
+  }
+  .zoom-controls button { width: 30px; height: 30px; font-size: 16px; }
+
+  /* Viewer area — fills entire viewport */
+  .viewer {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* Pages container */
+  .pages-container {
+    display: flex;
+    gap: 4px;
+    transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.3s ease;
+    align-items: center;
+    justify-content: center;
+  }
+  .pages-container.transitioning {
+    opacity: 0.3;
+    transform: scale(0.97);
+  }
+
+  /* Page canvas wrapper */
+  .page-wrapper {
+    position: relative;
+    background: #fff;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .page-wrapper canvas {
+    display: block;
+  }
+  .page-number {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    color: rgba(0,0,0,0.35);
+    pointer-events: none;
+  }
+
+  /* Navigation zones */
+  .nav-zone {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 15%;
+    z-index: 5;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background 0.2s;
+  }
+  .nav-zone:hover { background: rgba(255,255,255,0.03); }
+  .nav-zone.left { left: 0; justify-content: flex-start; padding-left: 12px; }
+  /* Right zone leaves 100px gap at bottom-right for Itzli FAB */
+  .nav-zone.right { right: 0; bottom: 100px; justify-content: flex-end; padding-right: 12px; }
+  .nav-arrow {
+    opacity: 0;
+    transition: opacity 0.2s;
+    font-size: 32px;
+    color: rgba(255,255,255,0.5);
+    pointer-events: none;
+  }
+  .nav-zone:hover .nav-arrow { opacity: 1; }
+
+  /* Loading */
+  .loading-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #1a1a1a;
+    z-index: 20;
+    transition: opacity 0.3s;
+  }
+  .loading-overlay.hidden { opacity: 0; pointer-events: none; }
+  .spinner {
+    width: 40px; height: 40px;
+    border: 3px solid rgba(255,255,255,0.1);
+    border-top-color: rgba(140, 20, 25, 0.8);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text { margin-top: 16px; font-size: 14px; color: rgba(255,255,255,0.5); }
+
+  /* Paywall overlay */
+  .paywall-overlay {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.85);
+    z-index: 25;
+  }
+  .paywall-overlay.active { display: flex; }
+  .paywall-text {
+    font-size: 18px;
+    color: rgba(255,255,255,0.9);
+    text-align: center;
+    max-width: 400px;
+    line-height: 1.5;
+  }
+
+  /* Single page mode for narrow screens */
+  @media (max-width: 800px) {
+    .pages-container { gap: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="viewer" id="viewer">
+  <div class="loading-overlay" id="loading">
+    <div class="spinner"></div>
+    <div class="loading-text">Cargando libro...</div>
+  </div>
+
+  <div class="paywall-overlay" id="paywall">
+    <div class="paywall-text">Has alcanzado el l&iacute;mite de p&aacute;ginas de muestra.</div>
+  </div>
+
+  <div class="pages-container" id="pagesContainer"></div>
+
+  <div class="nav-zone left" id="navLeft">
+    <span class="nav-arrow">&lsaquo;</span>
+  </div>
+  <div class="nav-zone right" id="navRight">
+    <span class="nav-arrow">&rsaquo;</span>
+  </div>
+</div>
+
+<div class="bottom-bar">
+  <button id="btnPrev" title="Anterior">&lsaquo;</button>
+  <span class="page-info" id="pageInfo">-</span>
+  <button id="btnNext" title="Siguiente">&rsaquo;</button>
+  <div class="zoom-controls">
+    <button id="btnZoomOut" title="Alejar">&minus;</button>
+    <span class="page-info" id="zoomInfo">100%</span>
+    <button id="btnZoomIn" title="Acercar">+</button>
+  </div>
+</div>
+
+<script type="module">
+  import * as pdfjsLib from 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.6.82/build/pdf.min.mjs';
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.6.82/build/pdf.worker.mjs';
+
+  // ─── Security: block right-click, print, save ───
+  document.addEventListener('contextmenu', (e) => e.preventDefault());
+  document.addEventListener('keydown', (e) => {
+    // Block Ctrl+P / Cmd+P (print)
+    if ((e.ctrlKey || e.metaKey) && e.key === 'p') { e.preventDefault(); return; }
+    // Block Ctrl+S / Cmd+S (save)
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); return; }
+    // Block Ctrl+Shift+I / Cmd+Option+I (devtools) — best effort
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'I') { e.preventDefault(); return; }
+  });
+
+  // ─── State ───
+  let isInitialized = false;
+  let pdfUrl = null;
+  let proxyUrl = null;
+  let pdfDoc = null;
+  let currentSpread = 0;
+  let totalPages = 0;
+  let maxPageLimit = 0;
+  let bookId = '';
+  let zoomLevel = 1.0;
+  let isTwoPage = window.innerWidth > 800;
+  let isTransitioning = false;
+  const pageCache = new Map();
+  const MAX_CACHE = 20;
+
+  const container = document.getElementById('pagesContainer');
+  const loading = document.getElementById('loading');
+  const paywall = document.getElementById('paywall');
+  const pageInfo = document.getElementById('pageInfo');
+  const zoomInfo = document.getElementById('zoomInfo');
+
+  // ─── Receive PDF URL securely via postMessage from Flutter ───
+  console.log('[pdf_reader] Script loaded, waiting for postMessage...');
+
+  window.addEventListener('message', (event) => {
+    const data = event.data;
+    console.log('[pdf_reader] Received postMessage:', JSON.stringify(data)?.substring(0, 200));
+    if (data && data.type === 'loadPdf') {
+      if (isInitialized) {
+        console.log('[pdf_reader] Already initialized, ignoring duplicate message');
+        return;
+      }
+      isInitialized = true;
+      pdfUrl = data.url;
+      proxyUrl = data.proxyUrl || null;
+      console.log('[pdf_reader] PDF URL received:', pdfUrl ? pdfUrl.substring(0, 80) + '...' : 'EMPTY');
+      console.log('[pdf_reader] Proxy URL:', proxyUrl ? 'configured' : 'none');
+      const startPage = data.startPage || 1;
+      maxPageLimit = data.maxPage || 0;
+      bookId = data.bookId || '';
+      initWithStartPage(startPage);
+    }
+  });
+
+  // ─── Helpers ───
+  let lastErrorDetail = '';
+
+  /** Fetch URL into ArrayBuffer, validating the response is actually a PDF. */
+  async function fetchAndValidatePdf(url, label) {
+    console.log(`[pdf_reader] ${label}: fetching ${url.substring(0, 100)}...`);
+    const response = await fetch(url);
+    if (!response.ok) {
+      // Read error body for diagnostic messages from proxy
+      let bodyText = '';
+      try { bodyText = await response.text(); } catch (_) {}
+      const err = new Error(`HTTP ${response.status} ${response.statusText}`);
+      err.status = response.status;
+      err.responseText = bodyText || response.statusText;
+      throw err;
+    }
+
+    const buffer = await response.arrayBuffer();
+    const bytes = new Uint8Array(buffer);
+
+    // Verify PDF magic number (%PDF-)
+    if (bytes.length < 5) {
+      throw new Error('Respuesta vacía o muy pequeña');
+    }
+    const magic = String.fromCharCode(bytes[0], bytes[1], bytes[2], bytes[3], bytes[4]);
+    if (magic !== '%PDF-') {
+      const preview = new TextDecoder().decode(bytes.slice(0, 500));
+      console.error(`[pdf_reader] ${label}: response is not a PDF. Content:`, preview);
+      lastErrorDetail = preview;
+      throw new Error('El servidor no devolvió un PDF válido');
+    }
+
+    console.log(`[pdf_reader] ${label}: validated PDF (${bytes.length} bytes)`);
+    return buffer;
+  }
+
+  function showError(title, message) {
+    loading.classList.remove('hidden');
+    loading.innerHTML = `
+      <div style="color:#ff6b6b;font-size:16px;margin-bottom:8px">${title}</div>
+      <div style="color:#888;font-size:13px;margin-bottom:16px;max-width:400px;text-align:center;line-height:1.5">${message}</div>
+      <div style="display:flex;gap:12px">
+        <button id="btnRetryPdf" style="padding:8px 20px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;border-radius:6px;cursor:pointer;font-size:13px">Reintentar</button>
+        <button onclick="window.parent.postMessage({type:'goBack',bookId:'${bookId}'},'*')" style="padding:8px 20px;background:transparent;border:1px solid rgba(255,255,255,0.1);color:#888;border-radius:6px;cursor:pointer;font-size:13px">Volver</button>
+      </div>
+    `;
+    // Retry button: reset state and try loading again
+    document.getElementById('btnRetryPdf')?.addEventListener('click', () => {
+      isInitialized = false;
+      pdfDoc = null;
+      pageCache.clear();
+      loading.innerHTML = '<div class="spinner"></div><div class="loading-text">Reintentando...</div>';
+      // Re-use the last known start page
+      const sp = currentSpread > 0 ? (isTwoPage ? currentSpread * 2 + 1 : currentSpread + 1) : 1;
+      initWithStartPage(sp);
+    });
+  }
+
+  // ─── Fetch with retry ───
+
+  /** Try direct fetch → proxy → native embed as last resort. */
+  async function fetchPdfWithRetry() {
+    const MAX_ATTEMPTS = 2;
+    let lastError = null;
+
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+      if (attempt > 1) {
+        const delay = attempt * 1500;
+        console.log(`[pdf_reader] Retry ${attempt}/${MAX_ATTEMPTS} in ${delay}ms...`);
+        loading.querySelector('.loading-text').textContent = `Reintentando (${attempt}/${MAX_ATTEMPTS})...`;
+        await new Promise(r => setTimeout(r, delay));
+      }
+
+      // 1) Direct fetch — works for same-origin or CORS-enabled domains
+      try {
+        const data = await fetchAndValidatePdf(pdfUrl, `Direct fetch (attempt ${attempt})`);
+        console.log('[pdf_reader] Direct fetch succeeded.');
+        return data;
+      } catch (directErr) {
+        console.warn(`[pdf_reader] Direct fetch attempt ${attempt} failed:`, directErr.message);
+        lastError = directErr;
+      }
+
+      // 2) Proxy fetch — for domains without CORS headers
+      if (proxyUrl) {
+        try {
+          const fetchUrl = `${proxyUrl}?url=${encodeURIComponent(pdfUrl)}`;
+          const data = await fetchAndValidatePdf(fetchUrl, `Proxy fetch (attempt ${attempt})`);
+          console.log('[pdf_reader] Proxy fetch succeeded.');
+          return data;
+        } catch (proxyErr) {
+          console.warn(`[pdf_reader] Proxy fetch attempt ${attempt} failed:`, proxyErr.message);
+          lastError = proxyErr;
+
+          const status = proxyErr.status || 0;
+          if (status > 0 && status !== 502 && status !== 503 && status !== 504) {
+            break;
+          }
+        }
+      }
+    }
+
+    // 3) Last resort — native <embed> (loses custom viewer but shows the PDF)
+    console.log('[pdf_reader] All fetch attempts failed. Falling back to native embed.');
+    fallbackToNativeEmbed();
+    return null;
+  }
+
+  /** Replace the viewer with a native <embed> pointing directly at the PDF URL. */
+  function fallbackToNativeEmbed() {
+    const viewer = document.getElementById('viewer');
+    // Clear all children (loading, pagesContainer, nav zones, paywall)
+    viewer.innerHTML = '';
+
+    const embed = document.createElement('embed');
+    embed.src = pdfUrl;
+    embed.type = 'application/pdf';
+    embed.style.cssText = 'width:100%;height:100%;border:none;';
+
+    viewer.appendChild(embed);
+
+    // Notify Flutter that PDF loaded (embed handles its own rendering)
+    window.parent.postMessage({
+      type: 'pdfLoaded',
+      bookId: bookId,
+      totalPages: 0, // Unknown in native viewer
+    }, '*');
+  }
+
+  // ─── Init ───
+  async function initWithStartPage(startPage) {
+    console.log('[pdf_reader] initWithStartPage:', startPage);
+    if (!pdfUrl) {
+      console.error('[pdf_reader] No PDF URL provided');
+      loading.innerHTML = '<div style="color:#888">No PDF URL provided</div>';
+      return;
+    }
+
+    const pdfJsOpts = {
+      cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.6.82/cmaps/',
+      cMapPacked: true,
+    };
+
+    let pdfData = null;
+
+    // Try direct fetch first, then proxy, with one automatic retry on
+    // transient errors (502/503/504) before showing an error to the user.
+    pdfData = await fetchPdfWithRetry();
+    if (!pdfData) return; // Either error shown or native embed took over
+
+    try {
+      pdfDoc = await pdfjsLib.getDocument({ data: pdfData, ...pdfJsOpts }).promise;
+    } catch (parseErr) {
+      console.error('[pdf_reader] PDF.js parse error:', parseErr.message);
+      showError('Error procesando PDF', parseErr.message);
+      window.parent.postMessage({ type: 'pdfError', bookId: bookId, error: parseErr.message }, '*');
+      return;
+    }
+
+    try {
+      totalPages = pdfDoc.numPages;
+      console.log('[pdf_reader] PDF loaded. Total pages:', totalPages);
+      loading.classList.add('hidden');
+
+      if (isTwoPage) {
+        currentSpread = Math.floor((startPage - 1) / 2);
+      } else {
+        currentSpread = startPage - 1;
+      }
+
+      await renderCurrentSpread();
+      preloadAdjacentSpreads();
+
+      // Notify Flutter that PDF loaded successfully
+      window.parent.postMessage({
+        type: 'pdfLoaded',
+        bookId: bookId,
+        totalPages: totalPages,
+      }, '*');
+    } catch (renderErr) {
+      console.error('[pdf_reader] Error rendering PDF:', renderErr.message);
+      loading.innerHTML = `<div style="color:#ff6b6b">Error cargando PDF</div><div style="color:#888;margin-top:8px;font-size:12px">${renderErr.message}</div>`;
+      window.parent.postMessage({ type: 'pdfError', bookId: bookId, error: renderErr.message }, '*');
+    }
+  }
+
+  function getPagesForSpread(spreadIdx) {
+    if (isTwoPage) {
+      const left = spreadIdx * 2 + 1;
+      const right = left + 1;
+      const pages = [left];
+      if (right <= totalPages) pages.push(right);
+      return pages;
+    }
+    return [spreadIdx + 1];
+  }
+
+  function getTotalSpreads() {
+    if (isTwoPage) return Math.ceil(totalPages / 2);
+    return totalPages;
+  }
+
+  // ─── Check if page is within allowed limit ───
+  function isPageAllowed(pageNum) {
+    if (maxPageLimit <= 0) return true;
+    return pageNum <= maxPageLimit;
+  }
+
+  // ─── Watermark overlay on canvas ───
+  function addWatermark(canvas) {
+    const ctx = canvas.getContext('2d');
+    ctx.save();
+    ctx.globalAlpha = 0.04;
+    ctx.font = `${Math.max(20, canvas.height * 0.04)}px sans-serif`;
+    ctx.fillStyle = '#000';
+
+    const text = 'EMXI';
+    const spacing = canvas.height * 0.18;
+
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.rotate(-Math.PI / 6);
+
+    for (let y = -canvas.height; y < canvas.height; y += spacing) {
+      for (let x = -canvas.width; x < canvas.width; x += spacing * 1.5) {
+        ctx.fillText(text, x, y);
+      }
+    }
+
+    ctx.restore();
+  }
+
+  async function renderPage(pageNum, targetHeight) {
+    if (!pdfDoc) return null;
+    const cacheKey = `${pageNum}-${targetHeight}-${zoomLevel}`;
+    if (pageCache.has(cacheKey)) return pageCache.get(cacheKey);
+
+    const page = await pdfDoc.getPage(pageNum);
+    const viewport = page.getViewport({ scale: 1 });
+    const scale = (targetHeight / viewport.height) * zoomLevel;
+    const scaledViewport = page.getViewport({ scale });
+
+    const canvas = document.createElement('canvas');
+    canvas.width = scaledViewport.width;
+    canvas.height = scaledViewport.height;
+    const ctx = canvas.getContext('2d');
+
+    await page.render({ canvasContext: ctx, viewport: scaledViewport }).promise;
+
+    // Apply watermark after rendering
+    addWatermark(canvas);
+
+    // Manage cache size
+    if (pageCache.size >= MAX_CACHE) {
+      const firstKey = pageCache.keys().next().value;
+      pageCache.delete(firstKey);
+    }
+    pageCache.set(cacheKey, canvas);
+    return canvas;
+  }
+
+  async function renderCurrentSpread() {
+    if (!pdfDoc) return; // PDF not loaded yet (or failed to load)
+    const pages = getPagesForSpread(currentSpread);
+    const viewerHeight = document.getElementById('viewer').clientHeight - 32;
+    const viewerWidth = document.getElementById('viewer').clientWidth - 32;
+
+    let targetHeight = viewerHeight;
+    const maxWidthPerPage = isTwoPage ? (viewerWidth - 4) / 2 : viewerWidth;
+
+    container.innerHTML = '';
+
+    // Check page limit enforcement
+    const firstPage = pages[0];
+    if (!isPageAllowed(firstPage)) {
+      paywall.classList.add('active');
+      pageInfo.textContent = `${firstPage} / ${totalPages}`;
+      return;
+    }
+    paywall.classList.remove('active');
+
+    for (const pageNum of pages) {
+      if (!isPageAllowed(pageNum)) break;
+
+      const canvas = await renderPage(pageNum, targetHeight);
+      if (!canvas) return;
+
+      if (canvas.width > maxWidthPerPage) {
+        const ratio = maxWidthPerPage / canvas.width;
+        const newCanvas = await renderPage(pageNum, targetHeight * ratio);
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'page-wrapper';
+        wrapper.appendChild(newCanvas);
+
+        const num = document.createElement('div');
+        num.className = 'page-number';
+        num.textContent = pageNum;
+        wrapper.appendChild(num);
+
+        container.appendChild(wrapper);
+      } else {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'page-wrapper';
+        wrapper.appendChild(canvas);
+
+        const num = document.createElement('div');
+        num.className = 'page-number';
+        num.textContent = pageNum;
+        wrapper.appendChild(num);
+
+        container.appendChild(wrapper);
+      }
+    }
+
+    // Update page info
+    if (pages.length === 2 && isPageAllowed(pages[1])) {
+      pageInfo.textContent = `Page ${pages[0]}-${pages[1]} / ${totalPages}`;
+    } else {
+      pageInfo.textContent = `Page ${pages[0]} / ${totalPages}`;
+    }
+    zoomInfo.textContent = `${Math.round(zoomLevel * 100)}%`;
+
+    // Update button states
+    document.getElementById('btnPrev').disabled = currentSpread <= 0;
+    const nextPages = getPagesForSpread(currentSpread + 1);
+    document.getElementById('btnNext').disabled =
+      currentSpread >= getTotalSpreads() - 1 || !isPageAllowed(nextPages[0]);
+
+    // Report page change to Flutter via postMessage
+    window.parent.postMessage({
+      type: 'pageChanged',
+      page: firstPage,
+      bookId: bookId,
+    }, '*');
+  }
+
+  async function preloadAdjacentSpreads() {
+    const viewerHeight = document.getElementById('viewer').clientHeight - 32;
+    const nextPages = getPagesForSpread(currentSpread + 1);
+    for (const p of nextPages) {
+      if (p <= totalPages && isPageAllowed(p)) renderPage(p, viewerHeight).catch(() => {});
+    }
+    if (currentSpread > 0) {
+      const prevPages = getPagesForSpread(currentSpread - 1);
+      for (const p of prevPages) {
+        if (p >= 1) renderPage(p, viewerHeight).catch(() => {});
+      }
+    }
+  }
+
+  async function goToSpread(idx) {
+    if (idx < 0 || idx >= getTotalSpreads() || isTransitioning) return;
+
+    // Enforce max page limit
+    const pages = getPagesForSpread(idx);
+    if (!isPageAllowed(pages[0])) {
+      paywall.classList.add('active');
+      return;
+    }
+
+    isTransitioning = true;
+    container.classList.add('transitioning');
+
+    await new Promise(r => setTimeout(r, 150));
+    currentSpread = idx;
+    await renderCurrentSpread();
+
+    container.classList.remove('transitioning');
+    isTransitioning = false;
+    preloadAdjacentSpreads();
+  }
+
+  function nextSpread() { goToSpread(currentSpread + 1); }
+  function prevSpread() { goToSpread(currentSpread - 1); }
+
+  function zoomIn() {
+    zoomLevel = Math.min(zoomLevel + 0.15, 3.0);
+    pageCache.clear();
+    renderCurrentSpread();
+  }
+  function zoomOut() {
+    zoomLevel = Math.max(zoomLevel - 0.15, 0.4);
+    pageCache.clear();
+    renderCurrentSpread();
+  }
+
+  // ─── Event listeners ───
+  document.getElementById('btnNext').addEventListener('click', nextSpread);
+  document.getElementById('btnPrev').addEventListener('click', prevSpread);
+  document.getElementById('navRight').addEventListener('click', nextSpread);
+  document.getElementById('navLeft').addEventListener('click', prevSpread);
+  document.getElementById('btnZoomIn').addEventListener('click', zoomIn);
+  document.getElementById('btnZoomOut').addEventListener('click', zoomOut);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSpread(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prevSpread(); }
+    if (e.key === '+' || e.key === '=') { e.preventDefault(); zoomIn(); }
+    if (e.key === '-') { e.preventDefault(); zoomOut(); }
+  });
+
+  // Handle resize / orientation change
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      const wasTwoPage = isTwoPage;
+      isTwoPage = window.innerWidth > 800;
+      if (wasTwoPage !== isTwoPage) {
+        const currentFirstPage = getPagesForSpread(currentSpread)[0];
+        if (isTwoPage) {
+          currentSpread = Math.floor((currentFirstPage - 1) / 2);
+        } else {
+          currentSpread = currentFirstPage - 1;
+        }
+      }
+      pageCache.clear();
+      renderCurrentSpread();
+    }, 200);
+  });
+
+  // Block drag events on images/canvas to prevent drag-and-save
+  document.addEventListener('dragstart', (e) => e.preventDefault());
+
+  // ─── Bottom bar hover zone ───
+  const bottomBar = document.querySelector('.bottom-bar');
+  const bottomHoverZone = 80; // pixels from bottom edge
+  let bottomBarTimer = null;
+
+  document.addEventListener('mousemove', (e) => {
+    if (window.innerHeight - e.clientY < bottomHoverZone) {
+      bottomBar.classList.add('visible');
+      clearTimeout(bottomBarTimer);
+    } else {
+      clearTimeout(bottomBarTimer);
+      bottomBarTimer = setTimeout(() => {
+        bottomBar.classList.remove('visible');
+      }, 600);
+    }
+  });
+
+  // Keep bar visible while hovering directly on it
+  bottomBar.addEventListener('mouseenter', () => {
+    clearTimeout(bottomBarTimer);
+    bottomBar.classList.add('visible');
+  });
+  bottomBar.addEventListener('mouseleave', () => {
+    bottomBarTimer = setTimeout(() => {
+      bottomBar.classList.remove('visible');
+    }, 400);
+  });
+</script>
+</body>
+</html>

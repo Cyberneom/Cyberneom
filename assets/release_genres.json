@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Meditación Guiada",
+    "description": "Sesiones de meditación con instrucciones vocales paso a paso."
+  },
+  {
+    "name": "Sonoterapia",
+    "description": "Terapia basada en frecuencias sonoras para bienestar neurológico."
+  },
+  {
+    "name": "Neurociencia",
+    "description": "Investigación y artículos sobre el cerebro, consciencia y cognición."
+  },
+  {
+    "name": "Psicología",
+    "description": "Estudios sobre bienestar, estrés y estados alterados de consciencia."
+  },
+  {
+    "name": "Bienestar",
+    "description": "Contenido sobre salud integral, optimización personal y calidad de vida."
+  },
+  {
+    "name": "Sueño y Descanso",
+    "description": "Contenido especializado en mejora del sueño y recuperación."
+  },
+  {
+    "name": "Respiración",
+    "description": "Técnicas de respiración para regulación emocional y estados de consciencia."
+  },
+  {
+    "name": "Tecnología y Consciencia",
+    "description": "Intersección entre tecnología, IA y desarrollo de la consciencia."
+  },
+  {
+    "name": "Filosofía y Espiritualidad",
+    "description": "Exploración filosófica y tradiciones contemplativas."
+  },
+  {
+    "name": "Investigación Científica",
+    "description": "Artículos científicos, papers y estudios revisados por pares."
+  }
+]

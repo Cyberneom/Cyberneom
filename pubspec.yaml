@@ -1,8 +1,7 @@
 name: cyberneom
 description: Guided meditation with your own voice
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-
-version: 2.2.0+26 # Incrementé un número el build por buena práctica
+version: 3.0.0+27 # Incrementé un número el build por buena práctica
 
 environment:
   sdk: ">=3.8.0 <4.0.0"
@@ -18,21 +17,27 @@ dependencies:
   neom_admin:
     git:
       url: git@github.com:Cyberneom/neom_admin.git
+  neom_qa_tracker:
+    git:
+      url: git@github.com:Open-Neom/neom_qa_tracker.git
   neom_analytics:
     git:
       url: git@github.com:Cyberneom/neom_analytics.git
   neom_audio_player:
     git:
-      url: https://github.com/Cyberneom/neom_audio_player.git
+      url: git@github.com:Cyberneom/neom_audio_player.git
   neom_auth:
     git:
-      url: https://github.com/Cyberneom/neom_auth.git
+      url: git@github.com:Cyberneom/neom_auth.git
   neom_bank:
     git:
       url: git@github.com:Cyberneom/neom_bank.git
   neom_calendar:
     git:
       url: git@github.com:Cyberneom/neom_calendar.git
+  neom_cloud:
+    git:
+      url: git@github.com:Open-Neom/neom_cloud.git
   neom_camera:
     git:
       url: git@github.com:Cyberneom/neom_camera.git
@@ -51,6 +56,9 @@ dependencies:
   neom_genres:
     git:
       url: git@github.com:Cyberneom/neom_genres.git
+  neom_experiences:
+    git:
+      url: git@github.com:Cyberneom/neom_experiences.git
   neom_home:
     git:
       url: git@github.com:Cyberneom/neom_home.git
@@ -68,13 +76,13 @@ dependencies:
       url: git@github.com:Cyberneom/neom_itemlists.git
   neom_mates:
     git:
-      url: https://github.com/Cyberneom/neom_mates.git
+      url: git@github.com:Cyberneom/neom_mates.git
   neom_media_player:
     git:
-      url: https://github.com/Cyberneom/neom_media_player.git
+      url: git@github.com:Cyberneom/neom_media_player.git
   neom_media_upload:
     git:
-      url: https://github.com/Cyberneom/neom_media_upload.git
+      url: git@github.com:Cyberneom/neom_media_upload.git
   neom_notifications:
     git:
       url: git@github.com:Cyberneom/neom_notifications.git
@@ -87,38 +95,44 @@ dependencies:
   neom_profile:
     git:
       url: git@github.com:Cyberneom/neom_profile.git
+  neom_books:
+    git:
+      url: git@github.com:Cyberneom/neom_books.git
   neom_releases:
     git:
-      url: https://github.com/Cyberneom/neom_releases.git
+      url: git@github.com:Cyberneom/neom_releases.git
   neom_requests:
     git:
       url: git@github.com:Cyberneom/neom_requests.git
   neom_search:
     git:
-      url: https://github.com/Cyberneom/neom_search.git
+      url: git@github.com:Cyberneom/neom_search.git
   neom_ia:
     git:
       url: git@github.com:Cyberneom/neom_ia.git
   neom_settings:
     git:
-      url: https://github.com/Cyberneom/neom_settings.git
+      url: git@github.com:Cyberneom/neom_settings.git
   neom_stripe:
     git:
-      url: https://github.com/Cyberneom/neom_stripe.git
+      url: git@github.com:Cyberneom/neom_stripe.git
   neom_timeline:
     git:
       url: git@github.com:Cyberneom/neom_timeline.git
   neom_vr:
     git:
       url: git@github.com:Cyberneom/neom_vr.git
+  neom_ar:
+    git:
+      url: git@github.com:Cyberneom/neom_ar.git
   neom_woo:
     git:
-      url: https://github.com/Cyberneom/neom_woo.git
+      url: git@github.com:Cyberneom/neom_woo.git
 
   # --- Shared Modules (Using emmanuel-montoya forks/repos per Gigmeout) ---
-  neom_bands:
+  neom_collectives:
     git:
-      url: git@github.com:emmanuel-montoya/neom_bands.git
+      url: git@github.com:emmanuel-montoya/neom_collectives.git
   neom_booking:
     git:
       url: git@github.com:emmanuel-montoya/neom_booking.git
@@ -130,7 +144,33 @@ dependencies:
       url: git@github.com:emmanuel-montoya/neom_directory.git
   neom_jobs:
     git:
-      url: https://github.com/emmanuel-montoya/neom_jobs.git
+      url: git@github.com:emmanuel-montoya/neom_jobs.git
+
+  # --- Additional Modules ---
+  neom_creator_analytics:
+    git:
+      url: git@github.com:Cyberneom/neom_creator_analytics.git
+  neom_erp:
+    git:
+      url: git@github.com:Open-Neom/neom_erp.git
+  neom_learning:
+    git:
+      url: git@github.com:Cyberneom/neom_learning.git
+  neom_rooms:
+    git:
+      url: git@github.com:Cyberneom/neom_rooms.git
+  neom_sound:
+    git:
+      url: git@github.com:Cyberneom/neom_sound.git
+  neom_tts:
+    git:
+      url: git@github.com:Open-Neom/neom_tts.git
+  neom_video_editor:
+    git:
+      url: git@github.com:Cyberneom/neom_video_editor.git
+  sint_sentinel:
+    git:
+      url: git@github.com:Open-Neom/sint_sentinel.git
 
   # --- Cyberneom Specific Modules ---
   neom_downloads:
@@ -138,13 +178,36 @@ dependencies:
       url: git@github.com:Cyberneom/neom_downloads.git
   neom_frequencies:
     git:
-      url: https://github.com/Cyberneom/neom_frequencies.git
+      url: git@github.com:Cyberneom/neom_frequencies.git
   neom_generator:
     git:
-      url: https://github.com/Cyberneom/neom_generator.git
+      url: git@github.com:Cyberneom/neom_generator.git
+  neom_inter:
+    git:
+      url: git@github.com:Cyberneom/neom_inter.git
   neom_states:
     git:
-      url: https://github.com/Cyberneom/neom_states.git
+      url: git@github.com:Cyberneom/neom_states.git
+
+  neom_audio_platform:
+    git:
+      url: https://github.com/Cyberneom/neom_audio_platform.git
+
+  # --- Historic State / Biofeedback / EEG ---
+  neom_eeg:
+    git:
+      url: git@github.com:Cyberneom/neom_eeg.git
+  neom_biofeedback:
+    git:
+      url: git@github.com:Cyberneom/neom_biofeedback.git
+  neom_historic_state:
+    git:
+      url: git@github.com:Cyberneom/neom_historic_state.git
+  neom_par:
+    git:
+      url: git@github.com:Cyberneom/neom_par.git
+  neom_levitation:
+    path: ../neom_modules/neom/neom_levitation
 
 dev_dependencies:
   flutter_test:
@@ -158,8 +221,13 @@ flutter_launcher_icons:
   image_path: "assets/appIcon.png"
   android: true
   ios: true
-  adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: "assets/icon/icon_foreground.png"
+  web:
+    generate: true
+    image_path: "assets/appIcon.png"
+    background_color: "#000000"
+    theme_color: "#000000"
+  adaptive_icon_background: "#000000"
+  adaptive_icon_foreground: "assets/appIcon.png"
 
 flutter:
   uses-material-design: true
@@ -182,6 +250,7 @@ flutter:
     - assets/
     - assets/elements/
     - assets/fonts/
+    - assets/qa/
     - assets/images/
     - assets/images/directory/
     - assets/images/eventType/
@@ -193,6 +262,6 @@ flutter:
     - assets/logos/
     - assets/logos/third-party/
     - assets/sounds/
-    - assets/itzli/
+    - assets/saia/
     - assets/properties.json
     - assets/frequencies.json

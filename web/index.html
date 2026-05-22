@@ -50,6 +50,22 @@
 
   <title>Cyberneom</title>
   <link rel="manifest" href="manifest.json">
+
+    <!-- Preconnect to critical origins -->
+    <link rel="preconnect" href="https://firestore.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://www.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://firebasestorage.googleapis.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+    <!-- pdf.js for pdfx plugin (deferred — not blocking) -->
+    <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.4.120/build/pdf.min.js" type="text/javascript" defer></script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+          if (typeof pdfjsLib !== 'undefined') {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.4.120/build/pdf.worker.min.js";
+          }
+        });
+    </script>
 </head>
 <body>
   <script src="flutter_bootstrap.js" async></script>

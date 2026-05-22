@@ -1,12 +1,15 @@
-import 'package:neom_admin/data/translations/admin_es_translations.dart';
 import 'package:neom_audio_player/data/translations/audio_player_es_translations.dart';
+import 'package:neom_ia/data/translations/saia_ia_es_translations.dart';
 import 'package:neom_auth/data/translations/auth_es_translations.dart';
-import 'package:neom_bands/data/translations/band_es_translations.dart';
+import 'package:neom_collectives/data/translations/collective_es_translations.dart';
 import 'package:neom_bank/data/translations/bank_es_translations.dart';
+import 'package:neom_bank/data/translations/tip_es_translations.dart';
 import 'package:neom_blog/data/translations/blog_es_translations.dart';
 import 'package:neom_booking/data/translations/booking_es_translations.dart';
 import 'package:neom_commerce/data/translations/commerce_es_translations.dart';
 import 'package:neom_commons/data/translations/commons/commons_es_translations.dart';
+import 'package:neom_commons/data/translations/core/core_es_translations.dart';
+import 'package:neom_commons/data/translations/messages/messages_es_translations.dart';
 import 'package:neom_daw/data/translations/daw_es_translations.dart';
 import 'package:neom_directory/data/translations/directory_es_translations.dart';
 import 'package:neom_events/data/translations/event_es_translations.dart';
@@ -26,19 +29,31 @@ import 'package:neom_releases/data/translations/release_es_translations.dart';
 import 'package:neom_requests/data/translations/request_es_translations.dart';
 import 'package:neom_search/data/translations/search_es_translations.dart';
 import 'package:neom_settings/data/translations/setting_es_translations.dart';
+import 'package:neom_inter/data/translations/inter_es_translations.dart';
 import 'package:neom_states/data/translations/states_es_translations.dart';
+import 'package:neom_historic_state/data/translations/historic_state_es_translations.dart';
+import 'package:neom_par/data/translations/par_es_translations.dart';
+import 'package:neom_levitation/data/translations/levitation_es_translations.dart';
 import 'package:neom_vr/data/translations/vr_es_translations.dart';
+import 'package:neom_ar/data/translations/ar_es_translations.dart';
+import 'package:neom_home/data/translations/home_es_translations.dart';
+import 'package:neom_rooms/data/translations/rooms_es_translations.dart';
 
 
 class AppEsTranslations {
 
   static Map<String, String> keys = {
     ...CommonsEsTranslations.values,
-    ...AdminEsTranslations.values,
+    ...CoreEsTranslations.values,
+    ...MessagesEsTranslations.values,
+    ...HomeEsTranslations.values,
+    ...RoomsEsTranslations.values,
     ...AudioPlayerEsTranslations.values,
+    ...SaiaIaEsTranslations.values,
     ...AuthEsTranslations.values,
-    ...BandEsTranslations.values,
+    ...CollectiveEsTranslations.values,
     ...BankEsTranslations.values,
+    ...TipEsTranslations.values,
     ...BlogEsTranslations.values,
     ...BookingEsTranslations.values,
     ...CommerceEsTranslations.values,
@@ -62,7 +77,12 @@ class AppEsTranslations {
     ...SearchEsTranslations.values,
     ...SettingEsTranslations.values,
     ...StatesEsTranslations.values,
+    ...InterEsTranslations.values,
+    ...HistoricStateEsTranslations.values,
+    ...ParEsTranslations.values,
+    ...LevitationEsTranslations.values,
     ...VrEsTranslations.values,
+    ...ArEsTranslations.values,
   };
 
 }

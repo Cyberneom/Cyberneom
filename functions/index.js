@@ -310,6 +310,110 @@ exports.secureOps = require('firebase-functions/v2/https').onCall(
 );
 
 // ============================================================
+// secureOpsWeb — HTTP version for Flutter web (CORS-enabled)
+// Web can't use onCall directly, uses Bearer token auth instead.
+// Deploy:  firebase deploy --only functions:secureOpsWeb
+// ============================================================
+exports.secureOpsWeb = onRequest(
+  {
+    region: 'us-central1',
+    cors: true,
+    secrets: [STRIPE_SECRET_KEY, WOO_KEY, WOO_SECRET, WP_USER, WP_APP_PASSWORD, GOOGLE_API_KEY],
+  },
+  async (req, res) => {
+    try {
+      const body = req.body || {};
+      const { action, ...params } = typeof body === 'string' ? JSON.parse(body) : body;
+
+      if (action === 'getConfig') {
+        return res.status(200).json(CYBERNEOM_PUBLIC_CONFIG);
+      }
+
+      // All other actions require auth
+      const authHeader = req.headers.authorization || '';
+      if (!authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ error: 'Missing Bearer token' });
+      }
+
+      const token = authHeader.split('Bearer ')[1];
+      try {
+        await admin.auth().verifyIdToken(token);
+      } catch (e) {
+        return res.status(401).json({ error: 'Invalid token' });
+      }
+
+      switch (action) {
+        case 'sendNotification': {
+          const { token: fcmToken, title, body: msgBody, data } = params;
+          if (!fcmToken) return res.status(400).json({ error: 'token required' });
+          const msgId = await admin.messaging().send({
+            notification: { title: title || '', body: msgBody || '' },
+            data: data || {},
+            token: fcmToken,
+          });
+          return res.status(200).json({ success: true, messageId: msgId });
+        }
+
+        case 'stripeProxy': {
+          const { method, path, body: stripeBody } = params;
+          if (!path) return res.status(400).json({ error: 'path required' });
+          const stripeRes = await fetch(`https://api.stripe.com/v1${path}`, {
+            method: method || 'POST',
+            headers: {
+              'Authorization': `Bearer ${STRIPE_SECRET_KEY.value()}`,
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: stripeBody || undefined,
+          });
+          const json = await stripeRes.json();
+          return res.status(stripeRes.ok ? 200 : 500).json(json);
+        }
+
+        case 'wooProxy': {
+          const { method, path, body: wooBody } = params;
+          if (!path) return res.status(400).json({ error: 'path required' });
+          const auth = Buffer.from(`${WOO_KEY.value()}:${WOO_SECRET.value()}`).toString('base64');
+          const wooRes = await fetch(`${CYBERNEOM_PUBLIC_CONFIG.wooUrl}${path}`, {
+            method: method || 'GET',
+            headers: { 'Authorization': `Basic ${auth}`, 'Content-Type': 'application/json' },
+            body: wooBody ? JSON.stringify(wooBody) : undefined,
+          });
+          const text = await wooRes.text();
+          if (!wooRes.ok || text.trim().startsWith('<')) {
+            return res.status(500).json({ error: `Woo error (${wooRes.status})` });
+          }
+          return res.status(200).json(JSON.parse(text));
+        }
+
+        case 'wooMediaProxy': {
+          const { method, path, body: wpBody } = params;
+          if (!path) return res.status(400).json({ error: 'path required' });
+          const auth = Buffer.from(`${WP_USER.value()}:${WP_APP_PASSWORD.value()}`).toString('base64');
+          const wpRes = await fetch(`${CYBERNEOM_PUBLIC_CONFIG.wpUrl}${path}`, {
+            method: method || 'GET',
+            headers: { 'Authorization': `Basic ${auth}`, 'Content-Type': 'application/json' },
+            body: wpBody ? JSON.stringify(wpBody) : undefined,
+          });
+          const text = await wpRes.text();
+          if (!wpRes.ok) return res.status(500).json({ error: `WP error (${wpRes.status})` });
+          return res.status(200).json(JSON.parse(text));
+        }
+
+        case 'getSecret':
+          if (params.key === 'googleApiKey') return res.status(200).json({ value: GOOGLE_API_KEY.value() });
+          return res.status(400).json({ error: `Unknown secret: ${params.key}` });
+
+        default:
+          return res.status(400).json({ error: `Unknown action: ${action}` });
+      }
+    } catch (err) {
+      console.error('[secureOpsWeb] Error:', err.message);
+      return res.status(500).json({ error: err.message });
+    }
+  }
+);
+
+// ============================================================
 // stateOgMeta — Dynamic OG meta tags for /x/{stateId} sharing
 // Called via /api/og/x/{stateId} rewrite in firebase.json
 // ============================================================

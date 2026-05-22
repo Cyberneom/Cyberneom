@@ -33,6 +33,15 @@
       ]
     },
     {
+      "collectionGroup": "blog",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "isDraft", "order": "ASCENDING" },
+        { "fieldPath": "isHidden", "order": "ASCENDING" },
+        { "fieldPath": "publishedTime", "order": "DESCENDING" }
+      ]
+    },
+    {
       "collectionGroup": "posts",
       "queryScope": "COLLECTION",
       "fields": [
@@ -98,11 +107,77 @@
       ]
     },
     {
-      "collectionGroup": "caseteSessions",
+      "collectionGroup": "nupaleSessions",
       "queryScope": "COLLECTION",
       "fields": [
         { "fieldPath": "ownerId", "order": "ASCENDING" },
         { "fieldPath": "createdTime", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "royaltyPayouts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "ownerEmail", "order": "ASCENDING" },
+        { "fieldPath": "month", "order": "ASCENDING" },
+        { "fieldPath": "year", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "royaltyPayouts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "ownerEmail", "order": "ASCENDING" },
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "createdTime", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "royaltyPayouts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "ownerEmail", "order": "ASCENDING" },
+        { "fieldPath": "createdTime", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "royaltyPayouts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "createdTime", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "transactions",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "recipientId", "order": "ASCENDING" },
+        { "fieldPath": "createdTime", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "transactions",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "senderId", "order": "ASCENDING" },
+        { "fieldPath": "createdTime", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "withdrawalRequests",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "ownerEmail", "order": "ASCENDING" },
+        { "fieldPath": "createdTime", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "userSubscriptions",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "level", "order": "ASCENDING" },
+        { "fieldPath": "status", "order": "ASCENDING" }
       ]
     },
     {
@@ -131,14 +206,6 @@
         { "fieldPath": "isDraft", "order": "ASCENDING" },
         { "fieldPath": "ownerId", "order": "ASCENDING" },
         { "fieldPath": "lastInteraction", "order": "DESCENDING" }
-      ]
-    },
-    {
-      "collectionGroup": "dawProjects",
-      "queryScope": "COLLECTION",
-      "fields": [
-        { "fieldPath": "ownerId", "order": "ASCENDING" },
-        { "fieldPath": "updatedTime", "order": "DESCENDING" }
       ]
     }
   ],
@@ -189,6 +256,13 @@
     {
       "collectionGroup": "profiles",
       "fieldPath": "id",
+      "indexes": [
+        { "order": "ASCENDING", "queryScope": "COLLECTION_GROUP" }
+      ]
+    },
+    {
+      "collectionGroup": "profiles",
+      "fieldPath": "slug",
       "indexes": [
         { "order": "ASCENDING", "queryScope": "COLLECTION_GROUP" }
       ]
