@@ -1,7 +1,7 @@
 name: cyberneom
 description: Guided meditation with your own voice
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 3.0.0+27 # Incrementé un número el build por buena práctica
+version: 3.0.1+28 # Incrementé un número el build por buena práctica
 
 environment:
   sdk: ">=3.8.0 <4.0.0"

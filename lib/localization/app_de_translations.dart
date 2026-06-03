@@ -11,6 +11,8 @@ import 'package:neom_commons/data/translations/commons/commons_de_translations.d
 import 'package:neom_commons/data/translations/core/core_de_translations.dart';
 import 'package:neom_commons/data/translations/messages/messages_de_translations.dart';
 import 'package:neom_daw/data/translations/daw_de_translations.dart';
+import 'package:neom_sound/data/translations/sound_de_translations.dart';
+import 'package:neom_audio_platform/data/translations/platform_de_translations.dart';
 import 'package:neom_directory/data/translations/directory_de_translations.dart';
 import 'package:neom_events/data/translations/event_de_translations.dart';
 import 'package:neom_frequencies/data/translations/frequency_de_translations.dart';
@@ -57,6 +59,8 @@ class AppDeTranslations {
     ...BookingDeTranslations.values,
     ...CommerceDeTranslations.values,
     ...DawDeTranslations.values,
+    ...SoundDeTranslations.values,
+    ...PlatformDeTranslations.values,
     ...DirectoryDeTranslations.values,
     ...EventDeTranslations.values,
     ...FrequencyDeTranslations.values,
