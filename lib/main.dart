@@ -160,6 +160,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       builder: SaiaGlobalOverlay.builder,
+      routingCallback: SaiaGlobalOverlay.onRouting,
       initialRoute: AppRouteConstants.root,
       sintPages: AppRoutes.getAppRoutes(),
       unknownRoute: SintPage(

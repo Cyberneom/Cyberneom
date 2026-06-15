@@ -1,5 +1,8 @@
 # Changelog — Cyberneom
 
+## Unreleased - System updates
+- Actualizaciones de estabilidad y compatibilidad.
+
 ## 2026-05-21
 - General dependency updates, icon assets and web configuration refresh
 
