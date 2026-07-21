@@ -34,10 +34,12 @@ import 'package:sint/navigation/src/router/url_strategy/url_strategy.dart';
 
 import 'app_routes.dart';
 import 'root_binding.dart';
+import 'package:neom_audio_player/neom_audio_player.dart';
 
 void main() async {
 
   Logger.level = kDebugMode ? Level.debug : Level.info;
+  initNeomIa();
 
   try {
     WidgetsFlutterBinding.ensureInitialized();
@@ -105,6 +107,13 @@ void main() async {
     HomeController.onWebShareComment = (context) {
       TextPostWebModal.show(context);
     };
+  }
+
+  // Initialize Audio Handler
+  try {
+    await NeomAudioProvider().getAudioHandler();
+  } catch (e) {
+    AppConfig.logger.e('Failed to initialize audio handler: $e');
   }
 
   runApp(const MyApp());

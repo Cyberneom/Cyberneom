@@ -37,6 +37,13 @@
         ]
       }
     ],
+    "redirects": [
+      {
+        "regex": "^/([^/]+/)+(main\\.dart\\.js_[0-9]+\\.part\\.js)$",
+        "destination": "/:2",
+        "type": 301
+      }
+    ],
     "rewrites": [
       {
         "source": "/api/og/x/**",

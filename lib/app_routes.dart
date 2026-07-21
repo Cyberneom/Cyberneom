@@ -40,6 +40,7 @@ import 'package:neom_frequencies/frequency_routes.dart';
 import 'package:neom_experiences/experience_routes.dart';
 import 'package:neom_generator/generator_routes.dart';
 import 'package:neom_generator/ui/harmonic/harmonic_footprint_widget.dart';
+import 'package:neom_generator/domain/models/harmonic/harmonic_footprint.dart';
 import 'package:neom_generator/ui/miniplayer/mini_neom_player.dart';
 import 'package:neom_inter/inter_routes.dart';
 import 'package:neom_home/domain/models/home_tab_item.dart';
@@ -169,7 +170,11 @@ class AppRoutes {
       ),
       SintPage(
         name: '/huella',
-        page: () => const HarmonicFootprintWidget(),
+        page: () => HarmonicFootprintWidget(
+          footprint: Sint.arguments != null
+              ? Sint.arguments as HarmonicFootprint
+              : HarmonicFootprint(userId: ''),
+        ),
         transition: Transition.rightToLeftWithFade,
       ),
       ...ParRoutes.routes,

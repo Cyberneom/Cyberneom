@@ -1,3 +1,6 @@
+
+## [2.0.0-unreleased] - 2026-07-21
+- Wire AudioPlatformBinding dependencies and initialize NeomAudioHandler inside main startup binding.
 # Changelog — Cyberneom
 
 ## Unreleased - System updates

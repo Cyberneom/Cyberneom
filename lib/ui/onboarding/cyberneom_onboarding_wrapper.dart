@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:neom_generator/ui/neom_generator_controller.dart';
 import 'package:neom_generator/utils/enums/neom_spatial_mode.dart';
-import 'package:neom_home/ui/web/cyberneom_onboarding_overlay.dart';
+import 'package:neom_home/ui/web/neom_onboarding_overlay.dart';
 import 'package:neom_states/data/state_catalog.dart';
 import 'package:sint/sint.dart';
 
@@ -132,7 +132,7 @@ class _CyberneomOnboardingWrapperState extends State<CyberneomOnboardingWrapper>
       duration: s.duration,
     )).toList();
 
-    return CyberneomOnboardingOverlay(
+    return NeomOnboardingOverlay(
       stateCards: cards,
       isFirstVisit: _isFirstVisit,
       onStateSelected: _onStateSelected,

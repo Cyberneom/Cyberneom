@@ -21,10 +21,14 @@ import 'package:neom_rooms/data/implementations/live_listener_controller.dart';
 import 'package:neom_sound/data/implementations/equalizer_controller.dart';
 import 'package:neom_sound/domain/use_cases/equalizer_service.dart';
 import 'package:neom_audio_player/data/implementations/audio_lite_player_controller.dart';
+import 'package:neom_audio_player/data/providers/neom_audio_provider.dart';
 import 'package:neom_audio_player/neom_audio_handler.dart';
-import 'package:neom_audio_platform/ui/home/audio_player_home_controller.dart';
+import 'package:neom_audio_player/data/implementations/enhanced_playback_controller.dart';
+import 'package:neom_audio_player/domain/use_cases/enhanced_playback_service.dart';
+import 'package:neom_audio_platform/neom_audio_platform.dart';
 import 'package:neom_audio_player/ui/player/miniplayer_controller.dart';
 import 'package:neom_auth/ui/login/login_controller.dart';
+import 'package:neom_auth/ui/login/google_auth_controller.dart';
 
 import 'package:neom_collectives/ui/collective_controller.dart';
 import 'package:neom_collectives/ui/details/collective_details_controller.dart';
@@ -117,6 +121,10 @@ class RootBinding extends Binding {
 
   @override
   List<Bind> dependencies() {
+    // Registers all neom_audio_platform controllers (Jam, Radio, SmartQueue,
+    // ListeningStats, PlaylistGenerator) as eager singletons.
+    AudioPlatformBinding.dependencies();
+
     return [
       Bind.put(UserController(), permanent: true),
       Bind.lazyPut<UserService>(() => Sint.find<UserController>(), fenix: true),
@@ -132,8 +140,10 @@ class RootBinding extends Binding {
 
       Bind.lazyPut(() => AudioPlayerInvoker(), fenix: true),
       Bind.lazyPut<AudioPlayerInvokerService>(() => Sint.find<AudioPlayerInvoker>(), fenix: true),
-      Bind.lazyPut(() => NeomAudioHandler(), fenix: true),
+      Bind.lazyPut<NeomAudioHandler>(() => NeomAudioProvider.audioHandler!, fenix: true),
       Bind.lazyPut<AudioHandlerService>(() => Sint.find<NeomAudioHandler>(), fenix: true),
+      Bind.lazyPut(() => EnhancedPlaybackController(), fenix: true),
+      Bind.lazyPut<EnhancedPlaybackService>(() => Sint.find<EnhancedPlaybackController>(), fenix: true),
       Bind.lazyPut(() => MiniPlayerController(), fenix: true),
       Bind.lazyPut<MiniPlayerService>(() => Sint.find<MiniPlayerController>(), fenix: true),
       Bind.lazyPut(() => AudioPlayerHomeController()),

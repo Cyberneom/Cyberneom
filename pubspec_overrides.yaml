@@ -137,3 +137,5 @@ dependency_overrides:
     path: ../neom_modules/neom/neom_par
   neom_achievements:
     path: ../neom_modules/creator/neom_achievements
+  neom_ar:
+    path: ../neom_modules/vr/neom_ar
