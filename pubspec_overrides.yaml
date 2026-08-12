@@ -139,3 +139,5 @@ dependency_overrides:
     path: ../neom_modules/creator/neom_achievements
   neom_ar:
     path: ../neom_modules/vr/neom_ar
+  neom_vst:
+    path: ../neom_modules/music/neom_vst
