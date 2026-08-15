@@ -3,7 +3,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:sint/sint.dart';
 
-import 'ui/experiences/state_visual_bridge.dart';
 import 'ui/onboarding/cyberneom_onboarding_wrapper.dart';
 import 'package:neom_admin/admin_routes.dart';
 import 'package:neom_qa_tracker/neom_qa_tracker.dart';
@@ -80,9 +79,6 @@ import 'package:neom_woo/woo_routes.dart';
 class AppRoutes {
 
   static List<SintPage> getAppRoutes() {
-    // Inject visual experiences into state sessions (auto-mapped by beat Hz).
-    StatesRoutes.visualLayerBuilder = buildStateVisualLayer;
-
     List<SintPage<dynamic>> appRoutes = [
       SintPage(
           name: AppRouteConstants.root,
@@ -192,7 +188,7 @@ class AppRoutes {
     return [
       HomeTabItem(
           title: AppTranslationConstants.home,
-          icon: FontAwesomeIcons.house,
+          icon: Icons.home,
           page: TimelinePage()
       ),
       HomeTabItem(
@@ -202,12 +198,12 @@ class AppRoutes {
       ),
       HomeTabItem(
         title: AppTranslationConstants.generator,
-        icon: FontAwesomeIcons.om,
+        icon: Icons.self_improvement,
         route: AppRouteConstants.generator,
       ),
       HomeTabItem(
           title: AppTranslationConstants.directory,
-          icon: FontAwesomeIcons.building,
+          icon: Icons.business,
           page: BookingHomePage()
       ),
       HomeTabItem(

@@ -1,4 +1,3 @@
-import 'package:cyberneom/localization/app_translations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -147,7 +146,6 @@ class MyApp extends StatelessWidget {
       },
       binds: RootBinding().dependencies(),
       enableLog: true,
-      translations: AppTranslations(),
       locale: const Locale('es'),
       // Spanish, Mexico
       fallbackLocale: const Locale('es'),
