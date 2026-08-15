@@ -90,3 +90,8 @@ coverage/
 /android/service_account.json
 
 # End of https://www.toptal.com/developers/gitignore/api/flutter
+
+# Tooling/IDE junk
+.firebase/
+.idea/
+.DS_Store
