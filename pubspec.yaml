@@ -207,7 +207,8 @@ dependencies:
     git:
       url: git@github.com:Cyberneom/neom_par.git
   neom_levitation:
-    path: ../neom_modules/neom/neom_levitation
+    git:
+      url: git@github.com:Open-Neom/neom_levitation.git
 
 dev_dependencies:
   flutter_test:
