@@ -1,6 +1,4 @@
 dependency_overrides:
-  saia_core:
-    path: ../neom_modules/ai/saia_core
   sint:
     path: ../neom_modules/framework/sint
   neom_ads:
@@ -23,14 +21,10 @@ dependency_overrides:
     path: ../neom_modules/marketplace/neom_booking
   neom_calendar:
     path: ../neom_modules/platform/neom_calendar
-  neom_cloud:
-    path: ../neom_modules/ai/neom_cloud
   neom_camera:
     path: ../neom_modules/hardware/neom_camera
   neom_core:
     path: ../neom_modules/main/neom_core
-  neom_corpus:
-    path: ../neom_modules/ai/neom_corpus
   neom_commons:
     path: ../neom_modules/main/neom_commons
   neom_commerce:
@@ -45,16 +39,12 @@ dependency_overrides:
     path: ../neom_modules/social/neom_events
   neom_frequencies:
     path: ../neom_modules/neom/neom_frequencies
-  neom_games:
-    path: ../neom_modules/engage/neom_games
   neom_generator:
     path: ../neom_modules/neom/neom_generator
   neom_inter:
     path: ../neom_modules/neom/neom_inter
   neom_genres:
     path: ../neom_modules/platform/neom_genres
-  neom_ia:
-    path: ../neom_modules/ai/neom_ia
   neom_experiences:
     path: ../neom_modules/neom/neom_experiences
   neom_home:
@@ -101,8 +91,6 @@ dependency_overrides:
     path: ../neom_modules/commerce/neom_stripe
   neom_timeline:
     path: ../neom_modules/content/neom_timeline
-  neom_vr:
-    path: ../neom_modules/vr/neom_vr
   neom_woo:
     path: ../neom_modules/commerce/neom_woo
   neom_creator_analytics:
@@ -111,14 +99,10 @@ dependency_overrides:
     path: ../neom_modules/erp/neom_erp
   neom_kanban:
     path: ../neom_modules/erp/neom_kanban
-  neom_learning:
-    path: ../neom_modules/engage/neom_learning
   neom_rooms:
     path: ../neom_modules/social/neom_rooms
   neom_sat:
     path: ../neom_modules/commerce/neom_sat
-  neom_tts:
-    path: ../neom_modules/ai/neom_tts
   neom_video_editor:
     path: ../neom_modules/media/neom_video_editor
   sint_sentinel:
@@ -131,13 +115,9 @@ dependency_overrides:
     path: ../neom_modules/neom/neom_eeg
   neom_audio_platform:
     path: ../neom_modules/media/neom_audio_platform
-  neom_iaas:
-    path: ../neom_modules/ai/neom_iaas
   neom_par:
     path: ../neom_modules/neom/neom_par
   neom_achievements:
     path: ../neom_modules/creator/neom_achievements
-  neom_ar:
-    path: ../neom_modules/vr/neom_ar
   neom_vst:
     path: ../neom_modules/music/neom_vst

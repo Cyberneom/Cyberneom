@@ -32,6 +32,7 @@ import 'package:neom_profile/ui/slug_resolver_page.dart';
 import 'package:sint/navigation/src/router/url_strategy/url_strategy.dart';
 
 import 'app_routes.dart';
+import 'localization/app_translations.dart';
 import 'root_binding.dart';
 import 'package:neom_audio_player/neom_audio_player.dart';
 
@@ -146,6 +147,7 @@ class MyApp extends StatelessWidget {
       },
       binds: RootBinding().dependencies(),
       enableLog: true,
+      translations: AppTranslations(),
       locale: const Locale('es'),
       // Spanish, Mexico
       fallbackLocale: const Locale('es'),
