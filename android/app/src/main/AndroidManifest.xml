@@ -59,6 +59,40 @@
                     android:scheme="app" />
             </intent-filter>
 
+            <!-- Content App Links: the addressable content routes. Separate from
+                 the /x/ state links above so neither filter constrains the other.
+                 Verified against /.well-known/assetlinks.json on each host. -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="cyberneom.xyz" />
+                <data android:scheme="https" android:host="www.cyberneom.xyz" />
+                <data android:scheme="https" android:host="cyberneom-edd2d.web.app" />
+                <data android:pathPrefix="/a" />
+                <data android:pathPrefix="/album" />
+                <data android:pathPrefix="/ep" />
+                <data android:pathPrefix="/single" />
+                <data android:pathPrefix="/demo" />
+                <data android:pathPrefix="/playlist" />
+                <data android:pathPrefix="/giglist" />
+                <data android:pathPrefix="/readlist" />
+                <data android:pathPrefix="/publication" />
+                <data android:pathPrefix="/audiobook" />
+                <data android:pathPrefix="/podcast" />
+                <data android:pathPrefix="/radiostation" />
+                <data android:pathPrefix="/meditation" />
+                <data android:pathPrefix="/gallery" />
+                <data android:pathPrefix="/p" />
+                <data android:pathPrefix="/blog" />
+                <data android:pathPrefix="/e" />
+                <data android:pathPrefix="/shop" />
+                <data android:pathPrefix="/item" />
+                <data android:pathPrefix="/collective" />
+                <data android:pathPrefix="/invite" />
+                <data android:pathPrefix="/@" />
+            </intent-filter>
+
             <!-- App Links: cyberneom.xyz/x/* state links open in app -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />

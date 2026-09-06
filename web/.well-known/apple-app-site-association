@@ -1,0 +1,35 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "4ZY3D2GU99.com.cyberneom.neom",
+        "paths": [
+          "/playlist/*",
+          "/giglist/*",
+          "/readlist/*",
+          "/publication/*",
+          "/single/*",
+          "/ep/*",
+          "/album/*",
+          "/demo/*",
+          "/audiobook/*",
+          "/podcast/*",
+          "/radiostation/*",
+          "/meditation/*",
+          "/gallery/*",
+          "/a/*",
+          "/p/*",
+          "/blog/*",
+          "/e/*",
+          "/shop/*",
+          "/item/*",
+          "/collective/*",
+          "/invite/*",
+          "/@*",
+          "NOT /api/*"
+        ]
+      }
+    ]
+  }
+}

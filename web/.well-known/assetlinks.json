@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.cyberneom.neom",
+      "sha256_cert_fingerprints": [
+        "C1:2F:B1:10:A4:45:53:CC:2D:5A:A1:83:31:19:20:28:42:54:B5:59:51:06:02:00:0C:DE:15:12:AB:E8:FD:28"
+      ]
+    }
+  }
+]

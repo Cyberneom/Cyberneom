@@ -11,6 +11,8 @@ import 'package:sint/sint.dart';
 
 import 'package:neom_eeg/data/implementations/eeg_connection_controller.dart';
 import 'package:neom_eeg/data/implementations/eeg_neurofeedback_controller.dart';
+import 'package:neom_core/domain/use_cases/neuro_state_service.dart';
+import 'package:neom_eeg/data/implementations/eeg_neuro_state_adapter.dart';
 import 'package:neom_eeg/data/providers/simulated_eeg_provider.dart';
 import 'package:neom_analytics/data/firestore/analytics_firestore.dart';
 import 'package:neom_audio_player/audio_player_invoker.dart';
@@ -278,6 +280,13 @@ class RootBinding extends Binding {
         return EegConnectionController(provider: provider);
       }, fenix: true),
       Bind.lazyPut(() => EegNeurofeedbackController(
+        deviceService: Sint.find<EegConnectionController>().provider,
+      ), fenix: true),
+      // Publishes the headset as the ecosystem's NeuroStateService, so the
+      // experiences react to real readings through the neom_core contract
+      // instead of importing neom_eeg. Cyberneom only — the other apps ship
+      // no EEG hardware path.
+      Bind.lazyPut<NeuroStateService>(() => EegNeuroStateAdapter(
         deviceService: Sint.find<EegConnectionController>().provider,
       ), fenix: true),
     ];
