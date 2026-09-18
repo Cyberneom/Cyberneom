@@ -228,19 +228,153 @@ service cloud.firestore {
     }
 
     match /wallets/{walletId} {
-      allow read: if signedIn() && resource.data.ownerId == request.auth.uid;
-      allow write: if false; // Mutaciones exclusivas de Cloud Functions / Admin SDK
+      allow read, write: if signedIn();
     }
 
     match /orders/{orderId} {
-      allow read: if signedIn() && resource.data.userId == request.auth.uid;
-      allow write: if false;
+      allow read, write: if signedIn();
     }
 
     match /userNotifications/{notifId} {
       allow read, update: if signedIn() && resource.data.userId == request.auth.uid;
       allow create, delete: if signedIn();
     }
+
+    // --- ERP & OPERACIONES ---
+    match /erpLeads/{id} { allow read, write: if signedIn(); }
+    match /erpAgents/{id} { allow read, write: if signedIn(); }
+    match /erpAgentKpis/{id} { allow read, write: if signedIn(); }
+    match /erpActivities/{id} { allow read, write: if signedIn(); }
+    match /erpTasks/{id} { allow read, write: if signedIn(); }
+    match /erpIncomes/{id} { allow read, write: if signedIn(); }
+    match /erpExpenses/{id} { allow read, write: if signedIn(); }
+    match /erpRequisitions/{id} { allow read, write: if signedIn(); }
+    match /erpQuotes/{id} { allow read, write: if signedIn(); }
+    match /erpSolutions/{id} { allow read, write: if signedIn(); }
+    match /erpSolutionAssignments/{id} { allow read, write: if signedIn(); }
+    match /erpRemovedSolutions/{id} { allow read, write: if signedIn(); }
+    match /erpBooks/{id} { allow read, write: if signedIn(); }
+    match /erpAuthors/{id} { allow read, write: if signedIn(); }
+    match /erpAuthorWallets/{id} { allow read, write: if signedIn(); }
+    match /erpRoyaltyPayouts/{id} { allow read, write: if signedIn(); }
+    match /erpSaleTransactions/{id} { allow read, write: if signedIn(); }
+    match /erpCommissions/{id} { allow read, write: if signedIn(); }
+    match /erpWarehouseNodes/{id} { allow read, write: if signedIn(); }
+    match /erpTransfers/{id} { allow read, write: if signedIn(); }
+    match /erpBoxContainers/{id} { allow read, write: if signedIn(); }
+    match /erpGoals/{id} { allow read, write: if signedIn(); }
+    match /erpAuditTrail/{id} { allow read, write: if signedIn(); }
+    match /erpConfigs/{id} { allow read, write: if signedIn(); }
+    match /erpModules/{id} { allow read, write: if signedIn(); }
+    match /erpFilStages/{id} { allow read, write: if signedIn(); }
+    match /erpFilParticipants/{id} { allow read, write: if signedIn(); }
+    match /erpFilSchedule/{id} { allow read, write: if signedIn(); }
+    match /erpRoleAssignments/{id} { allow read, write: if signedIn(); }
+    match /erpBenchmarks/{id} {
+      allow read, write: if signedIn();
+      match /{sub=**} { allow read, write: if signedIn(); }
+    }
+
+    // --- KANBAN & GESTIÓN DE PROYECTOS ---
+    match /kanbanBoards/{boardId} {
+      allow read, write: if signedIn();
+      match /{sub=**} { allow read, write: if signedIn(); }
+    }
+    match /kanbanTasks/{taskId} {
+      allow read, write: if signedIn();
+      match /{sub=**} { allow read, write: if signedIn(); }
+    }
+
+    // --- HUB, TELEMETRÍA Y SNAPSHOTS ---
+    match /hubLeads/{id} { allow read, write: if signedIn(); }
+    match /hubAgents/{id} { allow read, write: if signedIn(); }
+    match /hubExpenses/{id} { allow read, write: if signedIn(); }
+    match /hubIncomes/{id} { allow read, write: if signedIn(); }
+    match /hubSnapshots/{id} { allow read, write: if signedIn(); }
+    match /financialSnapshots/{id} { allow read, write: if signedIn(); }
+    match /subscriptionEvents/{id} { allow read, write: if signedIn(); }
+    match /collectionEvents/{id} { allow read, write: if signedIn(); }
+    match /saiaDevices/{id} { allow read, write: if signedIn(); }
+    match /saiaDomainSnapshots/{id} { allow read, write: if signedIn(); }
+    match /saiaUserContexts/{id} { allow read, write: if signedIn(); }
+
+    // --- E-COMMERCE, SUSCRIPCIONES Y SERVICIOS ---
+    match /subscriptionPlans/{planId} {
+      allow read: if true;
+      allow write: if isStaff();
+    }
+    match /userSubscriptions/{subId} {
+      allow read, write: if signedIn();
+    }
+    match /coupons/{couponId} {
+      allow read: if true;
+      allow write: if isStaff();
+    }
+    match /requests/{reqId} {
+      allow read, write: if signedIn();
+    }
+    match /shopOrders/{orderId} {
+      allow read, write: if signedIn();
+    }
+    match /shopMerchItems/{itemId} {
+      allow read: if true;
+      allow write: if signedIn();
+    }
+    match /shopMeta/{metaId} {
+      allow read, write: if signedIn();
+    }
+    match /shopProductMeta/{metaId} {
+      allow read, write: if signedIn();
+    }
+    match /shopWishlists/{userId} {
+      allow read, write: if signedIn();
+      match /{sub=**} { allow read, write: if signedIn(); }
+    }
+    match /shopReviews/{reviewId} {
+      allow read: if true;
+      allow write: if signedIn();
+    }
+    match /shopShippingZones/{zoneId} {
+      allow read: if true;
+      allow write: if isStaff();
+    }
+    match /shopBanners/{bannerId} {
+      allow read: if true;
+      allow write: if isStaff();
+    }
+    match /shopRefunds/{refundId} {
+      allow read, write: if signedIn();
+    }
+    match /shopStocks/{stockId} {
+      allow read, write: if signedIn();
+    }
+    match /shopAddresses/{addressId} {
+      allow read, write: if signedIn();
+      match /{sub=**} { allow read, write: if signedIn(); }
+    }
+    match /sales/{saleId} { allow read, write: if signedIn(); }
+    match /payments/{paymentId} { allow read, write: if signedIn(); }
+    match /invoices/{invoiceId} { allow read, write: if signedIn(); }
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isStaff();
+    }
+    match /quotations/{quotationId} { allow read, write: if signedIn(); }
+    match /royaltyPayouts/{payoutId} { allow read, write: if signedIn(); }
+    match /withdrawalRequests/{reqId} { allow read, write: if signedIn(); }
+    match /tickets/{ticketId} { allow read, write: if signedIn(); }
+    match /sponsors/{sponsorId} {
+      allow read: if true;
+      allow write: if isStaff();
+    }
+    match /bank/{docId} { allow read, write: if isStaff(); }
+    match /transactions/{txId} { allow read, write: if signedIn(); }
+
+    // --- POS & FACTURACIÓN SAT ---
+    match /posSessions/{sessionId} { allow read, write: if signedIn(); }
+    match /posReceipts/{receiptId} { allow read, write: if signedIn(); }
+    match /posStockAdjustments/{adjId} { allow read, write: if signedIn(); }
+    match /satInvoices/{invId} { allow read, write: if signedIn(); }
 
     // --- BLOQUEO DEFENSIVO POR DEFECTO ---
     match /{document=**} {
