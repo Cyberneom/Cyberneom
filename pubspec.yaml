@@ -4,14 +4,16 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 3.0.1+28 # Incrementé un número el build por buena práctica
 
 environment:
-  sdk: ">=3.8.0 <4.0.0"
-  flutter: ">=3.19.0"
+  sdk: ">=3.12.0 <4.0.0"
+  flutter: ">=3.44.0"
 
 dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  material_ui: ^1.2.0
+  cupertino_ui: ^1.0.0
 
   # --- Core Modules ---
   neom_admin:
@@ -98,6 +100,9 @@ dependencies:
   neom_books:
     git:
       url: git@github.com:Cyberneom/neom_books.git
+  neom_blog:
+    git:
+      url: git@github.com:Cyberneom/neom_blog.git
   neom_releases:
     git:
       url: git@github.com:Cyberneom/neom_releases.git

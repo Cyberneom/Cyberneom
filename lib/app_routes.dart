@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:sint/sint.dart';
@@ -15,6 +15,7 @@ import 'package:neom_auth/ui/login/login_page.dart';
 import 'package:neom_collectives/collective_routes.dart';
 import 'package:neom_bank/bank_routes.dart';
 import 'package:neom_books/books_routes.dart';
+import 'package:neom_blog/blog_routes.dart';
 import 'package:neom_booking/booking_routes.dart';
 import 'package:neom_booking/ui/booking_home_page.dart';
 import 'package:neom_calendar/calendar_routes.dart';
@@ -121,7 +122,8 @@ class AppRoutes {
       ...AuthRoutes.routes,
       ...CollectiveRoutes.routes,
       ...BankRoutes.routes,
-      ...BooksRoutes.routes,
+      ...BlogRoutes.practiceRoutes,
+      ...BooksRoutes.readerRoutes,
       ...BookingRoutes.routes,
       ...CalendarRoutes.routes,
       if (!kIsWeb) ...CameraRoutes.routes,
@@ -161,7 +163,17 @@ class AppRoutes {
       ...HistoricStateRoutes.routes,
       SintPage(
         name: '/eeg',
-        page: () => const EegMonitorPage(),
+        // The chamber's EEG-first layout is a separate route so the standard
+        // Cámara Neom stays untouched; the monitor is where it is offered.
+        page: () => EegMonitorPage(
+          actions: [
+            IconButton(
+              tooltip: 'Cámara Neom · Modo EEG',
+              icon: const Icon(Icons.graphic_eq),
+              onPressed: () => Sint.toNamed(AppRouteConstants.chamberNeuro),
+            ),
+          ],
+        ),
         transition: Transition.rightToLeftWithFade,
       ),
       SintPage(
@@ -174,7 +186,7 @@ class AppRoutes {
         transition: Transition.rightToLeftWithFade,
       ),
       ...ParRoutes.routes,
-      ...LevitationRoutes.routes,
+      if (kDebugMode) ...LevitationRoutes.routes,
       if (!kIsWeb) ...VrRoutes.routes,
       if (!kIsWeb) ...ArRoutes.routes,
       // ...NUPALERoutes.routes,

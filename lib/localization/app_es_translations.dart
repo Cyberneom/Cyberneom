@@ -7,6 +7,7 @@ import 'package:neom_bank/data/translations/bank_es_translations.dart';
 import 'package:neom_bank/data/translations/tip_es_translations.dart';
 import 'package:neom_booking/data/translations/booking_es_translations.dart';
 import 'package:neom_books/data/translations/books_es_translations.dart';
+import 'package:neom_blog/data/translations/blog_es_translations.dart';
 import 'package:neom_calendar/data/translations/calendar_es_translations.dart';
 import 'package:neom_cloud/data/translations/cloud_es_translations.dart';
 import 'package:neom_commerce/data/translations/commerce_es_translations.dart';
@@ -17,6 +18,7 @@ import 'package:neom_creator_analytics/data/translations/analytics_es_translatio
 import 'package:neom_directory/data/translations/directory_es_translations.dart';
 import 'package:neom_erp/data/translations/erp_es_translations.dart';
 import 'package:neom_events/data/translations/event_es_translations.dart';
+import 'package:neom_experiences/data/translations/experience_es_translations.dart';
 import 'package:neom_frequencies/data/translations/frequency_es_translations.dart';
 import 'package:neom_generator/data/translations/generator_es_translations.dart';
 import 'package:neom_home/data/translations/home_es_translations.dart';
@@ -60,6 +62,7 @@ class AppEsTranslations {
     ...TipEsTranslations.values,
     ...BookingEsTranslations.values,
     ...BooksEsTranslations.values,
+    ...BlogEsTranslations.values,
     ...CalendarEsTranslations.values,
     ...cloudEsTranslations,
     ...CommerceEsTranslations.values,
@@ -70,6 +73,7 @@ class AppEsTranslations {
     ...DirectoryEsTranslations.values,
     ...ErpEsTranslations.values,
     ...EventEsTranslations.values,
+    ...ExperienceEsTranslations.values,
     ...FrequencyEsTranslations.values,
     ...GeneratorEsTranslations.values,
     ...HomeEsTranslations.values,

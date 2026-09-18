@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/material.dart' show Icons;
 import 'package:neom_cloud/neom_cloud.dart';
 import 'package:neom_core/domain/use_cases/cloud_drive_service.dart';
 import 'package:neom_core/domain/use_cases/cloud_email_service.dart';
@@ -9,11 +10,15 @@ import 'package:neom_generator/domain/use_cases/neom_generator_service.dart';
 import 'package:neom_releases/ui/release_upload_controller.dart';
 import 'package:sint/sint.dart';
 
+import 'package:neom_eeg/data/hub/eeg_hub.dart';
 import 'package:neom_eeg/data/implementations/eeg_connection_controller.dart';
 import 'package:neom_eeg/data/implementations/eeg_neurofeedback_controller.dart';
 import 'package:neom_core/domain/use_cases/neuro_state_service.dart';
 import 'package:neom_eeg/data/implementations/eeg_neuro_state_adapter.dart';
-import 'package:neom_eeg/data/providers/simulated_eeg_provider.dart';
+import 'package:neom_eeg/domain/models/emotiv_cortex_config.dart';
+import 'package:neom_eeg/ui/widgets/eeg_live_dashboard.dart';
+import 'package:neom_generator/domain/use_cases/chamber_neuro_panel.dart';
+import 'eeg/cyberneom_eeg_practice_bridge.dart';
 import 'package:neom_analytics/data/firestore/analytics_firestore.dart';
 import 'package:neom_audio_player/audio_player_invoker.dart';
 import 'package:neom_creator_analytics/data/implementations/creator_analytics_controller.dart';
@@ -272,12 +277,19 @@ class RootBinding extends Binding {
       // Huella Armónica — voice-based personal frequency identity
       Bind.lazyPut(() => HarmonicFootprintController(), fenix: true),
 
-      // EEG — device connection + neurofeedback
-      // Uses SimulatedEegProvider by default; swap for EmotivCortexProvider
-      // or BleGenericEegProvider when real hardware is connected.
+      // EEG — one hub for every headset. The hub routes connect() by the
+      // device model: Emotiv (EPOC X / Insight / MN8 / Flex) through Cortex
+      // when `emotivClientId`/`emotivClientSecret` are set in properties.json,
+      // Muse over BLE, and the simulator in debug builds. Adding a vendor is
+      // a driver registration here, not a code path in the app.
       Bind.lazyPut(() {
-        final provider = SimulatedEegProvider();
-        return EegConnectionController(provider: provider);
+        late final EegConnectionController controller;
+        final hub = EegHub.standard(
+          emotiv: EmotivCortexConfig.fromAppProperties(),
+          onEmotivAccessPending: (msg) => controller.reportPending(msg),
+        );
+        controller = EegConnectionController(provider: hub);
+        return controller;
       }, fenix: true),
       Bind.lazyPut(() => EegNeurofeedbackController(
         deviceService: Sint.find<EegConnectionController>().provider,
@@ -289,6 +301,27 @@ class RootBinding extends Binding {
       Bind.lazyPut<NeuroStateService>(() => EegNeuroStateAdapter(
         deviceService: Sint.find<EegConnectionController>().provider,
       ), fenix: true),
+      // Cámara Neom "Modo EEG": the chamber gets a neuro layout with the EEG
+      // dashboard in the centre. The chamber only knows ChamberNeuroPanel;
+      // which headset feeds it is the hub's business, so any model works.
+      Bind.put<ChamberNeuroPanel>(ChamberNeuroPanel(
+        id: 'eeg',
+        icon: Icons.psychology,
+        builder: (_) => const EegLiveDashboard(compact: true),
+        statusLine: () {
+          if (!Sint.isRegistered<EegConnectionController>()) return null;
+          final eeg = Sint.find<EegConnectionController>();
+          final device = eeg.connectedDevice.value;
+          if (device == null) return 'Sin headset';
+          final poor = eeg.status.value?.poorContacts().length ?? 0;
+          return '${device.type.displayName} · '
+              '${device.channels.length - poor}/${device.channels.length} sensores';
+        },
+      ), permanent: true),
+      // Cuts the EEG live buffer into per-practice captures (frequencies,
+      // voice, markers, bands, coherence) by observing the chamber's public
+      // reactive state. Must come after both controllers above.
+      Bind.put(CyberneomEegPracticeBridge(), permanent: true),
     ];
   }
 

@@ -3,6 +3,8 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart' as material;
+import 'package:cupertino_ui/cupertino_ui.dart' as cupertino;
 import 'package:flutter/services.dart';
 import 'package:neom_ads/neom_ads.dart';
 import 'package:neom_states/ui/widgets/frequency_quick_start_bar.dart';
@@ -71,6 +73,7 @@ void main() async {
     );
     AppProperties();
     AppFlavour();
+    initNeomCommons();
     await hiveFuture;
 
     // Initialize SAIA secondary Firebase for cross-app memory
@@ -128,7 +131,7 @@ class MyApp extends StatelessWidget {
     initializeDateFormatting(AppLocale.spanish.code);
     return SentinelApp(
       config: SentinelConfig.production(),
-      child: SintMaterialApp(
+      child: SintApp(
       localeListResolutionCallback: (locales, supportedLocales) {
         for (var locale in locales!) {
           if (supportedLocales.contains(locale)) {
@@ -138,9 +141,9 @@ class MyApp extends StatelessWidget {
         return supportedLocales.first;
       },
       localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
+        material.GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
+        cupertino.GlobalCupertinoLocalizations.delegate,
       ],
       shortcuts: {
         LogicalKeySet(LogicalKeyboardKey.space): const ActivateIntent(),
@@ -161,12 +164,15 @@ class MyApp extends StatelessWidget {
       defaultTransition: Transition.upToDown,
       debugShowCheckedModeBanner: false,
 
-      theme: ThemeData(
+      materialTheme: material.ThemeData(
         brightness: Brightness.dark,
         fontFamily: AppTheme.fontFamily,
-        timePickerTheme: TimePickerThemeData(
+        timePickerTheme: material.TimePickerThemeData(
             backgroundColor: AppColor.getMain()
         ),
+      ),
+      cupertinoTheme: const cupertino.CupertinoThemeData(
+        brightness: Brightness.dark,
       ),
       builder: SaiaGlobalOverlay.builder,
       routingCallback: SaiaGlobalOverlay.onRouting,

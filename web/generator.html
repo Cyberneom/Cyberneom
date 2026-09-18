@@ -238,7 +238,7 @@ let neuroState='neutral';
 // Audio
 let ctx,oscL,oscR,gainL,gainR,merger,master,fmOsc,fmGain;
 // Viz
-let vizAF,lastVizTime=0;
+let vizAF=null,lastVizTime=null,vizGeneration=0,vizPageVisible=true;
 // Breath anim
 let breathAF,breathStartTime=0;
 
@@ -410,10 +410,21 @@ function stopGainLoop(){cancelAnimationFrame(gainAF);}
 // ─── VISUALIZATION ────────────────────────────────────────
 const vizCanvas=document.getElementById('viz');
 const vizCtx=vizCanvas.getContext('2d');
+const vizFrameInterval=1000/30;
 
 function startViz(){
+  if(!playing||document.hidden||!vizPageVisible||vizAF!==null)return;
+  const generation=++vizGeneration;
+  lastVizTime=null;
   function draw(ts){
-    if(!playing){vizAF=requestAnimationFrame(draw);return;}
+    if(generation!==vizGeneration)return;
+    vizAF=null;
+    if(!playing||document.hidden||!vizPageVisible){stopViz();return;}
+    if(lastVizTime!==null&&ts-lastVizTime<vizFrameInterval){
+      vizAF=requestAnimationFrame(draw);
+      return;
+    }
+    lastVizTime=ts;
     const w=vizCanvas.width,h=vizCanvas.height;
     vizCtx.clearRect(0,0,w,h);
 
@@ -461,7 +472,23 @@ function startViz(){
   }
   vizAF=requestAnimationFrame(draw);
 }
-function stopViz(){cancelAnimationFrame(vizAF);}
+function stopViz(){
+  vizGeneration++;
+  if(vizAF!==null)cancelAnimationFrame(vizAF);
+  vizAF=null;
+  lastVizTime=null;
+}
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden)stopViz();else startViz();
+});
+window.addEventListener('pagehide',()=>{
+  vizPageVisible=false;
+  stopViz();
+});
+window.addEventListener('pageshow',()=>{
+  vizPageVisible=true;
+  startViz();
+});
 
 // ─── UI UPDATES ───────────────────────────────────────────
 function updateFreqDisplay(){
@@ -506,6 +533,7 @@ function togglePlay(){
     document.getElementById('playIcon').innerHTML='&#9632;';
     fbInc({sessions:1,[`sessions_${todayKey()}`]:1});
   }
+  if(playing)startViz();else stopViz();
 }
 
 function onFreq(v){freq=parseFloat(v);document.getElementById('slFreqV').textContent=freq.toFixed(1)+' Hz';applyFreqs();applyModulation();updateFreqDisplay();}

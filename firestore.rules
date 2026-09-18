@@ -1,0 +1,250 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // --- HELPERS GLOBALES ---
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isStaff() {
+      return signedIn() && (
+        request.auth.token.get('admin', false) == true ||
+        request.auth.token.get('staff', false) == true
+      );
+    }
+
+    // --- REGLAS PARA COLLECTION GROUPS ---
+    // Imprescindible para que búsquedas globales (timeline, catálogo, autores) funcionen sin pantallas en blanco
+    match /{path=**}/profiles/{profileId} {
+      allow read: if true;
+    }
+
+    match /{path=**}/messages/{messageId} {
+      allow read: if signedIn();
+    }
+
+    // --- CONTENIDO PÚBLICO: TIMELINE, RELEASES, DEMOS, AUTORES ---
+    // Lectura abierta para invitados y registrados. Cero pantallas en blanco.
+    match /posts/{postId} {
+      allow read: if true;
+      allow create: if signedIn();
+      allow update: if signedIn(); // Necesario para likes (likedProfiles), comentarios (commentIds) e interacción
+      allow delete: if signedIn() && (resource.data.ownerId == request.auth.uid || isStaff());
+
+      match /comments/{commentId} {
+        allow read: if true;
+        allow create: if signedIn();
+        allow update, delete: if signedIn();
+      }
+    }
+
+    match /appReleaseItems/{releaseId} {
+      allow read: if true; // Demos de canciones, libros o frecuencias siempre reproducibles
+      allow create: if signedIn();
+      allow update, delete: if signedIn() && (
+        isStaff() || 
+        resource.data.get('ownerEmail', '') == request.auth.token.email ||
+        resource.data.get('ownerProfileId', '') == request.auth.uid ||
+        resource.data.get('metaOwnerId', '') == request.auth.token.email ||
+        resource.data.get('metaOwnerId', '') == request.auth.uid
+      );
+    }
+
+    match /appMediaItems/{mediaId} {
+      allow read: if true;
+      allow create: if signedIn();
+      allow update, delete: if signedIn();
+    }
+
+    match /profiles/{profileId} {
+      allow read: if true;
+      allow create: if signedIn();
+      allow update: if signedIn();
+      allow delete: if isStaff();
+    }
+
+    match /itemlists/{listId} {
+      allow read: if true;
+      allow create: if signedIn();
+      allow update, delete: if signedIn();
+    }
+
+    match /events/{eventId} {
+      allow read: if true;
+      allow create: if signedIn();
+      allow update, delete: if signedIn();
+    }
+
+    match /blog/{blogId} {
+      allow read: if true;
+      allow write: if isStaff();
+    }
+
+    match /app/{docId} {
+      allow read: if true;
+      allow write: if isStaff();
+    }
+
+    match /places/{placeId} {
+      allow read: if true;
+      allow write: if signedIn();
+    }
+
+    match /facilities/{facilityId} {
+      allow read: if true;
+      allow write: if signedIn();
+    }
+
+    match /externalItems/{itemId} {
+      allow read: if true;
+      allow write: if signedIn();
+    }
+
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow write: if signedIn();
+    }
+
+    match /hashtags/{tagId} {
+      allow read: if true;
+      allow write: if signedIn();
+    }
+
+    match /collectives/{collId} {
+      allow read: if true;
+      allow write: if signedIn();
+      match /{sub=**} {
+        allow read: if true;
+        allow write: if signedIn();
+      }
+    }
+
+    match /stories/{storyId} {
+      allow read: if true;
+      allow write: if signedIn();
+    }
+
+    match /activityFeed/{profileId} {
+      allow read, write: if signedIn();
+      match /activityFeedItems/{itemId} {
+        allow read, write: if signedIn();
+      }
+    }
+
+    match /inbox/{inboxId} {
+      allow read, write: if signedIn();
+      match /messages/{messageId} {
+        allow read, write: if signedIn();
+      }
+    }
+
+    match /reports/{reportId} {
+      allow create: if signedIn();
+      allow read, update, delete: if isStaff();
+    }
+
+    // Compatibilidad con colecciones de proyección en Gigmeout
+    match /publicProfiles/{doc=**} { allow read: if true; allow write: if false; }
+    match /publicPosts/{doc=**} { allow read: if true; allow write: if false; }
+    match /publicAppReleaseItems/{doc=**} { allow read: if true; allow write: if false; }
+    match /publicAppMediaItems/{doc=**} { allow read: if true; allow write: if false; }
+    match /publicItemlists/{doc=**} { allow read: if true; allow write: if false; }
+    match /publicAudioCharts/{doc=**} { allow read: if true; allow write: if false; }
+
+    // --- COLECCIONES POR FLAVOUR ---
+    // EMXI: Libros y lectura
+    match /books/{bookId} {
+      allow read: if true;
+      allow write: if isStaff();
+    }
+    match /googleBooks/{bookId} {
+      allow read: if true;
+      allow write: if isStaff();
+    }
+    match /nupaleSessions/{sessionId} {
+      allow read, write: if signedIn();
+    }
+
+    // CYBERNEOM: Frecuencias, cámaras de sonido
+    match /frequencies/{freqId} {
+      allow read: if true;
+      allow write: if isStaff();
+    }
+    match /chambers/{chamberId} {
+      allow read, write: if signedIn();
+    }
+    match /presets/{presetId} {
+      allow read: if true;
+      allow write: if signedIn();
+    }
+    match /inciensos/{inciensoId} {
+      allow read: if true;
+      allow write: if isStaff();
+    }
+
+    // GIGMEOUT: Instrumentos, sesiones DAW
+    match /instruments/{instId} {
+      allow read: if true;
+      allow write: if isStaff();
+    }
+    match /bands/{bandId} {
+      allow read: if true;
+      allow write: if signedIn();
+    }
+    match /caseteSessions/{sessionId} {
+      allow read, write: if signedIn();
+    }
+    match /authorsCaseteSessions/{sessionId} {
+      allow read, write: if signedIn();
+    }
+    match /freemiumCaseteSessions/{sessionId} {
+      allow read, write: if signedIn();
+    }
+    match /dawProjects/{projectId} {
+      allow read, write: if signedIn();
+    }
+    match /jamSessions/{sessionId} {
+      allow read, write: if signedIn();
+    }
+
+    // --- DATOS PRIVADOS DE USUARIO ---
+    match /users/{userId} {
+      allow read, update: if signedIn() && (request.auth.uid == userId || request.auth.token.email == resource.data.email);
+      allow create: if signedIn() && request.auth.uid == userId;
+      allow delete: if false;
+
+      // Perfiles bajo el árbol del usuario: legibles públicamente (para autores, avatares),
+      // pero únicamente modificables por el dueño de la cuenta
+      match /profiles/{profileId} {
+        allow read: if true;
+        allow write: if signedIn() && request.auth.uid == userId;
+
+        match /{subcollection=**} {
+          allow read: if true; // géneros, instrumentos, frecuencias del perfil
+          allow write: if signedIn() && request.auth.uid == userId;
+        }
+      }
+    }
+
+    match /wallets/{walletId} {
+      allow read: if signedIn() && resource.data.ownerId == request.auth.uid;
+      allow write: if false; // Mutaciones exclusivas de Cloud Functions / Admin SDK
+    }
+
+    match /orders/{orderId} {
+      allow read: if signedIn() && resource.data.userId == request.auth.uid;
+      allow write: if false;
+    }
+
+    match /userNotifications/{notifId} {
+      allow read, update: if signedIn() && resource.data.userId == request.auth.uid;
+      allow create, delete: if signedIn();
+    }
+
+    // --- BLOQUEO DEFENSIVO POR DEFECTO ---
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
