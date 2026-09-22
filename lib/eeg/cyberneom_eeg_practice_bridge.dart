@@ -1,6 +1,8 @@
+import 'package:neom_eeg/data/implementations/eeg_calibration_controller.dart';
 import 'package:neom_eeg/data/implementations/eeg_connection_controller.dart';
 import 'package:neom_eeg/data/implementations/eeg_practice_link.dart';
 import 'package:neom_eeg/data/implementations/eeg_session_capture_controller.dart';
+import 'package:neom_eeg/data/implementations/eeg_watch_controller.dart';
 import 'package:neom_eeg/domain/models/eeg_session_capture.dart';
 import 'package:neom_generator/ui/neom_generator_controller.dart';
 import 'package:sint/sint.dart';
@@ -13,6 +15,11 @@ import 'package:sint/sint.dart';
 /// (base/binaural/effective frequency, volume, neuro state, preset) and what
 /// the microphone detected. The generator is only *observed* — none of its
 /// code changes — and neom_eeg never learns who the host is.
+///
+/// It also wakes the calibration and watch controllers, which are lazy
+/// bindings: without this they would only start when the EEG dashboard is
+/// opened, and a chamber session with the panel closed would get no
+/// alerts, no automatic markers and no baseline loaded.
 class CyberneomEegPracticeBridge extends SintController {
   EegPracticeLink? _link;
 
@@ -26,6 +33,10 @@ class CyberneomEegPracticeBridge extends SintController {
     final capture = Sint.isRegistered<EegSessionCaptureController>()
         ? Sint.find<EegSessionCaptureController>()
         : Sint.put(EegSessionCaptureController(hub: hub), permanent: true);
+    if (Sint.isRegistered<EegCalibrationController>()) {
+      Sint.find<EegCalibrationController>();
+    }
+    if (Sint.isRegistered<EegWatchController>()) Sint.find<EegWatchController>();
 
     if (!Sint.isRegistered<NeomGeneratorController>()) return;
     final chamber = Sint.find<NeomGeneratorController>();

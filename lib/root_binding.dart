@@ -11,14 +11,19 @@ import 'package:neom_releases/ui/release_upload_controller.dart';
 import 'package:sint/sint.dart';
 
 import 'package:neom_eeg/data/hub/eeg_hub.dart';
+import 'package:neom_eeg/data/implementations/eeg_calibration_controller.dart';
 import 'package:neom_eeg/data/implementations/eeg_connection_controller.dart';
 import 'package:neom_eeg/data/implementations/eeg_neurofeedback_controller.dart';
+import 'package:neom_eeg/data/implementations/eeg_session_capture_controller.dart';
+import 'package:neom_eeg/data/implementations/eeg_watch_controller.dart';
 import 'package:neom_core/domain/use_cases/neuro_state_service.dart';
 import 'package:neom_eeg/data/implementations/eeg_neuro_state_adapter.dart';
 import 'package:neom_eeg/domain/models/emotiv_cortex_config.dart';
 import 'package:neom_eeg/ui/widgets/eeg_live_dashboard.dart';
+import 'package:neom_core/domain/use_cases/neom_audio_visual_signal.dart';
 import 'package:neom_generator/domain/use_cases/chamber_neuro_panel.dart';
 import 'eeg/cyberneom_eeg_practice_bridge.dart';
+import 'eeg/cyberneom_eeg_visual_signal.dart';
 import 'package:neom_analytics/data/firestore/analytics_firestore.dart';
 import 'package:neom_audio_player/audio_player_invoker.dart';
 import 'package:neom_creator_analytics/data/implementations/creator_analytics_controller.dart';
@@ -294,6 +299,25 @@ class RootBinding extends Binding {
       Bind.lazyPut(() => EegNeurofeedbackController(
         deviceService: Sint.find<EegConnectionController>().provider,
       ), fenix: true),
+      // Personal baseline (eyes open / eyes closed) per profile and headset
+      // model, and the watcher that turns it into alerts and automatic
+      // markers (sustained T7/T8 asymmetry, beta over rest, hypofrontality,
+      // lost contact). Both are opt-in for the EEG dashboard: registering
+      // them here is what makes their panels appear.
+      Bind.lazyPut(() => EegCalibrationController(
+        hub: Sint.find<EegConnectionController>().hub!,
+        subjectId: () {
+          final id = Sint.find<UserController>().profile.id;
+          return id.isEmpty ? null : id;
+        },
+      ), fenix: true),
+      Bind.lazyPut(() => EegWatchController(
+        hub: Sint.find<EegConnectionController>().hub!,
+        calibration: () => Sint.find<EegCalibrationController>().current.value,
+        capture: () => Sint.isRegistered<EegSessionCaptureController>()
+            ? Sint.find<EegSessionCaptureController>()
+            : null,
+      ), fenix: true),
       // Publishes the headset as the ecosystem's NeuroStateService, so the
       // experiences react to real readings through the neom_core contract
       // instead of importing neom_eeg. Cyberneom only — the other apps ship
@@ -322,6 +346,12 @@ class RootBinding extends Binding {
       // voice, markers, bands, coherence) by observing the chamber's public
       // reactive state. Must come after both controllers above.
       Bind.put(CyberneomEegPracticeBridge(), permanent: true),
+      // The experiences resolve NeomAudioSessionSignal before the plain
+      // NeomAudioVisualSignal the generator registers; this decorator gives
+      // them the chamber's signal with the EEG's measured hemispheric
+      // coherence in place of the audio-phase inference whenever a headset
+      // is streaming. The generator itself is untouched.
+      Bind.put<NeomAudioSessionSignal>(CyberneomEegVisualSignal(), permanent: true),
     ];
   }
 

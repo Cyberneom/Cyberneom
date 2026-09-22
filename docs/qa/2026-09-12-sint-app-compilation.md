@@ -1,5 +1,8 @@
 # Cyberneom: validación de SintApp (2026-09-12)
 
+> Registro histórico. La implementación y las compilaciones se revisaron de
+> nuevo el [21 de septiembre de 2026](2026-09-21-sint-app-compilation.md).
+
 ## Alcance
 
 Se migra la configuración de `MyApp` de `SintMaterialApp` a `SintApp` utilizando
