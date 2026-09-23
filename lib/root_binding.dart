@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart' show Icons;
 import 'package:neom_cloud/neom_cloud.dart';
@@ -20,10 +22,8 @@ import 'package:neom_core/domain/use_cases/neuro_state_service.dart';
 import 'package:neom_eeg/data/implementations/eeg_neuro_state_adapter.dart';
 import 'package:neom_eeg/domain/models/emotiv_cortex_config.dart';
 import 'package:neom_eeg/ui/widgets/eeg_live_dashboard.dart';
-import 'package:neom_core/domain/use_cases/neom_audio_visual_signal.dart';
 import 'package:neom_generator/domain/use_cases/chamber_neuro_panel.dart';
 import 'eeg/cyberneom_eeg_practice_bridge.dart';
-import 'eeg/cyberneom_eeg_visual_signal.dart';
 import 'package:neom_analytics/data/firestore/analytics_firestore.dart';
 import 'package:neom_audio_player/audio_player_invoker.dart';
 import 'package:neom_creator_analytics/data/implementations/creator_analytics_controller.dart';
@@ -318,13 +318,19 @@ class RootBinding extends Binding {
             ? Sint.find<EegSessionCaptureController>()
             : null,
       ), fenix: true),
-      // Publishes the headset as the ecosystem's NeuroStateService, so the
-      // experiences react to real readings through the neom_core contract
-      // instead of importing neom_eeg. Cyberneom only — the other apps ship
-      // no EEG hardware path.
-      Bind.lazyPut<NeuroStateService>(() => EegNeuroStateAdapter(
-        deviceService: Sint.find<EegConnectionController>().provider,
-      ), fenix: true),
+      // Publishes the headset as the ecosystem's NeuroStateService (neom_core
+      // contract, no neom_eeg import on the consumer side). Its consumer is
+      // the experiences HUD, which shows the measured state while a headset
+      // streams. Started on creation: the adapter only reads the hub once
+      // started. The Cámara Neom does not read it — it stays untouched, and
+      // its hemispheric meter keeps measuring the audio.
+      Bind.lazyPut<NeuroStateService>(() {
+        final adapter = EegNeuroStateAdapter(
+          deviceService: Sint.find<EegConnectionController>().provider,
+        );
+        unawaited(adapter.start());
+        return adapter;
+      }, fenix: true),
       // Cámara Neom "Modo EEG": the chamber gets a neuro layout with the EEG
       // dashboard in the centre. The chamber only knows ChamberNeuroPanel;
       // which headset feeds it is the hub's business, so any model works.
@@ -346,12 +352,6 @@ class RootBinding extends Binding {
       // voice, markers, bands, coherence) by observing the chamber's public
       // reactive state. Must come after both controllers above.
       Bind.put(CyberneomEegPracticeBridge(), permanent: true),
-      // The experiences resolve NeomAudioSessionSignal before the plain
-      // NeomAudioVisualSignal the generator registers; this decorator gives
-      // them the chamber's signal with the EEG's measured hemispheric
-      // coherence in place of the audio-phase inference whenever a headset
-      // is streaming. The generator itself is untouched.
-      Bind.put<NeomAudioSessionSignal>(CyberneomEegVisualSignal(), permanent: true),
     ];
   }
 

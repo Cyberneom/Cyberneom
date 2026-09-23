@@ -1,5 +1,9 @@
 # Changelog — Cyberneom
 
+## [2.2.0+30] - 2026-09-23
+- Actualización a Google Play Billing Library 8.0.0 (vía `in_app_purchase_android 0.5.3` y `neom_core 2.1.3`) para cumplimiento de requisitos de publicación en Google Play Console.
+- Optimizaciones de estabilidad en experiencias sensoriales y biofeedback.
+
 ## [2.2.0+29] - 2026-09-22
 - Actualización de versión para lanzamiento en Google Play Store (minor update).
 - Optimizaciones de estabilidad, compatibilidad con ecosistema modular y ajustes en bindings de inicio.

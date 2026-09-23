@@ -1,12 +1,16 @@
-# Cyberneom
-The app for which I seek collaboration would be called "Cyberneom".
-It is related with guided meditation, focused on the user's voice.
-Let's say your voice has a frequency of 140hz.
-For this, the initial phase must analyze the voice's audio
-and take the average to give a base frequency.
-Once the base frequency is confirmed, you can start the guiding stage in meditation
-with reference to your voice.
-This makes it much easier when meditating and improves the quality of the act.
+# 🧘 Cyberneom
+> **Meditación guiada con tu propia voz**  
+> *Guided meditation with your own voice*
 
-<img width="426" alt="f4adaf92-40e2-4673-bf6f-fe4b31704ab9" src="https://user-images.githubusercontent.com/26264788/130486506-4a4e2b47-6e09-43a2-af77-885fd4f285dd.png">
+**Cyberneom** es una plataforma de bienestar consciente y neurociencia aplicada que revoluciona la meditación guiada sincronizando la frecuencia de tu propia voz, biofeedback/neurofeedback en tiempo real y terapias acústicas.
+
+---
+
+## 🌟 Pilares y Características
+
+* 🗣️ **Calibración Vocal Personalizada**: Detecta y calibra la frecuencia fundamental de tu propia voz (ej. 140 Hz) para generar sesiones con resonancia armónica natural y mayor sensación de seguridad y calma.
+* 🧠 **Biofeedback y Neurofeedback EEG**: Monitoreo de ondas cerebrales (Alpha, Theta) para cuantificar objetivamente la relajación y el enfoque.
+* 🎵 **Frecuencias Sonoras y Tonos Binaurales**: Ondas isocrónicas y paisajes acústicos diseñados para inducir descanso profundo, concentración o meditación activa.
+* 🌌 **Realidad Aumentada (AR) y Cámaras Sensoriales**: Entornos visuales interactivos que sincronizan tus ciclos de respiración con visualizaciones espaciales.
+* 📊 **Monitoreo de Bienestar**: Seguimiento histórico de estados emocionales, tiempo de práctica y evolución personal.
 

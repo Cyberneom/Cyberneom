@@ -9,7 +9,7 @@ import PackageDescription
 let package = Package(
     name: "FlutterGeneratedPluginSwiftPackage",
     platforms: [
-        .iOS("13.0")
+        .iOS("15.0")
     ],
     products: [
         .library(name: "FlutterGeneratedPluginSwiftPackage", type: .static, targets: ["FlutterGeneratedPluginSwiftPackage"])
@@ -27,8 +27,8 @@ let package = Package(
         .package(name: "easy_video_editor", path: "../.packages/easy_video_editor-0.1.6"),
         .package(name: "file_picker", path: "../.packages/file_picker-11.0.2"),
         .package(name: "firebase_ai", path: "../.packages/firebase_ai-3.14.1"),
-        .package(name: "firebase_app_check", path: "../.packages/firebase_app_check-0.4.5+2"),
-        .package(name: "firebase_auth", path: "../.packages/firebase_auth-6.5.6"),
+        .package(name: "firebase_app_check", path: "../.packages/firebase_app_check-0.4.8"),
+        .package(name: "firebase_auth", path: "../.packages/firebase_auth-6.7.0"),
         .package(name: "firebase_core", path: "../.packages/firebase_core-4.14.0"),
         .package(name: "firebase_crashlytics", path: "../.packages/firebase_crashlytics-5.2.6"),
         .package(name: "firebase_messaging", path: "../.packages/firebase_messaging-16.4.3"),
