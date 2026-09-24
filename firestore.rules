@@ -165,6 +165,14 @@ service cloud.firestore {
     match /nupaleSessions/{sessionId} {
       allow read, write: if signedIn();
     }
+    // NUPALE by audience: authors' and free-tier reading is analytics only;
+    // the monthly payout reads nupaleSessions (members) alone.
+    match /authorsNupaleSessions/{sessionId} {
+      allow read, write: if signedIn();
+    }
+    match /freemiumNupaleSessions/{sessionId} {
+      allow read, write: if signedIn();
+    }
 
     // CYBERNEOM: Frecuencias, cámaras de sonido
     match /frequencies/{freqId} {
