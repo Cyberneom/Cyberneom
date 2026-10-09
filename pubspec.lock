@@ -2789,10 +2789,10 @@ packages:
     dependency: transitive
     description:
       name: pointer_interceptor
-      sha256: "57210410680379aea8b1b7ed6ae0c3ad349bfd56fe845b8ea934a53344b9d523"
+      sha256: "9ad8889f36a417649ad7578fdb6df967157208cb90f69facd043660424020710"
       url: "https://pub.dev"
     source: hosted
-    version: "0.10.1+2"
+    version: "0.10.1+3"
   pointer_interceptor_ios:
     dependency: transitive
     description:

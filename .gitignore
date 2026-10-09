@@ -1,4 +1,6 @@
 assets/properties.json
+# Internal legal-review notes are not public app assets or repository content.
+/legal/privacy_policy.review.json
 android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
 # Miscellaneous

@@ -255,6 +255,7 @@ flutter:
   assets:
     - assets/
     - assets/elements/
+    - assets/legal/
     - assets/fonts/
     - assets/qa/
     - assets/images/

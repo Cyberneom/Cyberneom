@@ -1,6 +1,22 @@
 {
   "indexes": [
     {
+      "collectionGroup": "participants",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {"fieldPath": "isActive", "order": "ASCENDING"},
+        {"fieldPath": "lastSeen", "order": "ASCENDING"}
+      ]
+    },
+    {
+      "collectionGroup": "liveSessions",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {"fieldPath": "status", "order": "ASCENDING"},
+        {"fieldPath": "listenerCount", "order": "DESCENDING"}
+      ]
+    },
+    {
       "collectionGroup": "activityFeedItems",
       "queryScope": "COLLECTION",
       "fields": [

@@ -28,6 +28,7 @@ cd "$PROJECT_DIR"
 FIREBASE_PROJECT="cyberneom-edd2d"
 APP_NAME="Cyberneom"
 BUILD_DIR="build/web"
+LEGAL_GENERATOR="$PROJECT_DIR/../neom_modules/main/neom_commons/tool/legal/generate.mjs"
 DEFAULT_CHANNEL="test"
 DEFAULT_EXPIRES="7d"
 FLUTTER_BUILD_FLAGS=(
@@ -53,8 +54,10 @@ fail()  { printf "%s✗%s %s\n" "$C_RED"    "$C_RESET" "$*" >&2; exit 1; }
 
 # ── Pre-flight checks ────────────────────────────────────────────
 check_tools() {
+  command -v node     >/dev/null 2>&1 || fail "node no está en PATH"
   command -v flutter  >/dev/null 2>&1 || fail "flutter no está en PATH"
   command -v firebase >/dev/null 2>&1 || fail "firebase-tools no instalado (npm i -g firebase-tools)"
+  [[ -f "$LEGAL_GENERATOR" ]] || fail "Generador de páginas legales no encontrado: $LEGAL_GENERATOR"
 }
 
 check_login() {
@@ -73,6 +76,9 @@ ensure_project() {
 
 # ── Build ────────────────────────────────────────────────────────
 build_web() {
+  log "Generando privacidad, eliminación de cuenta y términos para publicación…"
+  node "$LEGAL_GENERATOR" --app-dir "$PROJECT_DIR" --require-published
+
   log "Limpiando build previo…"
   rm -rf "$BUILD_DIR"
 
@@ -85,6 +91,10 @@ build_web() {
   if [[ ! -f "$BUILD_DIR/index.html" ]]; then
     fail "Build falló: $BUILD_DIR/index.html no existe"
   fi
+
+  log "Verificando las tres páginas legales del build…"
+  node "$LEGAL_GENERATOR" --app-dir "$PROJECT_DIR" \
+    --output-dir "$PROJECT_DIR/build/web" --check --require-published
 
   local size
   size="$(du -sh "$BUILD_DIR" | awk '{print $1}')"

@@ -258,6 +258,8 @@
   let isTransitioning = false;
   const pageCache = new Map();
   const MAX_CACHE = 20;
+  let pendingHostPage = null;
+  let drainingHostNavigation = false;
 
   const container = document.getElementById('pagesContainer');
   const loading = document.getElementById('loading');
@@ -269,27 +271,63 @@
   console.log('[pdf_reader] Script loaded, waiting for postMessage...');
 
   window.addEventListener('message', (event) => {
+    // Only the same-origin embedding app may load or navigate this reader.
+    if (event.source !== window.parent || event.origin !== window.location.origin) return;
     const data = event.data;
-    console.log('[pdf_reader] Received postMessage:', JSON.stringify(data)?.substring(0, 200));
+    if (!data || typeof data !== 'object') return;
     if (data && data.type === 'loadPdf') {
       if (isInitialized) {
         console.log('[pdf_reader] Already initialized, ignoring duplicate message');
         return;
       }
+      if (typeof data.url !== 'string' || !data.url) return;
       isInitialized = true;
       // The host app supplies its brand; older clients remain unbranded.
       appName = typeof data.appName === 'string' ? data.appName.trim() : '';
       document.title = appName ? `${appName} · PDF` : 'PDF';
       pdfUrl = data.url;
       proxyUrl = data.proxyUrl || null;
-      console.log('[pdf_reader] PDF URL received:', pdfUrl ? pdfUrl.substring(0, 80) + '...' : 'EMPTY');
       console.log('[pdf_reader] Proxy URL:', proxyUrl ? 'configured' : 'none');
-      const startPage = data.startPage || 1;
-      maxPageLimit = data.maxPage || 0;
+      const startPage = Number.isInteger(data.startPage) && data.startPage > 0 ? data.startPage : 1;
+      maxPageLimit = Number.isInteger(data.maxPage) && data.maxPage > 0 ? data.maxPage : 0;
       bookId = data.bookId || '';
-      initWithStartPage(startPage);
+      return initWithStartPage(startPage);
+    }
+    if (!isInitialized || data.bookId !== bookId) return;
+    if (data.type === 'goToPage' && Number.isInteger(data.page) && data.page > 0) {
+      return queueHostNavigation(data.page);
+    }
+    if (data.type === 'setMaxPage' && Number.isInteger(data.maxPage) && data.maxPage >= 0) {
+      maxPageLimit = data.maxPage;
+      // Re-render even in the same spread: a newly locked right-hand page must
+      // disappear, and newly granted access must remove the paywall.
+      paywall.classList.remove('active');
+      return queueHostNavigation(pendingHostPage ?? getPagesForSpread(currentSpread)[0]);
     }
   });
+
+  async function queueHostNavigation(page) {
+    pendingHostPage = page;
+    if (drainingHostNavigation || !pdfDoc) return;
+    drainingHostNavigation = true;
+    try {
+      while (pendingHostPage !== null) {
+        if (isTransitioning) {
+          await new Promise(resolve => setTimeout(resolve, 25));
+          continue;
+        }
+        const requestedPage = pendingHostPage;
+        pendingHostPage = null;
+        const lastAllowed = maxPageLimit > 0
+          ? Math.min(totalPages, maxPageLimit) : totalPages;
+        const targetPage = Math.max(1, Math.min(requestedPage, lastAllowed));
+        const spread = isTwoPage ? Math.floor((targetPage - 1) / 2) : targetPage - 1;
+        await goToSpread(spread);
+      }
+    } finally {
+      drainingHostNavigation = false;
+    }
+  }
 
   // ─── Helpers ───
   let lastErrorDetail = '';
@@ -334,7 +372,7 @@
       <div style="color:#888;font-size:13px;margin-bottom:16px;max-width:400px;text-align:center;line-height:1.5">${message}</div>
       <div style="display:flex;gap:12px">
         <button id="btnRetryPdf" style="padding:8px 20px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;border-radius:6px;cursor:pointer;font-size:13px">Reintentar</button>
-        <button onclick="window.parent.postMessage({type:'goBack',bookId:'${bookId}'},'*')" style="padding:8px 20px;background:transparent;border:1px solid rgba(255,255,255,0.1);color:#888;border-radius:6px;cursor:pointer;font-size:13px">Volver</button>
+        <button onclick="window.parent.postMessage({type:'goBack',bookId:'${bookId}'},window.location.origin)" style="padding:8px 20px;background:transparent;border:1px solid rgba(255,255,255,0.1);color:#888;border-radius:6px;cursor:pointer;font-size:13px">Volver</button>
       </div>
     `;
     // Retry button: reset state and try loading again
@@ -417,7 +455,7 @@
       type: 'pdfLoaded',
       bookId: bookId,
       totalPages: 0, // Unknown in native viewer
-    }, '*');
+    }, window.location.origin);
   }
 
   // ─── Init ───
@@ -446,12 +484,13 @@
     } catch (parseErr) {
       console.error('[pdf_reader] PDF.js parse error:', parseErr.message);
       showError('Error procesando PDF', parseErr.message);
-      window.parent.postMessage({ type: 'pdfError', bookId: bookId, error: parseErr.message }, '*');
+      window.parent.postMessage({ type: 'pdfError', bookId: bookId, error: parseErr.message }, window.location.origin);
       return;
     }
 
     try {
       totalPages = pdfDoc.numPages;
+      startPage = Math.min(startPage, maxPageLimit > 0 ? Math.min(totalPages, maxPageLimit) : totalPages);
       console.log('[pdf_reader] PDF loaded. Total pages:', totalPages);
       loading.classList.add('hidden');
 
@@ -463,17 +502,18 @@
 
       await renderCurrentSpread();
       preloadAdjacentSpreads();
+      if (pendingHostPage !== null) await queueHostNavigation(pendingHostPage);
 
       // Notify Flutter that PDF loaded successfully
       window.parent.postMessage({
         type: 'pdfLoaded',
         bookId: bookId,
         totalPages: totalPages,
-      }, '*');
+      }, window.location.origin);
     } catch (renderErr) {
       console.error('[pdf_reader] Error rendering PDF:', renderErr.message);
       loading.innerHTML = `<div style="color:#ff6b6b">Error cargando PDF</div><div style="color:#888;margin-top:8px;font-size:12px">${renderErr.message}</div>`;
-      window.parent.postMessage({ type: 'pdfError', bookId: bookId, error: renderErr.message }, '*');
+      window.parent.postMessage({ type: 'pdfError', bookId: bookId, error: renderErr.message }, window.location.origin);
     }
   }
 
@@ -626,7 +666,7 @@
       type: 'pageChanged',
       page: firstPage,
       bookId: bookId,
-    }, '*');
+    }, window.location.origin);
   }
 
   async function preloadAdjacentSpreads() {
@@ -656,13 +696,15 @@
     isTransitioning = true;
     container.classList.add('transitioning');
 
-    await new Promise(r => setTimeout(r, 150));
-    currentSpread = idx;
-    await renderCurrentSpread();
-
-    container.classList.remove('transitioning');
-    isTransitioning = false;
-    preloadAdjacentSpreads();
+    try {
+      await new Promise(r => setTimeout(r, 150));
+      currentSpread = idx;
+      await renderCurrentSpread();
+      preloadAdjacentSpreads();
+    } finally {
+      container.classList.remove('transitioning');
+      isTransitioning = false;
+    }
   }
 
   function nextSpread() { goToSpread(currentSpread + 1); }

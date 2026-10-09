@@ -10,9 +10,22 @@
       "**/*.pem",
       "**/*.key",
       "**/.git/**",
-      "**/.env*"
+      "**/.env*",
+      "**/privacy_policy.review.json"
     ],
     "headers": [
+      {
+        "source": "/assets/assets/legal/{account_deletion,terms_conditions}.md",
+        "headers": [
+          { "key": "Cache-Control", "value": "no-cache, max-age=0, must-revalidate" }
+        ]
+      },
+      {
+        "source": "/assets/assets/privacy_policy.{md,json}",
+        "headers": [
+          { "key": "Cache-Control", "value": "no-cache, max-age=0, must-revalidate" }
+        ]
+      },
       {
         "source": "/.well-known/apple-app-site-association",
         "headers": [
@@ -30,9 +43,56 @@
         "headers": [
           { "key": "Cache-Control", "value": "no-cache, max-age=0, must-revalidate" }
         ]
+      },
+      {
+        "source": "/eliminar-cuenta{,/**}",
+        "headers": [
+          { "key": "Cache-Control", "value": "no-cache, max-age=0, must-revalidate" },
+          { "key": "Content-Type", "value": "text/html; charset=utf-8" },
+          { "key": "X-Content-Type-Options", "value": "nosniff" },
+          { "key": "Referrer-Policy", "value": "no-referrer" }
+        ]
+      },
+      {
+        "source": "/terminos-y-condiciones{,/**}",
+        "headers": [
+          { "key": "Cache-Control", "value": "no-cache, max-age=0, must-revalidate" },
+          { "key": "Content-Type", "value": "text/html; charset=utf-8" },
+          { "key": "X-Content-Type-Options", "value": "nosniff" },
+          { "key": "Referrer-Policy", "value": "no-referrer" }
+        ]
+      },
+      {
+        "source": "/politica-de-privacidad{,/**}",
+        "headers": [
+          { "key": "Cache-Control", "value": "no-cache" },
+          { "key": "Content-Type", "value": "text/html; charset=utf-8" },
+          { "key": "X-Content-Type-Options", "value": "nosniff" },
+          { "key": "Referrer-Policy", "value": "no-referrer" }
+        ]
       }
     ],
     "redirects": [
+      {
+        "regex": "^/terminos-de-servicio/?$",
+        "destination": "/terminos-y-condiciones/",
+        "type": 301
+      },
+      {
+        "regex": "^/eliminar-cuenta$",
+        "destination": "/eliminar-cuenta/",
+        "type": 301
+      },
+      {
+        "regex": "^/terminos-y-condiciones$",
+        "destination": "/terminos-y-condiciones/",
+        "type": 301
+      },
+      {
+        "regex": "^/politica-de-privacidad$",
+        "destination": "/politica-de-privacidad/",
+        "type": 301
+      },
       {
         "regex": "^/([^/]+/)+(main\\.dart\\.js_[0-9]+\\.part\\.js)$",
         "destination": "/:2",
@@ -40,6 +100,18 @@
       }
     ],
     "rewrites": [
+      {
+        "source": "/eliminar-cuenta/",
+        "destination": "/eliminar-cuenta/index.html"
+      },
+      {
+        "source": "/terminos-y-condiciones/",
+        "destination": "/terminos-y-condiciones/index.html"
+      },
+      {
+        "source": "/politica-de-privacidad/",
+        "destination": "/politica-de-privacidad/index.html"
+      },
       {
         "source": "/api/og/x/**",
         "function": "stateOgMeta"

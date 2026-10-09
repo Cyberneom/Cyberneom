@@ -384,6 +384,495 @@ service cloud.firestore {
     match /posStockAdjustments/{adjId} { allow read, write: if signedIn(); }
     match /satInvoices/{invId} { allow read, write: if signedIn(); }
 
+
+    // ===============================================================
+    // Room contract v1 (prototype; legacy documents without UIDs fail closed)
+    // rooms/liveSessions: immutable hostUid, hostId and createdAt.
+    // members/{authUid}: {ownerUid, profileId}, atomic with participants.
+    // participants/{profileId}: immutable ownerUid/profileId/joinedAt.
+    // reactions/replies/chat: immutable ownerUid + display profile identity.
+    // Signaling remains under rooms/{id}, including live session signaling.
+    // Epoch milliseconds remain compatible with the Flutter models.
+    // Existing unrelated collections and their access policy are unchanged.
+    // ===============================================================
+    function roomSignedIn() {
+      return signedIn() && request.auth.token.get('firebase', {}).get('sign_in_provider', '') != 'anonymous';
+    }
+    function roomText(value, max) {
+      return value is string && value.size() <= max;
+    }
+    function roomKey(value) {
+      return roomText(value, 128) && value.size() > 0 && !value.matches('.*[/].*');
+    }
+    function roomMillis(value) {
+      return value is int && value >= 0 && value <= request.time.toMillis() + 60000;
+    }
+    function roomOptionalMillis(value) {
+      return value == null || roomMillis(value);
+    }
+    function roomScheduleMillis(value) {
+      return value == null || (value is int && value >= 0 && value <= 253402300799999);
+    }
+    function roomRecent(value) {
+      return roomMillis(value) && value >= request.time.toMillis() - 300000;
+    }
+    function roomUrl(value) {
+      return roomText(value, 2048) && (value == '' || value.matches('https?://.*'));
+    }
+    function roomCount(value) {
+      return value is int && value >= 0 && value <= 1000000000;
+    }
+    function roomStringAt(values, index) {
+      return values.size() <= index || roomText(values[index], 256);
+    }
+    function roomStringList(values) {
+      return values is list && values.size() <= 20 && (values.size() == 0
+        || (roomStringAt(values,0) && roomStringAt(values,1) && roomStringAt(values,2) && roomStringAt(values,3) && roomStringAt(values,4) && roomStringAt(values,5) && roomStringAt(values,6) && roomStringAt(values,7) && roomStringAt(values,8) && roomStringAt(values,9) && roomStringAt(values,10) && roomStringAt(values,11) && roomStringAt(values,12) && roomStringAt(values,13) && roomStringAt(values,14) && roomStringAt(values,15) && roomStringAt(values,16) && roomStringAt(values,17) && roomStringAt(values,18) && roomStringAt(values,19)));
+    }
+    function roomAccess(data) {
+      return data is map && (data.size() == 0 || (
+        data.keys().hasOnly(['scheduleType','startTime','endTime','recurringDays','minAge','requiredCondition','conditionValue'])
+        && data.get('scheduleType','none') in ['none','timeRange','recurring']
+        && roomScheduleMillis(data.get('startTime',null))
+        && roomScheduleMillis(data.get('endTime',null))
+        && data.get('recurringDays',[]) is list
+        && data.get('recurringDays',[]).size() <= 7
+        && data.get('recurringDays',[]).toSet().hasOnly([1,2,3,4,5,6,7])
+        && data.get('minAge',0) is int && data.get('minAge',0) >= 0 && data.get('minAge',0) <= 120
+        && data.get('requiredCondition','none') in ['none','commentRequired','timeOfDay','reactionCount']
+        && roomText(data.get('conditionValue',''),100)));
+    }
+    function roomAgent(data) {
+      return data is map
+        && data.keys().hasOnly(['id','name','personality','context','avatarUrl','startPage','endPage','priority','isActive','createdAt'])
+        && data.id is string && data.id.size() <= 128
+        && data.name is string && data.name.size() <= 200
+        && data.personality is string && data.personality.size() <= 4000
+        && data.context is string && data.context.size() <= 10000
+        && data.avatarUrl is string && data.avatarUrl.size() <= 2048
+        && (data.avatarUrl == '' || data.avatarUrl.matches('https?://.*'))
+        && data.startPage is int && data.startPage >= 0 && data.startPage <= 1000000
+        && data.endPage is int && data.endPage >= -1 && data.endPage <= 1000000
+        && data.priority is int && data.priority >= 0 && data.priority <= 1000
+        && data.isActive is bool && data.createdAt is int && data.createdAt >= 0
+        && data.createdAt <= request.time.toMillis() + 60000;
+    }
+    function roomAgentAt(values, previous, index) {
+      return values.size() <= index
+        || (previous is list && previous.size() > index && values[index] == previous[index])
+        || roomAgent(values[index]);
+    }
+    function roomAgents(values) {
+      let previous = resource == null ? [] : resource.data.get('characterAgents',[]);
+      return values is list && values.size() <= 8 && (values.size() == 0
+        || (roomAgentAt(values,previous,0) && roomAgentAt(values,previous,1) && roomAgentAt(values,previous,2) && roomAgentAt(values,previous,3) && roomAgentAt(values,previous,4) && roomAgentAt(values,previous,5) && roomAgentAt(values,previous,6) && roomAgentAt(values,previous,7)));
+    }
+    function unchangedInkZones(values) {
+      // No persisted zone schema exists in the current callers. Preserve old
+      // data without granting clients a new arbitrary-map storage channel.
+      return resource == null ? values == [] : values == resource.data.get('invisibleInkZones',[]);
+    }
+    function validRoom(data) {
+      // Optional unchanged metadata inherits its previous validation. Validate
+      // every changed field (also on updates) within Firestore's expression cap.
+      let changed = resource == null ? data.keys().toSet() : data.diff(resource.data).affectedKeys();
+      return data.keys().hasAll(['id','roomId','hostUid','hostId','status','category','createdAt','updatedAt'])
+        && data.keys().hasOnly(['id','roomId','hostUid','hostId','hostName','category','status','createdAt','updatedAt',
+          'participants','reactionsCount','notesCount','hotSpotScore','liveSessionStartedAt','authorCommentUrl','authorCommentAt',
+          'accessControl','invisibleInkZones','characterName','characterContext','characterPersonality','characterAgents',
+          'bookTitle','bookAuthor','bookDescription','meetings','scheduledEvents','title','description','genre','listenerCount',
+          'maxSpeakers','allowTips','allowRaiseHand','totalTipsReceived','endedAt','hostAvatarUrl'])
+        && roomText(data.id,256) && roomText(data.roomId,256) && data.roomId.size() > 0
+        && roomKey(data.hostUid) && roomKey(data.hostId)
+        && data.category in ['staticContent','timeStream','bioState','gameSession','liveStream']
+        && data.status in ['idle','active','liveSession']
+        && roomMillis(data.createdAt) && roomMillis(data.updatedAt)
+        && (!changed.hasAny(['participants']) || data.get('participants',[]) == [])
+        && (!changed.hasAny(['reactionsCount','notesCount','hotSpotScore','listenerCount'])
+          || (roomCount(data.get('reactionsCount',0)) && roomCount(data.get('notesCount',0))
+            && roomCount(data.get('hotSpotScore',0)) && roomCount(data.get('listenerCount',0))))
+        && (!changed.hasAny(['liveSessionStartedAt','authorCommentAt','endedAt'])
+          || (roomOptionalMillis(data.get('liveSessionStartedAt',null))
+            && roomOptionalMillis(data.get('authorCommentAt',null)) && roomOptionalMillis(data.get('endedAt',null))))
+        && (!changed.hasAny(['authorCommentUrl','hostAvatarUrl'])
+          || (roomUrl(data.get('authorCommentUrl','')) && roomUrl(data.get('hostAvatarUrl',''))))
+        && (!changed.hasAny(['accessControl']) || roomAccess(data.get('accessControl',{})))
+        && unchangedInkZones(data.get('invisibleInkZones',[]))
+        && (!changed.hasAny(['characterName','characterContext','characterPersonality'])
+          || (roomText(data.get('characterName',''),200) && roomText(data.get('characterContext',''),10000)
+            && roomText(data.get('characterPersonality',''),4000)))
+        && (!changed.hasAny(['characterAgents']) || roomAgents(data.get('characterAgents',[])))
+        && (!changed.hasAny(['bookTitle','bookAuthor','bookDescription'])
+          || (roomText(data.get('bookTitle',''),500) && roomText(data.get('bookAuthor',''),200) && roomText(data.get('bookDescription',''),5000)))
+        && (!changed.hasAny(['meetings']) || roomStringList(data.get('meetings',[])))
+        && (!changed.hasAny(['scheduledEvents']) || roomStringList(data.get('scheduledEvents',[])))
+        && (!changed.hasAny(['title','description','genre','hostName'])
+          || (roomText(data.get('title',''),500) && roomText(data.get('description',''),5000)
+            && roomText(data.get('genre',''),100) && roomText(data.get('hostName',''),200)))
+        && (!changed.hasAny(['maxSpeakers','allowTips','allowRaiseHand'])
+          || (data.get('maxSpeakers',6) is int && data.get('maxSpeakers',6) >= 1 && data.get('maxSpeakers',6) <= 50
+            && data.get('allowTips',false) is bool && data.get('allowRaiseHand',true) is bool))
+        && (!changed.hasAny(['totalTipsReceived']) || (data.get('totalTipsReceived',0) is number
+          && data.get('totalTipsReceived',0) >= 0 && data.get('totalTipsReceived',0) <= 1000000000));
+    }
+    function roomExists(space, id) {
+      return exists(/databases/$(database)/documents/$(space)/$(id));
+    }
+    function roomHost(space, id) {
+      return roomSignedIn() && roomExists(space,id)
+        && get(/databases/$(database)/documents/$(space)/$(id)).data.get('hostUid','') == request.auth.uid;
+    }
+    function roomProfile(space, id) {
+      return get(/databases/$(database)/documents/$(space)/$(id)/members/$(request.auth.uid)).data.profileId;
+    }
+    function roomIdentity(space, id) {
+      return roomSignedIn() && roomExists(space,id)
+        && exists(/databases/$(database)/documents/$(space)/$(id)/members/$(request.auth.uid))
+        && get(/databases/$(database)/documents/$(space)/$(id)/members/$(request.auth.uid)).data.ownerUid == request.auth.uid
+        && get(/databases/$(database)/documents/$(space)/$(id)/participants/$(roomProfile(space,id))).data.ownerUid == request.auth.uid;
+    }
+    function roomMember(space, id) {
+      let member = get(/databases/$(database)/documents/$(space)/$(id)/members/$(request.auth.uid)).data;
+      let participant = get(/databases/$(database)/documents/$(space)/$(id)/participants/$(member.profileId)).data;
+      return roomSignedIn() && roomExists(space,id) && member.ownerUid == request.auth.uid
+        && participant.ownerUid == request.auth.uid && participant.isActive == true;
+    }
+    function roomPeer(space, id, profile) {
+      let peer = get(/databases/$(database)/documents/$(space)/$(id)/participants/$(profile)).data;
+      let member = get(/databases/$(database)/documents/$(space)/$(id)/members/$(peer.ownerUid)).data;
+      return roomKey(profile) && peer.isActive == true && member.ownerUid == peer.ownerUid
+        && member.profileId == profile;
+    }
+    function roomSpeaker(space, id, profile) {
+      return roomPeer(space,id,profile)
+        && get(/databases/$(database)/documents/$(space)/$(id)/participants/$(profile)).data.role in ['speaker','host'];
+    }
+    function validMember(data) {
+      return data.keys().hasOnly(['ownerUid','profileId']) && roomKey(data.ownerUid) && roomKey(data.profileId);
+    }
+    function memberWrite(space,id,uid) {
+      let data = request.resource.data;
+      return roomSignedIn() && uid == request.auth.uid && validMember(data) && data.ownerUid == uid
+        && existsAfter(/databases/$(database)/documents/$(space)/$(id))
+        && getAfter(/databases/$(database)/documents/$(space)/$(id)/participants/$(data.profileId)).data.ownerUid == uid;
+    }
+    function validParticipant(data, profile) {
+      return data.keys().hasAll(['ownerUid','profileId','name','photoUrl','role','isMuted','isActive','handRaised','joinedAt','lastSeen'])
+        && data.keys().hasOnly(['ownerUid','profileId','name','photoUrl','role','isMuted','isActive','handRaised','joinedAt','lastSeen','handRaisedAt','participationGroupId'])
+        && roomKey(data.ownerUid) && data.profileId == profile && roomKey(profile)
+        && roomText(data.name,200) && roomUrl(data.photoUrl)
+        && data.role in ['host','speaker','listener']
+        && data.isMuted is bool && data.isActive is bool && data.handRaised is bool
+        && roomMillis(data.joinedAt) && roomMillis(data.lastSeen)
+        && roomOptionalMillis(data.get('handRaisedAt',null))
+        && roomText(data.get('participationGroupId',''),256);
+    }
+    function participantCreate(space,id,profile) {
+      let data = request.resource.data;
+      let parent = getAfter(/databases/$(database)/documents/$(space)/$(id)).data;
+      return roomSignedIn() && validParticipant(data,profile) && data.ownerUid == request.auth.uid
+        && roomRecent(data.joinedAt) && roomRecent(data.lastSeen)
+        && getAfter(/databases/$(database)/documents/$(space)/$(id)/members/$(request.auth.uid)).data.profileId == profile
+        && (data.role == 'listener' || (parent.hostUid == request.auth.uid && data.role == 'host'))
+        && data.get('participationGroupId','') == '' && data.isActive == true;
+    }
+    function participantUpdate(space,id,profile) {
+      let before = resource.data;
+      let after = request.resource.data;
+      let changed = after.diff(before).affectedKeys();
+      return roomSignedIn() && roomExists(space,id) && validParticipant(after,profile)
+        && after.ownerUid == before.ownerUid && after.profileId == before.profileId && after.joinedAt == before.joinedAt
+        && (
+          (before.ownerUid == request.auth.uid
+            && getAfter(/databases/$(database)/documents/$(space)/$(id)/members/$(request.auth.uid)).data.profileId == profile
+            && (after.role == before.role
+              || (space == 'rooms' && after.role in ['listener','speaker'])
+              || (space == 'liveSessions' && after.role == 'listener')))
+          || (roomHost(space,id) && changed.hasOnly(['role','participationGroupId','handRaised','handRaisedAt','isMuted'])
+            && (after.role != 'host' || after.ownerUid == request.auth.uid)
+            && (after.isMuted == before.isMuted || after.isMuted == true))
+          || (space == 'rooms' && roomMember(space,id) && before.handRaised == true
+            && changed.hasOnly(['role','participationGroupId','handRaised','handRaisedAt','isMuted'])
+            && after.role == 'speaker' && after.handRaised == false
+            && after.get('participationGroupId','') != ''
+            && after.participationGroupId == get(/databases/$(database)/documents/$(space)/$(id)/participants/$(roomProfile(space,id))).data.get('participationGroupId','')
+            && (after.isMuted == before.isMuted || after.isMuted == true))
+          || (roomMember(space,id) && changed.hasOnly(['isActive']) && after.isActive == false
+            && before.lastSeen < request.time.toMillis() - 90000)
+        );
+    }
+    function expiredLegacyParticipant() {
+      let last = resource.data.get('lastSeen',resource.data.get('joinedAt',request.time.toMillis()));
+      return resource.data.get('ownerUid','') == '' && last is int
+        && last < request.time.toMillis() - 90000;
+    }
+    function legacyParticipantClaim(space,id,profile) {
+      return roomSignedIn() && expiredLegacyParticipant()
+        && request.resource.data.role == 'listener' && participantCreate(space,id,profile);
+    }
+    function rootCreate(id) {
+      let data = request.resource.data;
+      return roomSignedIn() && validRoom(data) && data.hostUid == request.auth.uid
+        && data.id in ['',id] && roomRecent(data.createdAt) && roomRecent(data.updatedAt)
+        && data.get('reactionsCount',0) == 0 && data.get('notesCount',0) == 0 && data.get('hotSpotScore',0) == 0
+        && data.get('listenerCount',0) == 0 && data.get('totalTipsReceived',0) == 0
+        && data.get('meetings',[]) == [];
+    }
+    function listenerCountChange(id) {
+      let before = resource.data.get('listenerCount',0);
+      let after = request.resource.data.get('listenerCount',0);
+      let membership = /databases/$(database)/documents/liveSessions/$(id)/members/$(request.auth.uid);
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['listenerCount','updatedAt'])
+        && ((after == before + 1 && !exists(membership) && getAfter(membership).data.ownerUid == request.auth.uid)
+          || (after == before - 1 && exists(membership) && !existsAfter(membership)));
+    }
+    function rootUpdate(space,id) {
+      let before = resource.data;
+      let after = request.resource.data;
+      let changed = after.diff(before).affectedKeys();
+      return roomSignedIn() && validRoom(after) && after.hostUid == before.hostUid
+        && after.hostId == before.hostId && after.createdAt == before.createdAt && after.roomId == before.roomId
+        && after.id in [before.id,id]
+        && (
+          (space == 'liveSessions' && changed.hasAny(['listenerCount']) && listenerCountChange(id))
+          || (changed.hasOnly(['updatedAt']) && roomMember(space,id))
+          || (!changed.hasAny(['participants','meetings','reactionsCount','notesCount','hotSpotScore','listenerCount','totalTipsReceived']) && roomHost(space,id))
+        );
+    }
+    function validReaction(data, id, roomId) {
+      return data.keys().hasAll(['id','roomId','ownerUid','authorId','authorName','authorPhotoUrl','type','content','mediaUrl','likesCount','repliesCount','contentPosition','isPinned','isEdited','createdAt','viewedBy','isOneTimeView'])
+        && data.keys().hasOnly(['id','roomId','ownerUid','authorId','authorName','authorPhotoUrl','type','content','mediaUrl','likesCount','repliesCount','lastReplyId','contentPosition','isPinned','isEdited','createdAt','editedAt','viewedBy','isOneTimeView'])
+        && data.id == id && data.roomId == roomId && roomKey(data.ownerUid) && roomKey(data.authorId)
+        && roomText(data.authorName,200) && roomUrl(data.authorPhotoUrl)
+        && data.type in ['text','audio','video','photo','emoji']
+        && roomText(data.content,500) && roomUrl(data.mediaUrl)
+        && roomCount(data.likesCount) && roomCount(data.repliesCount) && roomText(data.get('lastReplyId',''),128)
+        && data.contentPosition is number && data.contentPosition >= 0 && data.contentPosition <= 1000000000
+        && data.isPinned is bool && data.isEdited is bool && data.isOneTimeView is bool
+        && roomMillis(data.createdAt) && roomOptionalMillis(data.get('editedAt',null))
+        && data.viewedBy is list && data.viewedBy.size() <= 500;
+    }
+    function reactionCreate(roomId, id) {
+      let data = request.resource.data;
+      return roomMember('rooms',roomId) && validReaction(data,id,roomId)
+        && data.ownerUid == request.auth.uid && data.authorId == roomProfile('rooms',roomId)
+        && roomRecent(data.createdAt) && data.likesCount == 0 && data.repliesCount == 0
+        && data.get('lastReplyId','') == '' && data.viewedBy == [] && data.isPinned == false && data.isEdited == false;
+    }
+    function reactionEdit(roomId,id) {
+      let before = resource.data;
+      let after = request.resource.data;
+      let changed = after.diff(before).affectedKeys();
+      return !changed.hasAny(['likesCount','repliesCount','lastReplyId'])
+        && roomMember('rooms',roomId) && validReaction(after,id,roomId)
+        && after.ownerUid == before.ownerUid && after.authorId == before.authorId && after.createdAt == before.createdAt
+        && (
+          (before.ownerUid == request.auth.uid && changed.hasOnly(['content','isEdited','editedAt']) && after.isEdited == true && roomRecent(after.editedAt))
+          || (roomHost('rooms',roomId) && changed.hasOnly(['isPinned']))
+          || (changed.hasOnly(['viewedBy'])
+            && (after.viewedBy == before.viewedBy
+              || (after.viewedBy.size() == before.viewedBy.size() + 1 && after.viewedBy.hasAll(before.viewedBy)
+                && after.viewedBy.toSet().difference(before.viewedBy.toSet()) == [roomProfile('rooms',roomId)].toSet())))
+        );
+    }
+    function reactionCounter(roomId,id) {
+      let before = resource.data;
+      let after = request.resource.data;
+      let changed = after.diff(before).affectedKeys();
+      let like = /databases/$(database)/documents/rooms/$(roomId)/reactions/$(id)/likes/$(request.auth.uid);
+      let reply = /databases/$(database)/documents/rooms/$(roomId)/reactions/$(id)/replies/$(after.get('lastReplyId',''));
+      return changed.hasOnly(['likesCount','repliesCount','lastReplyId'])
+        && roomMember('rooms',roomId) && validReaction(after,id,roomId)
+        && (
+          (changed.hasOnly(['likesCount']) && after.likesCount == before.likesCount + 1
+            && !exists(like) && getAfter(like).data.ownerUid == request.auth.uid)
+          || (changed.hasOnly(['repliesCount','lastReplyId']) && after.repliesCount == before.repliesCount + 1
+            && roomKey(after.lastReplyId) && !exists(reply) && getAfter(reply).data.ownerUid == request.auth.uid)
+        );
+    }
+    function validSync(data) {
+      return data.keys().hasOnly(['ownerUid','type','targetPage','hostId','timestamp','meetingId','sourcePage'])
+        && roomKey(data.ownerUid) && roomKey(data.hostId)
+        && data.type in ['navigate','lobby','tourStart','tourEnd','meetingNavigate']
+        && data.targetPage is int && data.targetPage >= 0 && data.targetPage <= 1000000
+        && roomRecent(data.timestamp)
+        && roomText(data.get('meetingId',''),256)
+        && data.get('sourcePage',0) is int && data.get('sourcePage',0) >= 0 && data.get('sourcePage',0) <= 1000000;
+    }
+    function signalSpace(id) {
+      return exists(/databases/$(database)/documents/liveSessions/$(id)) ? 'liveSessions' : 'rooms';
+    }
+    function signalMember(id) {
+      return roomMember(signalSpace(id),id);
+    }
+    function signalOwn(id, data) {
+      return signalMember(id) && data.ownerUid == request.auth.uid
+        && data.get('fromId',data.get('profileId','')) == roomProfile(signalSpace(id),id);
+    }
+    function validSignal(data, signalId, id) {
+      return data.keys().hasOnly(['type','profileId','roomId','isBroadcasting','ownerUid','sessionId','updatedAt','fromId','toId','negotiationId','offerId','answerTo','sdp','createdAt','isAnswer'])
+        && roomKey(data.ownerUid) && roomText(data.sessionId,80) && data.sessionId.size() > 0
+        && (
+          (data.type == 'broadcaster' && signalId == 'broadcaster_' + data.profileId
+            && roomKey(data.profileId) && data.roomId == id && data.isBroadcasting == true
+            && roomRecent(data.updatedAt)
+            && data.keys().hasOnly(['type','profileId','roomId','isBroadcasting','ownerUid','sessionId','updatedAt']))
+          || (data.type in ['offer','answer'] && roomKey(data.fromId) && roomKey(data.toId) && data.fromId != data.toId
+            && signalId == data.fromId + '_to_' + data.toId
+            && roomText(data.negotiationId,80) && data.negotiationId.size() > 0
+            && roomText(data.sdp,131072) && data.sdp.size() > 0 && roomRecent(data.createdAt)
+            && ((data.type == 'offer' && data.offerId == data.negotiationId && !data.keys().hasAny(['answerTo','isAnswer']))
+              || (data.type == 'answer' && data.isAnswer == true && roomText(data.answerTo,80) && data.answerTo.size() > 0 && !data.keys().hasAny(['offerId']))))
+        );
+    }
+    function signalWrite(id, signalId) {
+      let data = request.resource.data;
+      let space = signalSpace(id);
+      return validSignal(data,signalId,id) && signalOwn(id,data)
+        && ((data.type == 'broadcaster' && roomSpeaker(space,id,data.profileId))
+          || (data.type in ['offer','answer'] && roomPeer(space,id,data.toId)
+            && (roomSpeaker(space,id,data.fromId) || roomSpeaker(space,id,data.toId))));
+    }
+    function signalRead(id, signalId) {
+      let data = resource.data;
+      return signalMember(id)
+        && (signalId in ['broadcast_host','offer']
+          || data.get('type','') == 'broadcaster'
+          || data.get('fromId','') == roomProfile(signalSpace(id),id)
+          || data.get('toId','') == roomProfile(signalSpace(id),id));
+    }
+    function signalDirectionOwn(id, direction) {
+      let peers = direction.split('_to_');
+      return signalMember(id) && peers.size() == 2 && roomProfile(signalSpace(id),id) in peers;
+    }
+    function validCandidate(data, direction) {
+      return data.keys().hasAll(['profileId','fromId','toId','ownerUid','sessionId','negotiationId','candidate','sdpMid','sdpMLineIndex','createdAt'])
+        && data.keys().hasOnly(['profileId','fromId','toId','ownerUid','sessionId','negotiationId','candidate','sdpMid','sdpMLineIndex','createdAt'])
+        && roomKey(data.ownerUid) && roomKey(data.fromId) && roomKey(data.toId) && data.profileId == data.fromId
+        && direction == data.fromId + '_to_' + data.toId && data.fromId != data.toId
+        && roomText(data.sessionId,80) && data.sessionId.size() > 0
+        && roomText(data.negotiationId,80) && data.negotiationId.size() > 0
+        && roomText(data.candidate,4096)
+        && (data.sdpMid == null || roomText(data.sdpMid,256))
+        && (data.sdpMLineIndex == null || (data.sdpMLineIndex is int && data.sdpMLineIndex >= 0 && data.sdpMLineIndex <= 32))
+        && roomRecent(data.createdAt);
+    }
+    function candidateWrite(id,direction) {
+      let data = request.resource.data;
+      let space = signalSpace(id);
+      return signalOwn(id,data) && validCandidate(data,direction) && roomPeer(space,id,data.toId)
+        && (roomSpeaker(space,id,data.fromId) || roomSpeaker(space,id,data.toId));
+    }
+    function validLiveChat(data,id,session) {
+      return data.keys().hasAll(['id','sessionId','ownerUid','senderId','senderName','senderAvatarUrl','text','createdTime','parentMessageId','parentSenderName','parentText'])
+        && data.keys().hasOnly(['id','sessionId','ownerUid','senderId','senderName','senderAvatarUrl','text','createdTime','parentMessageId','parentSenderName','parentText'])
+        && data.id == id && data.sessionId == session && roomKey(data.ownerUid) && roomKey(data.senderId)
+        && roomText(data.senderName,200) && roomUrl(data.senderAvatarUrl)
+        && roomText(data.text,2000) && data.text.size() > 0 && roomMillis(data.createdTime)
+        && roomText(data.parentMessageId,128) && roomText(data.parentSenderName,200) && roomText(data.parentText,500);
+    }
+
+    match /rooms/{roomId} {
+      allow read: if roomSignedIn();
+      allow create: if rootCreate(roomId) && !exists(/databases/$(database)/documents/liveSessions/$(roomId));
+      allow update: if rootUpdate('rooms',roomId);
+      allow delete: if roomHost('rooms',roomId);
+      match /members/{uid} {
+        allow read: if roomSignedIn() && (uid == request.auth.uid || roomHost('rooms',roomId));
+        allow create: if memberWrite('rooms',roomId,uid);
+        allow update: if memberWrite('rooms',roomId,uid) && resource.data.ownerUid == request.auth.uid;
+        allow delete: if roomSignedIn() && uid == request.auth.uid && resource.data.ownerUid == request.auth.uid
+          && !existsAfter(/databases/$(database)/documents/rooms/$(roomId)/participants/$(resource.data.profileId));
+      }
+      match /participants/{profile} {
+        allow get: if roomSignedIn() && !exists(/databases/$(database)/documents/rooms/$(roomId)/participants/$(profile));
+        allow get: if roomSignedIn() && roomExists('rooms',roomId) && expiredLegacyParticipant();
+        allow read: if roomMember('rooms',roomId) || (roomSignedIn() && roomExists('rooms',roomId) && resource.data.ownerUid == request.auth.uid);
+        allow create: if participantCreate('rooms',roomId,profile);
+        allow update: if legacyParticipantClaim('rooms',roomId,profile) || participantUpdate('rooms',roomId,profile);
+        allow delete: if roomSignedIn() && (resource.data.ownerUid == request.auth.uid || roomHost('rooms',roomId));
+      }
+      match /reactions/{reactionId} {
+        allow read: if roomMember('rooms',roomId);
+        allow create: if reactionCreate(roomId,reactionId);
+        allow update: if reactionEdit(roomId,reactionId) || reactionCounter(roomId,reactionId);
+        allow delete: if roomMember('rooms',roomId) && (resource.data.ownerUid == request.auth.uid || roomHost('rooms',roomId));
+        match /likes/{uid} {
+          allow read: if roomMember('rooms',roomId);
+          allow create: if roomMember('rooms',roomId) && uid == request.auth.uid
+            && request.resource.data.keys().hasOnly(['ownerUid']) && request.resource.data.ownerUid == request.auth.uid
+            && getAfter(/databases/$(database)/documents/rooms/$(roomId)/reactions/$(reactionId)).data.likesCount
+              == get(/databases/$(database)/documents/rooms/$(roomId)/reactions/$(reactionId)).data.likesCount + 1;
+          allow update, delete: if false;
+        }
+        match /replies/{replyId} {
+          allow read: if roomMember('rooms',roomId);
+          allow create: if reactionCreate(roomId,replyId)
+            && getAfter(/databases/$(database)/documents/rooms/$(roomId)/reactions/$(reactionId)).data.lastReplyId == replyId
+            && getAfter(/databases/$(database)/documents/rooms/$(roomId)/reactions/$(reactionId)).data.repliesCount
+              == get(/databases/$(database)/documents/rooms/$(roomId)/reactions/$(reactionId)).data.repliesCount + 1;
+          allow update: if reactionEdit(roomId,replyId);
+          allow delete: if roomMember('rooms',roomId) && (resource.data.ownerUid == request.auth.uid || roomHost('rooms',roomId));
+        }
+      }
+      match /sync/{eventId} {
+        allow read: if roomMember('rooms',roomId);
+        allow create, update: if eventId == 'latest' && roomHost('rooms',roomId)
+          && roomMember('rooms',roomId) && validSync(request.resource.data)
+          && request.resource.data.ownerUid == request.auth.uid
+          && request.resource.data.hostId == roomProfile('rooms',roomId);
+        allow delete: if roomHost('rooms',roomId);
+      }
+      match /signaling/{signalId} {
+        allow get: if signalMember(roomId) && (signalId in ['broadcast_host','offer']
+          || signalId == 'broadcaster_' + roomProfile(signalSpace(roomId),roomId)
+          || signalDirectionOwn(roomId,signalId));
+        allow read: if signalRead(roomId,signalId);
+        allow create: if signalWrite(roomId,signalId);
+        allow update: if signalWrite(roomId,signalId) && resource.data.ownerUid == request.auth.uid;
+        allow delete: if signalMember(roomId) && resource.data.get('ownerUid','') == request.auth.uid
+          && !(signalId in ['broadcast_host','offer']);
+        match /{direction}/{candidateId} {
+          allow read: if signalId == 'mesh_candidates' && signalDirectionOwn(roomId,direction);
+          allow create: if signalId == 'mesh_candidates' && candidateWrite(roomId,direction);
+          allow update: if signalId == 'mesh_candidates' && candidateWrite(roomId,direction)
+            && resource.data.ownerUid == request.auth.uid;
+          allow delete: if signalId == 'mesh_candidates' && signalMember(roomId) && resource.data.get('ownerUid','') == request.auth.uid;
+        }
+      }
+    }
+    match /liveSessions/{sessionId} {
+      allow read: if roomSignedIn();
+      allow create: if rootCreate(sessionId) && !exists(/databases/$(database)/documents/rooms/$(sessionId));
+      allow update: if rootUpdate('liveSessions',sessionId);
+      allow delete: if roomHost('liveSessions',sessionId);
+      match /members/{uid} {
+        allow read: if roomSignedIn() && (uid == request.auth.uid || roomHost('liveSessions',sessionId));
+        allow create: if memberWrite('liveSessions',sessionId,uid);
+        allow update: if memberWrite('liveSessions',sessionId,uid) && resource.data.ownerUid == request.auth.uid;
+        allow delete: if roomSignedIn() && uid == request.auth.uid && resource.data.ownerUid == request.auth.uid
+          && !existsAfter(/databases/$(database)/documents/liveSessions/$(sessionId)/participants/$(resource.data.profileId));
+      }
+      match /participants/{profile} {
+        allow get: if roomSignedIn() && !exists(/databases/$(database)/documents/liveSessions/$(sessionId)/participants/$(profile));
+        allow get: if roomSignedIn() && roomExists('liveSessions',sessionId) && expiredLegacyParticipant();
+        allow read: if roomMember('liveSessions',sessionId) || (roomSignedIn() && roomExists('liveSessions',sessionId) && resource.data.ownerUid == request.auth.uid);
+        allow create: if participantCreate('liveSessions',sessionId,profile);
+        allow update: if legacyParticipantClaim('liveSessions',sessionId,profile) || participantUpdate('liveSessions',sessionId,profile);
+        allow delete: if roomSignedIn() && (resource.data.ownerUid == request.auth.uid || roomHost('liveSessions',sessionId));
+      }
+      match /chat/{messageId} {
+        allow read: if roomMember('liveSessions',sessionId);
+        allow create: if roomMember('liveSessions',sessionId) && validLiveChat(request.resource.data,messageId,sessionId)
+          && request.resource.data.ownerUid == request.auth.uid && roomRecent(request.resource.data.createdTime)
+          && request.resource.data.senderId == roomProfile('liveSessions',sessionId);
+        allow update: if roomMember('liveSessions',sessionId) && validLiveChat(request.resource.data,messageId,sessionId)
+          && resource.data.ownerUid == request.auth.uid
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['text']);
+        allow delete: if roomMember('liveSessions',sessionId) && (resource.data.ownerUid == request.auth.uid || roomHost('liveSessions',sessionId));
+      }
+    }
+
     // --- BLOQUEO DEFENSIVO POR DEFECTO ---
     match /{document=**} {
       allow read, write: if false;
