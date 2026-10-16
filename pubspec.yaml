@@ -214,6 +214,9 @@ dependencies:
   neom_levitation:
     git:
       url: git@github.com:Open-Neom/neom_levitation.git
+  neom_ble:
+    git:
+      url: git@github.com:Open-Neom/neom_ble.git
 
 dev_dependencies:
   flutter_test:
@@ -253,7 +256,16 @@ flutter:
           weight: 800
 
   assets:
-    - assets/
+    # List root files explicitly so private files cannot enter the web bundle.
+    - assets/appIcon.png
+    - assets/appIcon_white.png
+    - assets/frequencies_bkp.json
+    - assets/genres.json
+    - assets/privacy_policy.json
+    - assets/privacy_policy.md
+    - assets/release_genres.json
+    - assets/release_subgenres.json
+    - assets/user_skills.json
     - assets/elements/
     - assets/legal/
     - assets/fonts/

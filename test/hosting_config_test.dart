@@ -4,6 +4,15 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  test('Flutter assets cannot sweep private root files into the bundle', () {
+    final pubspec = File('pubspec.yaml').readAsStringSync();
+    expect(
+      pubspec,
+      isNot(matches(RegExp(r'^\s*-\s*assets/\s*(?:#.*)?$', multiLine: true))),
+    );
+    expect(File('assets/service_account.json').existsSync(), isFalse);
+  });
+
   test(
     'direct chamber links load the same Flutter app as in-app navigation',
     () {

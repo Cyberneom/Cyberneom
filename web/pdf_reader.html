@@ -258,6 +258,11 @@
   let isTransitioning = false;
   const pageCache = new Map();
   const MAX_CACHE = 20;
+  const pageTextCache = new Map();
+  const MAX_TEXT_CACHE = 3;
+  const MAX_PAGE_TEXT_CHARS = 100000;
+  let pdfDocReady = false;
+  let pdfDocRevision = 0;
   let pendingHostPage = null;
   let drainingHostNavigation = false;
 
@@ -282,6 +287,8 @@
       }
       if (typeof data.url !== 'string' || !data.url) return;
       isInitialized = true;
+      replacePdfDocument(null);
+      totalPages = 0;
       // The host app supplies its brand; older clients remain unbranded.
       appName = typeof data.appName === 'string' ? data.appName.trim() : '';
       document.title = appName ? `${appName} · PDF` : 'PDF';
@@ -293,7 +300,10 @@
       bookId = data.bookId || '';
       return initWithStartPage(startPage);
     }
-    if (!isInitialized || data.bookId !== bookId) return;
+    if (!isInitialized || typeof data.bookId !== 'string' || data.bookId !== bookId) return;
+    if (data.type === 'getPageText') {
+      return handlePageTextRequest(data);
+    }
     if (data.type === 'goToPage' && Number.isInteger(data.page) && data.page > 0) {
       return queueHostNavigation(data.page);
     }
@@ -305,6 +315,178 @@
       return queueHostNavigation(pendingHostPage ?? getPagesForSpread(currentSpread)[0]);
     }
   });
+
+  function replacePdfDocument(nextDocument) {
+    pdfDoc = nextDocument;
+    pdfDocReady = false;
+    pdfDocRevision += 1;
+    pageTextCache.clear();
+  }
+
+  function postPageTextError(request, error) {
+    window.parent.postMessage({
+      type: 'pageTextError',
+      bookId,
+      requestId: request.requestId,
+      page: request.page,
+      error,
+    }, window.location.origin);
+  }
+
+  function pageTextStateError(documentAtStart, revisionAtStart, page) {
+    if (!pdfDocReady || pdfDoc !== documentAtStart || pdfDocRevision !== revisionAtStart) {
+      return 'notReady';
+    }
+    if (page > totalPages || !isPageAllowed(page)) return 'accessDenied';
+    return null;
+  }
+
+  function buildPageText(textContent) {
+    if (!textContent || !Array.isArray(textContent.items)) {
+      throw new Error('Invalid PDF.js text content');
+    }
+
+    const chunks = [];
+    let length = 0;
+    for (const item of textContent.items) {
+      if (!item || typeof item.str !== 'string') continue;
+      const chunk = `${item.str}${item.hasEOL === true ? '\n' : ''}`;
+      length += chunk.length;
+      if (length > MAX_PAGE_TEXT_CHARS) {
+        const error = new Error('PDF page text exceeds the local extraction limit');
+        error.code = 'pageTooLarge';
+        throw error;
+      }
+      chunks.push(chunk);
+    }
+    return chunks.join('');
+  }
+
+  function cachePageText(page, text) {
+    pageTextCache.delete(page);
+    pageTextCache.set(page, text);
+    while (pageTextCache.size > MAX_TEXT_CACHE) {
+      pageTextCache.delete(pageTextCache.keys().next().value);
+    }
+  }
+
+  function postPageChanged(firstPage, requestedPage) {
+    const message = {
+      type: 'pageChanged',
+      page: firstPage,
+      bookId: bookId,
+    };
+    if (Number.isSafeInteger(requestedPage) && requestedPage > 0) {
+      message.requestedPage = requestedPage;
+    }
+    window.parent.postMessage(message, window.location.origin);
+  }
+
+  async function handlePageTextRequest(request) {
+    if (!Number.isSafeInteger(request.requestId) ||
+        !Number.isSafeInteger(request.page) || request.page < 1) {
+      return;
+    }
+
+    if (!pdfDocReady || !pdfDoc) {
+      postPageTextError(request, 'notReady');
+      return;
+    }
+
+    const documentAtStart = pdfDoc;
+    const revisionAtStart = pdfDocRevision;
+    const initialError = pageTextStateError(
+      documentAtStart,
+      revisionAtStart,
+      request.page,
+    );
+    if (initialError) {
+      postPageTextError(request, initialError);
+      return;
+    }
+
+    if (pageTextCache.has(request.page)) {
+      const text = pageTextCache.get(request.page);
+      // Refresh insertion order so the three-page cache behaves as LRU.
+      pageTextCache.delete(request.page);
+      pageTextCache.set(request.page, text);
+      const cacheError = pageTextStateError(
+        documentAtStart,
+        revisionAtStart,
+        request.page,
+      );
+      if (cacheError) {
+        postPageTextError(request, cacheError);
+        return;
+      }
+      window.parent.postMessage({
+        type: 'pageText',
+        bookId,
+        requestId: request.requestId,
+        page: request.page,
+        text,
+      }, window.location.origin);
+      return;
+    }
+
+    try {
+      const page = await documentAtStart.getPage(request.page);
+      const pageError = pageTextStateError(
+        documentAtStart,
+        revisionAtStart,
+        request.page,
+      );
+      if (pageError) {
+        postPageTextError(request, pageError);
+        return;
+      }
+
+      const textContent = await page.getTextContent({
+        disableCombineTextItems: true,
+      });
+      const contentError = pageTextStateError(
+        documentAtStart,
+        revisionAtStart,
+        request.page,
+      );
+      if (contentError) {
+        postPageTextError(request, contentError);
+        return;
+      }
+
+      const text = buildPageText(textContent);
+      const finalError = pageTextStateError(
+        documentAtStart,
+        revisionAtStart,
+        request.page,
+      );
+      if (finalError) {
+        postPageTextError(request, finalError);
+        return;
+      }
+
+      cachePageText(request.page, text);
+      window.parent.postMessage({
+        type: 'pageText',
+        bookId,
+        requestId: request.requestId,
+        page: request.page,
+        text,
+      }, window.location.origin);
+    } catch (error) {
+      const stateError = pageTextStateError(
+        documentAtStart,
+        revisionAtStart,
+        request.page,
+      );
+      postPageTextError(
+        request,
+        stateError || (error && error.code === 'pageTooLarge'
+          ? 'pageTooLarge'
+          : 'extractionFailed'),
+      );
+    }
+  }
 
   async function queueHostNavigation(page) {
     pendingHostPage = page;
@@ -322,7 +504,7 @@
           ? Math.min(totalPages, maxPageLimit) : totalPages;
         const targetPage = Math.max(1, Math.min(requestedPage, lastAllowed));
         const spread = isTwoPage ? Math.floor((targetPage - 1) / 2) : targetPage - 1;
-        await goToSpread(spread);
+        await goToSpread(spread, targetPage);
       }
     } finally {
       drainingHostNavigation = false;
@@ -378,7 +560,8 @@
     // Retry button: reset state and try loading again
     document.getElementById('btnRetryPdf')?.addEventListener('click', () => {
       isInitialized = false;
-      pdfDoc = null;
+      replacePdfDocument(null);
+      totalPages = 0;
       pageCache.clear();
       loading.innerHTML = '<div class="spinner"></div><div class="loading-text">Reintentando...</div>';
       // Re-use the last known start page
@@ -439,6 +622,8 @@
 
   /** Replace the viewer with a native <embed> pointing directly at the PDF URL. */
   function fallbackToNativeEmbed() {
+    replacePdfDocument(null);
+    totalPages = 0;
     const viewer = document.getElementById('viewer');
     // Clear all children (loading, pagesContainer, nav zones, paywall)
     viewer.innerHTML = '';
@@ -480,8 +665,11 @@
     if (!pdfData) return; // Either error shown or native embed took over
 
     try {
-      pdfDoc = await pdfjsLib.getDocument({ data: pdfData, ...pdfJsOpts }).promise;
+      const loadedDocument = await pdfjsLib.getDocument({ data: pdfData, ...pdfJsOpts }).promise;
+      replacePdfDocument(loadedDocument);
     } catch (parseErr) {
+      replacePdfDocument(null);
+      totalPages = 0;
       console.error('[pdf_reader] PDF.js parse error:', parseErr.message);
       showError('Error procesando PDF', parseErr.message);
       window.parent.postMessage({ type: 'pdfError', bookId: bookId, error: parseErr.message }, window.location.origin);
@@ -490,6 +678,7 @@
 
     try {
       totalPages = pdfDoc.numPages;
+      pdfDocReady = true;
       startPage = Math.min(startPage, maxPageLimit > 0 ? Math.min(totalPages, maxPageLimit) : totalPages);
       console.log('[pdf_reader] PDF loaded. Total pages:', totalPages);
       loading.classList.add('hidden');
@@ -593,7 +782,7 @@
     return canvas;
   }
 
-  async function renderCurrentSpread() {
+  async function renderCurrentSpread(requestedPage) {
     if (!pdfDoc) return; // PDF not loaded yet (or failed to load)
     const pages = getPagesForSpread(currentSpread);
     const viewerHeight = document.getElementById('viewer').clientHeight - 32;
@@ -662,11 +851,7 @@
       currentSpread >= getTotalSpreads() - 1 || !isPageAllowed(nextPages[0]);
 
     // Report page change to Flutter via postMessage
-    window.parent.postMessage({
-      type: 'pageChanged',
-      page: firstPage,
-      bookId: bookId,
-    }, window.location.origin);
+    postPageChanged(firstPage, requestedPage);
   }
 
   async function preloadAdjacentSpreads() {
@@ -683,7 +868,7 @@
     }
   }
 
-  async function goToSpread(idx) {
+  async function goToSpread(idx, requestedPage) {
     if (idx < 0 || idx >= getTotalSpreads() || isTransitioning) return;
 
     // Enforce max page limit
@@ -699,7 +884,7 @@
     try {
       await new Promise(r => setTimeout(r, 150));
       currentSpread = idx;
-      await renderCurrentSpread();
+      await renderCurrentSpread(requestedPage);
       preloadAdjacentSpreads();
     } finally {
       container.classList.remove('transitioning');

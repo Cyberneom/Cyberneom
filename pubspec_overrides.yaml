@@ -1,4 +1,13 @@
 dependency_overrides:
+  # Full title/opacity render for post editing on Android and Apple platforms.
+  pro_video_editor:
+    path: ../../codebase_artcraft/vendor/pro_video_editor
+  # Shared core for the local image/video Craft integrations.
+  neom_craft_libs:
+    path: ../../codebase_artcraft/packages/neom_craft_libs
+  # Local reader integration; remove only after publishing neom_tts changes.
+  neom_tts:
+    path: ../neom_modules/ai/neom_tts
   sint:
     path: ../neom_modules/framework/sint
   neom_ads:
@@ -121,3 +130,7 @@ dependency_overrides:
     path: ../neom_modules/creator/neom_achievements
   neom_vst:
     path: ../neom_modules/music/neom_vst
+  neom_levitation:
+    path: ../neom_modules/neom/neom_levitation
+  neom_ble:
+    path: ../neom_modules/hardware/neom_ble
