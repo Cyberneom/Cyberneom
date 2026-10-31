@@ -1,0 +1,48 @@
+name: Cyberneom CI/CD Release Pipeline
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+concurrency:
+  group: cicd-cyberneom-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  release:
+    uses: Open-Neom/releases/.github/workflows/neom-ci-cd.yml@main
+    with:
+      app_slug: 'cyberneom'
+      app_display_name: 'Cyberneom'
+      apple_runner: 'macos-latest' # Cambiar a 'self-hosted' al activar Mac mini M4
+      enable_web: true
+      firebase_project_id: 'cyberneom-edd2d'
+      web_build_args: '--release --source-maps --no-tree-shake-icons'
+      run_legal_generator: true
+      deploy_firestore_rules: true
+      deploy_functions: true
+      enable_android: true
+      android_package_name: 'com.cyberneom.neom'
+      play_track: 'production'
+      publish_apk_to_releases: true
+      enable_ios: true
+      ios_bundle_id: 'com.cyberneom.neom'
+      apple_team_id: '4ZY3D2GU99'
+      ios_submit_for_review: true
+      enable_windows: false
+      enable_macos: false
+      enable_linux: false
+    secrets:
+      GH_MODULES_PAT: ${{ secrets.GH_MODULES_PAT }}
+      FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT || secrets.FIREBASE_SERVICE_ACCOUNT_CYBERNEOM_EDD2D }}
+      ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+      ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+      ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      ANDROID_STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
+      GOOGLE_PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+      IOS_DIST_CERT_BASE64: ${{ secrets.IOS_DIST_CERT_BASE64 }}
+      IOS_DIST_CERT_PASSWORD: ${{ secrets.IOS_DIST_CERT_PASSWORD }}
+      APPSTORE_API_KEY_ID: ${{ secrets.APPSTORE_API_KEY_ID }}
+      APPSTORE_API_ISSUER_ID: ${{ secrets.APPSTORE_API_ISSUER_ID }}
+      APPSTORE_API_PRIVATE_KEY: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}

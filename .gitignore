@@ -99,3 +99,6 @@ coverage/
 .firebase/
 .idea/
 .DS_Store
+
+# Local multi-module overrides (never commit to CI)
+pubspec_overrides.yaml

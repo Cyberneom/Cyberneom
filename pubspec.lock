@@ -3284,7 +3284,7 @@ packages:
       path: "../neom_modules/framework/sint"
       relative: true
     source: path
-    version: "1.7.0-dev.1"
+    version: "2.0.0"
   sint_sentinel:
     dependency: "direct main"
     description:

@@ -29,6 +29,9 @@ FIREBASE_PROJECT="cyberneom-edd2d"
 APP_NAME="Cyberneom"
 BUILD_DIR="build/web"
 LEGAL_GENERATOR="$PROJECT_DIR/../neom_modules/main/neom_commons/tool/legal/generate.mjs"
+if [[ ! -f "$LEGAL_GENERATOR" && -f "$PROJECT_DIR/.dart_tool/package_config.json" ]]; then
+  LEGAL_GENERATOR="$(node -e 'const fs=require("fs"),path=require("path"),{fileURLToPath}=require("url");const cfg=JSON.parse(fs.readFileSync(".dart_tool/package_config.json","utf8"));const p=(cfg.packages||[]).find(x=>x.name==="neom_commons");if(p){const r=p.rootUri.startsWith("file://")?fileURLToPath(p.rootUri):path.resolve(".dart_tool",p.rootUri);process.stdout.write(path.join(r,"tool/legal/generate.mjs"));}')"
+fi
 DEFAULT_CHANNEL="test"
 DEFAULT_EXPIRES="7d"
 FLUTTER_BUILD_FLAGS=(

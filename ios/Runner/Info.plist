@@ -101,5 +101,7 @@
 	<true/>
 	<key>NSAppleMusicUsageDescription</key>
     <string>$(PROJECT_NAME) requires access to media library</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 </dict>
 </plist>

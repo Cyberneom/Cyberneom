@@ -370,12 +370,16 @@
     }
   }
 
-  function postPageChanged(firstPage, requestedPage) {
+  function postPageChanged(firstPage, requestedPage, visiblePages) {
     const message = {
       type: 'pageChanged',
       page: firstPage,
       bookId: bookId,
     };
+    if (Array.isArray(visiblePages) && visiblePages.length > 0) {
+      message.visiblePages = visiblePages;
+      message.isTwoPage = visiblePages.length > 1;
+    }
     if (Number.isSafeInteger(requestedPage) && requestedPage > 0) {
       message.requestedPage = requestedPage;
     }
@@ -689,7 +693,7 @@
         currentSpread = startPage - 1;
       }
 
-      await renderCurrentSpread();
+      await renderCurrentSpread(startPage);
       preloadAdjacentSpreads();
       if (pendingHostPage !== null) await queueHostNavigation(pendingHostPage);
 
@@ -802,11 +806,13 @@
     }
     paywall.classList.remove('active');
 
+    const renderedPages = [];
     for (const pageNum of pages) {
       if (!isPageAllowed(pageNum)) break;
 
       const canvas = await renderPage(pageNum, targetHeight);
       if (!canvas) return;
+      renderedPages.push(pageNum);
 
       if (canvas.width > maxWidthPerPage) {
         const ratio = maxWidthPerPage / canvas.width;
@@ -851,7 +857,7 @@
       currentSpread >= getTotalSpreads() - 1 || !isPageAllowed(nextPages[0]);
 
     // Report page change to Flutter via postMessage
-    postPageChanged(firstPage, requestedPage);
+    postPageChanged(firstPage, requestedPage, renderedPages);
   }
 
   async function preloadAdjacentSpreads() {

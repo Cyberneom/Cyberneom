@@ -389,7 +389,7 @@ service cloud.firestore {
     // Room contract v1 (prototype; legacy documents without UIDs fail closed)
     // rooms/liveSessions: immutable hostUid, hostId and createdAt.
     // members/{authUid}: {ownerUid, profileId}, atomic with participants.
-    // participants/{profileId}: immutable ownerUid/profileId/joinedAt.
+    // participants/{profileId}: immutable ownerUid/profileId/joinedAt; optional currentPage/visiblePages.
     // reactions/replies/chat: immutable ownerUid + display profile identity.
     // Signaling remains under rooms/{id}, including live session signaling.
     // Epoch milliseconds remain compatible with the Flutter models.
@@ -421,6 +421,16 @@ service cloud.firestore {
     }
     function roomCount(value) {
       return value is int && value >= 0 && value <= 1000000000;
+    }
+    function roomPageNumber(value) {
+      return value is int && value >= 0 && value <= 1000000;
+    }
+    function roomVisiblePages(values) {
+      return values is list && values.size() <= 4 && (values.size() == 0
+        || (roomPageNumber(values[0])
+          && (values.size() <= 1 || roomPageNumber(values[1]))
+          && (values.size() <= 2 || roomPageNumber(values[2]))
+          && (values.size() <= 3 || roomPageNumber(values[3]))));
     }
     function roomStringAt(values, index) {
       return values.size() <= index || roomText(values[index], 256);
@@ -558,14 +568,16 @@ service cloud.firestore {
     }
     function validParticipant(data, profile) {
       return data.keys().hasAll(['ownerUid','profileId','name','photoUrl','role','isMuted','isActive','handRaised','joinedAt','lastSeen'])
-        && data.keys().hasOnly(['ownerUid','profileId','name','photoUrl','role','isMuted','isActive','handRaised','joinedAt','lastSeen','handRaisedAt','participationGroupId'])
+        && data.keys().hasOnly(['ownerUid','profileId','name','photoUrl','role','isMuted','isActive','handRaised','joinedAt','lastSeen','handRaisedAt','participationGroupId','currentPage','visiblePages'])
         && roomKey(data.ownerUid) && data.profileId == profile && roomKey(profile)
         && roomText(data.name,200) && roomUrl(data.photoUrl)
         && data.role in ['host','speaker','listener']
         && data.isMuted is bool && data.isActive is bool && data.handRaised is bool
         && roomMillis(data.joinedAt) && roomMillis(data.lastSeen)
         && roomOptionalMillis(data.get('handRaisedAt',null))
-        && roomText(data.get('participationGroupId',''),256);
+        && roomText(data.get('participationGroupId',''),256)
+        && (data.get('currentPage', 0) == null || roomPageNumber(data.get('currentPage', 0)))
+        && roomVisiblePages(data.get('visiblePages', []));
     }
     function participantCreate(space,id,profile) {
       let data = request.resource.data;
