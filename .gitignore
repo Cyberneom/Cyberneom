@@ -102,3 +102,5 @@ coverage/
 
 # Local multi-module overrides (never commit to CI)
 pubspec_overrides.yaml
+ios/Flutter/ephemeral/
+/build/

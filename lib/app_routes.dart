@@ -60,6 +60,7 @@ import 'package:neom_profile/profile_routes.dart';
 import 'package:neom_releases/release_routes.dart';
 import 'package:neom_requests/request_routes.dart';
 import 'package:neom_rooms/room_routes.dart';
+import 'package:neom_scanner/neom_scanner_routes.dart';
 import 'package:neom_search/search_routes.dart';
 import 'package:neom_settings/setting_routes.dart';
 import 'package:neom_stripe/stripe_routes.dart';
@@ -126,6 +127,7 @@ class AppRoutes {
       ...BookingRoutes.routes,
       ...CalendarRoutes.routes,
       if (!kIsWeb) ...CameraRoutes.routes,
+      ...NeomScannerRoutes.routes,
       ...CommerceRoutes.routes,
       ...CommonRoutes.routes,
       ...DirectoryRoutes.routes,

@@ -7,10 +7,42 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    function userDocHasRoleAt(docId, roles) {
+      return docId is string
+        && docId.size() > 0
+        && !docId.matches('.*[/].*')
+        && exists(/databases/$(database)/documents/users/$(docId))
+        && get(/databases/$(database)/documents/users/$(docId)).data.get('userRole', '') in roles;
+    }
+
+    function hasUserDocRole(roles) {
+      return signedIn() && (
+        userDocHasRoleAt(request.auth.uid, roles) ||
+        (request.auth.token.get('email_verified', false) == true
+          && userDocHasRoleAt(request.auth.token.get('email', ''), roles))
+      );
+    }
+
+    function isUserDocStaff() {
+      return hasUserDocRole(['support', 'erp', 'developer', 'admin', 'superAdmin']);
+    }
+
+    function isUserDocAdmin() {
+      return hasUserDocRole(['developer', 'admin', 'superAdmin']);
+    }
+
     function isStaff() {
       return signedIn() && (
         request.auth.token.get('admin', false) == true ||
-        request.auth.token.get('staff', false) == true
+        request.auth.token.get('staff', false) == true ||
+        isUserDocStaff()
+      );
+    }
+
+    function isAdmin() {
+      return signedIn() && (
+        request.auth.token.get('admin', false) == true ||
+        isUserDocAdmin()
       );
     }
 
@@ -30,13 +62,26 @@ service cloud.firestore {
       allow read: if true;
       allow create: if signedIn();
       allow update: if signedIn(); // Necesario para likes (likedProfiles), comentarios (commentIds) e interacción
-      allow delete: if signedIn() && (resource.data.ownerId == request.auth.uid || isStaff());
+      allow delete: if signedIn() && (
+        resource.data.ownerId == request.auth.uid ||
+        (request.auth.token.get('email_verified', false) == true && resource.data.get('ownerEmail', '') == request.auth.token.get('email', '')) ||
+        (request.auth.token.get('email_verified', false) == true && resource.data.ownerId == request.auth.token.get('email', '')) ||
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)/profiles/$(resource.data.ownerId)) ||
+        isStaff()
+      );
 
       match /comments/{commentId} {
         allow read: if true;
         allow create: if signedIn();
         allow update, delete: if signedIn();
       }
+    }
+
+    // Colección raíz comments (usada directamente por CommentFirestore en neom_posts)
+    match /comments/{commentId} {
+      allow read: if true;
+      allow create: if signedIn();
+      allow update, delete: if signedIn();
     }
 
     match /appReleaseItems/{releaseId} {
@@ -76,9 +121,316 @@ service cloud.firestore {
       allow update, delete: if signedIn();
     }
 
+    // ===============================================================
+    // EMXI Blog (neom_blog) — Assumed Data Model & Security Rules
+    // ===============================================================
+    //
+    // Collection: blog/{blogId}
+    // Document ID: safe Firestore ID (1..128 chars, no '/')
+    // Identity mapping:
+    //   - ownerId and savedByProfiles store AppProfile.id (under
+    //     /users/{userId}/profiles/{profileId}) or request.auth.uid directly;
+    //     legacy email-keyed user trees require email_verified == true.
+    // Fields (BlogEntry.toJSON()):
+    //   - ownerId: string (required, 1..128 chars, no '/', immutable on update)
+    //   - profileName: string (required, 0..200 chars)
+    //   - profileImgUrl: string (required, 0..2048 chars, safe URL or empty)
+    //   - title: string (required, 0..500 chars)
+    //   - content: string (required, 0..200000 chars)
+    //   - thumbnailUrl: string (required, 0..2048 chars, safe URL or empty)
+    //   - hashtags: list<string> (required, <= 50 items, each string 0..100 chars)
+    //   - createdTime: int (required, 0..8640000000000000, immutable once > 0)
+    //   - modifiedTime: int (required, 0..8640000000000000)
+    //   - publishedTime: int (required, 0..8640000000000000)
+    //   - position: string | map | null (optional/nullable, <= 4096 chars or geolocator map)
+    //   - location: string (required, 0..500 chars)
+    //   - isDraft: bool (required)
+    //   - isHidden: bool (required; false on non-staff create)
+    //   - isCommentEnabled: bool (required)
+    //   - themeMode: string (required, in ['', 'dark', 'light', 'sepia', 'amoled', 'system', 'default'])
+    //   - savedByProfiles: list<string> (required, <= 5000 items; [] on non-staff create)
+    //   - viewCount: int (required, 0..1000000000; 0 on non-staff create)
+    //   - verificationLevel: string | null (optional/nullable, valid VerificationLevel)
+    //   - slug: string (required on create, preserved on update, 0..750 chars, no '/')
+    //   - legacyPostId: string | null (optional, <= 128 chars, no '/', immutable once set)
+    //   - practiceReference: map | null (optional, sanitized Incienso reference keys only)
+    // ===============================================================
+    function isBlogStaff() {
+      return isStaff() || isUserDocStaff();
+    }
+
+    function isBlogSafeId(id) {
+      return id is string
+        && id.size() > 0
+        && id.size() <= 128
+        && !(id in ['.', '..'])
+        && !id.matches('.*[/].*');
+    }
+
+    function ownsBlogProfile(profileId) {
+      return signedIn()
+        && isBlogSafeId(profileId)
+        && (
+          profileId == request.auth.uid
+          || exists(/databases/$(database)/documents/users/$(request.auth.uid)/profiles/$(profileId))
+          || (
+            request.auth.token.get('email_verified', false) == true
+            && request.auth.token.get('email', '') is string
+            && request.auth.token.get('email', '').size() > 0
+            && request.auth.token.get('email', '').size() <= 320
+            && !request.auth.token.get('email', '').matches('.*[/].*')
+            && exists(/databases/$(database)/documents/users/$(request.auth.token.get('email', ''))/profiles/$(profileId))
+          )
+        );
+    }
+
+    function isValidBlogUrl(url) {
+      return url is string
+        && url.size() <= 2048
+        && url.matches('(|https?://.*|gs://.*|assets/.*|/.*)');
+    }
+
+    function isValidBlogEpochMs(t) {
+      return t is int && t >= 0 && t <= 8640000000000000;
+    }
+
+    function isValidBlogPosition(pos) {
+      return pos == null
+        || (pos is string && pos.size() <= 4096)
+        || (pos is map
+          && pos.keys().hasOnly([
+            'latitude', 'longitude', 'timestamp', 'accuracy', 'altitude',
+            'heading', 'speed', 'speed_accuracy', 'speedAccuracy',
+            'altitude_accuracy', 'altitudeAccuracy', 'heading_accuracy',
+            'headingAccuracy', 'floor', 'is_mocked', 'isMocked'
+          ])
+          && pos.get('latitude', 0) is number && pos.get('latitude', 0) >= -90 && pos.get('latitude', 0) <= 90
+          && pos.get('longitude', 0) is number && pos.get('longitude', 0) >= -180 && pos.get('longitude', 0) <= 180);
+    }
+
+    function isValidBlogVerificationLevel(level) {
+      return level == null
+        || (level is string
+          && level in [
+            '', 'none', 'basic', 'verified', 'creator',
+            'ambassador', 'artist', 'professional', 'premium', 'platinum'
+          ]);
+    }
+
+    function isValidBlogPracticeReference(ref) {
+      return ref == null
+        || (ref is map
+          && ref.keys().hasOnly([
+            'inciensoName', 'publicInciensoId', 'inciensoId', 'isPublicCatalog'
+          ])
+          && ref.get('inciensoName', '') is string && ref.get('inciensoName', '').size() <= 200
+          && ref.get('publicInciensoId', '') is string && ref.get('publicInciensoId', '').size() <= 128 && !ref.get('publicInciensoId', '').matches('.*[/].*')
+          && ref.get('inciensoId', '') is string && ref.get('inciensoId', '').size() <= 128 && !ref.get('inciensoId', '').matches('.*[/].*')
+          && ref.get('isPublicCatalog', false) is bool);
+    }
+
+    function blogTags0(t) {
+      return t.size() >= 10
+        ? (t[0] is string && t[1] is string && t[2] is string && t[3] is string && t[4] is string
+          && t[5] is string && t[6] is string && t[7] is string && t[8] is string && t[9] is string)
+        : ((t.size() <= 0 || t[0] is string) && (t.size() <= 1 || t[1] is string)
+          && (t.size() <= 2 || t[2] is string) && (t.size() <= 3 || t[3] is string)
+          && (t.size() <= 4 || t[4] is string) && (t.size() <= 5 || t[5] is string)
+          && (t.size() <= 6 || t[6] is string) && (t.size() <= 7 || t[7] is string)
+          && (t.size() <= 8 || t[8] is string) && (t.size() <= 9 || t[9] is string));
+    }
+
+    function blogTags10(t) {
+      return t.size() <= 10 || (t.size() >= 20
+        ? (t[10] is string && t[11] is string && t[12] is string && t[13] is string && t[14] is string
+          && t[15] is string && t[16] is string && t[17] is string && t[18] is string && t[19] is string)
+        : ((t.size() <= 10 || t[10] is string) && (t.size() <= 11 || t[11] is string)
+          && (t.size() <= 12 || t[12] is string) && (t.size() <= 13 || t[13] is string)
+          && (t.size() <= 14 || t[14] is string) && (t.size() <= 15 || t[15] is string)
+          && (t.size() <= 16 || t[16] is string) && (t.size() <= 17 || t[17] is string)
+          && (t.size() <= 18 || t[18] is string) && (t.size() <= 19 || t[19] is string)));
+    }
+
+    function blogTags20(t) {
+      return t.size() <= 20 || (t.size() >= 30
+        ? (t[20] is string && t[21] is string && t[22] is string && t[23] is string && t[24] is string
+          && t[25] is string && t[26] is string && t[27] is string && t[28] is string && t[29] is string)
+        : ((t.size() <= 20 || t[20] is string) && (t.size() <= 21 || t[21] is string)
+          && (t.size() <= 22 || t[22] is string) && (t.size() <= 23 || t[23] is string)
+          && (t.size() <= 24 || t[24] is string) && (t.size() <= 25 || t[25] is string)
+          && (t.size() <= 26 || t[26] is string) && (t.size() <= 27 || t[27] is string)
+          && (t.size() <= 28 || t[28] is string) && (t.size() <= 29 || t[29] is string)));
+    }
+
+    function isValidBlogHashtags(tags) {
+      return tags is list
+        && tags.size() <= 50
+        && tags.join('').size() <= 2500
+        && (
+          tags.size() == 0
+          || (resource != null && tags == resource.data.get('hashtags', null))
+          || (
+            blogTags0(tags)
+            && blogTags10(tags)
+            && blogTags20(tags)
+            && tags[tags.size() - 1] is string
+          )
+        );
+    }
+
+    function isValidBlogEntry(data) {
+      return data.keys().hasOnly([
+          'ownerId', 'profileName', 'profileImgUrl', 'title', 'content',
+          'thumbnailUrl', 'hashtags', 'createdTime', 'modifiedTime', 'publishedTime',
+          'position', 'location', 'isDraft', 'isHidden', 'isCommentEnabled',
+          'themeMode', 'savedByProfiles', 'viewCount', 'verificationLevel',
+          'slug', 'legacyPostId', 'practiceReference'
+        ])
+        && isBlogSafeId(data.ownerId)
+        && data.profileName is string && data.profileName.size() <= 200
+        && isValidBlogUrl(data.profileImgUrl)
+        && data.title is string && data.title.size() <= 500
+        && data.content is string && data.content.size() <= 200000
+        && isValidBlogUrl(data.thumbnailUrl)
+        && isValidBlogHashtags(data.hashtags)
+        && isValidBlogEpochMs(data.createdTime)
+        && isValidBlogEpochMs(data.modifiedTime)
+        && isValidBlogEpochMs(data.publishedTime)
+        && (!('position' in data) || isValidBlogPosition(data.position))
+        && data.location is string && data.location.size() <= 500
+        && data.isDraft is bool
+        && data.isHidden is bool
+        && data.isCommentEnabled is bool
+        && data.themeMode is string
+        && data.themeMode in ['', 'dark', 'light', 'sepia', 'amoled', 'system', 'default']
+        && data.savedByProfiles is list && data.savedByProfiles.size() <= 5000
+        && (data.savedByProfiles.size() == 0 || isBlogSafeId(data.savedByProfiles[0]))
+        && data.viewCount is int && data.viewCount >= 0 && data.viewCount <= 1000000000
+        && (!('verificationLevel' in data) || isValidBlogVerificationLevel(data.verificationLevel))
+        && (!('slug' in data) || (data.slug is string && data.slug.size() <= 750 && !data.slug.matches('.*[/].*')))
+        && (!('legacyPostId' in data) || data.legacyPostId == null
+          || (data.legacyPostId is string && data.legacyPostId.size() <= 128 && !data.legacyPostId.matches('.*[/].*')))
+        && (!('practiceReference' in data) || isValidBlogPracticeReference(data.practiceReference));
+    }
+
+    function blogEntryCreate(blogId) {
+      let data = request.resource.data;
+      return signedIn()
+        && isBlogSafeId(blogId)
+        && isValidBlogEntry(data)
+        && 'slug' in data
+        && (
+          (
+            data.viewCount == 0
+            && data.savedByProfiles.size() == 0
+            && data.isHidden == false
+            && ownsBlogProfile(data.ownerId)
+          )
+          || isBlogStaff()
+        );
+    }
+
+    function blogAuthorUpdate() {
+      let before = resource.data;
+      let after = request.resource.data;
+      return 'ownerId' in before
+        && after.ownerId == before.ownerId
+        && (before.get('createdTime', 0) == 0 || after.createdTime == before.createdTime)
+        && after.viewCount == before.get('viewCount', 0)
+        && after.savedByProfiles == before.get('savedByProfiles', [])
+        && (before.get('isHidden', false) == false || after.isHidden == true)
+        && (!('slug' in before) || 'slug' in after)
+        && (!('legacyPostId' in before) || before.legacyPostId == null
+          || after.get('legacyPostId', null) == before.legacyPostId)
+        && ownsBlogProfile(before.ownerId);
+    }
+
+    function blogStaffUpdate() {
+      let before = resource.data;
+      let after = request.resource.data;
+      return (!('ownerId' in before) || before.ownerId == '' || after.ownerId == before.ownerId)
+        && isBlogStaff();
+    }
+
+    function blogBookmarkToggle() {
+      let before = resource.data;
+      let after = request.resource.data;
+      let prevSaved = before.get('savedByProfiles', []);
+      let nextSaved = after.savedByProfiles;
+      return signedIn()
+        && before.get('isDraft', true) == false
+        && before.get('isHidden', false) == false
+        && after.diff(before).affectedKeys() == ['savedByProfiles'].toSet()
+        && prevSaved is list
+        && (
+          (
+            nextSaved.size() == prevSaved.size() + 1
+            && nextSaved.hasAll(prevSaved)
+            && nextSaved.removeAll(prevSaved).size() == 1
+            && ownsBlogProfile(nextSaved.removeAll(prevSaved)[0])
+          )
+          || (
+            prevSaved.size() == nextSaved.size() + 1
+            && prevSaved.hasAll(nextSaved)
+            && prevSaved.removeAll(nextSaved).size() == 1
+            && ownsBlogProfile(prevSaved.removeAll(nextSaved)[0])
+          )
+        );
+    }
+
+    function blogViewCountIncrement() {
+      let before = resource.data;
+      let after = request.resource.data;
+      let prevViews = before.get('viewCount', 0);
+      return signedIn()
+        && before.get('isDraft', true) == false
+        && before.get('isHidden', false) == false
+        && after.diff(before).affectedKeys() == ['viewCount'].toSet()
+        && prevViews is int
+        && after.viewCount is int
+        && after.viewCount == prevViews + 1;
+    }
+
+    function blogEntryUpdate(blogId) {
+      return resource != null
+        && isBlogSafeId(blogId)
+        && isValidBlogEntry(request.resource.data)
+        && (
+          blogViewCountIncrement()
+          || blogBookmarkToggle()
+          || blogAuthorUpdate()
+          || blogStaffUpdate()
+        );
+    }
+
+    function canGetBlogEntry() {
+      return resource == null
+        || (resource.data.get('isDraft', true) == false
+          && resource.data.get('isHidden', false) == false)
+        || ('ownerId' in resource.data && ownsBlogProfile(resource.data.ownerId))
+        || isBlogStaff();
+    }
+
+    function canListBlogEntries() {
+      return (resource.data.isDraft == false && resource.data.isHidden == false)
+        || ('ownerId' in resource.data && ownsBlogProfile(resource.data.ownerId))
+        || isBlogStaff();
+    }
+
+    function canDeleteBlogEntry() {
+      return resource != null
+        && (
+          ('ownerId' in resource.data && ownsBlogProfile(resource.data.ownerId))
+          || isBlogStaff()
+        );
+    }
+
     match /blog/{blogId} {
-      allow read: if true;
-      allow write: if isStaff();
+      allow get: if canGetBlogEntry();
+      allow list: if canListBlogEntries();
+      allow create: if blogEntryCreate(blogId);
+      allow update: if blogEntryUpdate(blogId);
+      allow delete: if canDeleteBlogEntry();
     }
 
     match /app/{docId} {
@@ -132,9 +484,18 @@ service cloud.firestore {
       }
     }
 
+    match /globalActivityFeed/{feedId} {
+      allow read: if true;
+      allow create: if signedIn();
+      allow update, delete: if isStaff();
+    }
+
     match /inbox/{inboxId} {
       allow read, write: if signedIn();
       match /messages/{messageId} {
+        allow read, write: if signedIn();
+      }
+      match /roomProfiles/{profileId} {
         allow read, write: if signedIn();
       }
     }
@@ -214,97 +575,244 @@ service cloud.firestore {
     }
     match /jamSessions/{sessionId} {
       allow read, write: if signedIn();
+      match /chat/{messageId} {
+        allow read, write: if signedIn();
+      }
     }
 
     // --- DATOS PRIVADOS DE USUARIO ---
+    // User roles are assigned by trusted server code, never by a client.
+    // UID documents are canonical; older email-keyed records require a
+    // Firebase-verified matching email before they may be read or updated.
+    function userOwnsRecord(userId, data) {
+      return signedIn() && (request.auth.uid == userId || (
+        request.auth.token.get('email_verified', false) == true
+        && request.auth.token.get('email', '') is string
+        && request.auth.token.get('email', '').size() > 0
+        && data.get('email', '') == request.auth.token.get('email', '')
+      ));
+    }
+
+    function validUserIdentity(data, userId) {
+      return data.get('id', userId) is string
+        && data.get('email', '') is string
+        && data.get('email', '').size() <= 320
+        && data.get('userRole', 'subscriber') is string;
+    }
+
+    function safeUserCreate(userId) {
+      let data = request.resource.data;
+      return signedIn() && request.auth.uid == userId
+        && validUserIdentity(data, userId)
+        && data.get('id', userId) == userId
+        && data.get('userRole', 'subscriber') == 'subscriber'
+        && data.get('email', '') == request.auth.token.get('email', '');
+    }
+
+    function safeUserUpdate(userId) {
+      let before = resource.data;
+      let after = request.resource.data;
+      return userOwnsRecord(userId, before)
+        && validUserIdentity(after, userId)
+        // Preserve existing privileged accounts but do not let their owners
+        // modify roles; provisioning and changes require Admin SDK.
+        && after.get('userRole', 'subscriber') == before.get('userRole', 'subscriber')
+        && after.get('id', userId) == before.get('id', userId)
+        && (!after.diff(before).affectedKeys().hasAny(['email']) || (
+          request.auth.token.get('email_verified', false) == true
+          && after.get('email', '') == request.auth.token.get('email', '')
+        ));
+    }
+
     match /users/{userId} {
-      allow read, update: if signedIn() && (request.auth.uid == userId || request.auth.token.email == resource.data.email);
-      allow create: if signedIn() && request.auth.uid == userId;
+      allow read: if signedIn() && (
+        request.auth.uid == userId ||
+        (resource != null && userOwnsRecord(userId, resource.data)) ||
+        isStaff()
+      );
+      allow update: if safeUserUpdate(userId);
+      allow create: if safeUserCreate(userId);
       allow delete: if false;
 
       // Perfiles bajo el árbol del usuario: legibles públicamente (para autores, avatares),
-      // pero únicamente modificables por el dueño de la cuenta
+      // modificables por el dueño de la cuenta o mediante actualizaciones sociales acotadas
       match /profiles/{profileId} {
         allow read: if true;
-        allow write: if signedIn() && request.auth.uid == userId;
+        allow create, delete: if signedIn() && (request.auth.uid == userId || isStaff());
+        allow update: if signedIn() && (
+          request.auth.uid == userId ||
+          isStaff() ||
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+            'followers', 'requests', 'invitationRequests', 'mateRequests', 'sentRequests',
+            'following', 'followingCount', 'followersCount'
+          ])
+        );
 
         match /{subcollection=**} {
           allow read: if true; // géneros, instrumentos, frecuencias del perfil
-          allow write: if signedIn() && request.auth.uid == userId;
+          allow write: if signedIn() && (request.auth.uid == userId || isStaff());
         }
       }
     }
 
     match /wallets/{walletId} {
-      allow read, write: if signedIn();
+      allow read: if signedIn() && (
+        walletId == request.auth.uid ||
+        (request.auth.token.get('email_verified', false) == true && walletId == request.auth.token.get('email', '')) ||
+        (resource != null && (
+          resource.data.get('ownerId', '') == request.auth.uid ||
+          resource.data.get('userId', '') == request.auth.uid ||
+          (request.auth.token.get('email_verified', false) == true && resource.data.get('ownerEmail', '') == request.auth.token.get('email', ''))
+        )) ||
+        isStaff()
+      );
+      allow create: if signedIn() && (
+        walletId == request.auth.uid ||
+        (request.auth.token.get('email_verified', false) == true && walletId == request.auth.token.get('email', '')) ||
+        request.resource.data.get('ownerId', '') == request.auth.uid ||
+        request.resource.data.get('userId', '') == request.auth.uid ||
+        (request.auth.token.get('email_verified', false) == true && request.resource.data.get('ownerEmail', '') == request.auth.token.get('email', '')) ||
+        isStaff()
+      );
+      allow update: if signedIn() && (
+        walletId == request.auth.uid ||
+        (request.auth.token.get('email_verified', false) == true && walletId == request.auth.token.get('email', '')) ||
+        resource.data.get('ownerId', '') == request.auth.uid ||
+        resource.data.get('userId', '') == request.auth.uid ||
+        (request.auth.token.get('email_verified', false) == true && resource.data.get('ownerEmail', '') == request.auth.token.get('email', '')) ||
+        isStaff()
+      );
+      allow delete: if isStaff();
     }
 
     match /orders/{orderId} {
-      allow read, write: if signedIn();
+      allow read: if signedIn() && (
+        isStaff() ||
+        resource.data.get('userId', '') == request.auth.uid ||
+        resource.data.get('customerId', '') == request.auth.uid ||
+        (request.auth.token.get('email_verified', false) == true && resource.data.get('customerEmail', '') == request.auth.token.get('email', ''))
+      );
+      allow create: if signedIn();
+      allow update, delete: if isStaff();
     }
 
+    // Notification data can include payment information: users only read their
+    // own documents. A client can create only its own non-payment reminders;
+    // financial notifications are generated by trusted server code.
+    function validUserNotification(data) {
+      return data.keys().hasAll(['userId', 'type', 'title', 'body', 'createdTime', 'read'])
+        && data.keys().hasOnly(['userId', 'type', 'title', 'body', 'referenceUrl', 'invoiceUrl',
+                                'createdTime', 'read', 'subscriptionId', 'invoiceId'])
+        && data.userId is string && data.userId.size() > 0 && data.userId.size() <= 128
+        && data.type is string && data.type.size() > 0 && data.type.size() <= 64
+        && data.title is string && data.title.size() > 0 && data.title.size() <= 160
+        && data.body is string && data.body.size() <= 1000
+        && data.get('referenceUrl', '') is string && data.get('referenceUrl', '').size() <= 512
+        && data.get('invoiceUrl', '') is string && data.get('invoiceUrl', '').size() <= 512
+        && data.get('subscriptionId', '') is string && data.get('subscriptionId', '').size() <= 128
+        && data.get('invoiceId', '') is string && data.get('invoiceId', '').size() <= 128
+        && data.createdTime is int && data.createdTime >= 0 && data.createdTime <= 8640000000000000
+        && data.read is bool;
+    }
     match /userNotifications/{notifId} {
-      allow read, update: if signedIn() && resource.data.userId == request.auth.uid;
-      allow create, delete: if signedIn();
+      allow read: if signedIn() && resource.data.userId == request.auth.uid;
+      allow create: if signedIn() && validUserNotification(request.resource.data)
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.type in ['task_result', 'briefing', 'mission_reminder', 'cluster_event', 'system_alert']
+        && request.resource.data.get('subscriptionId', '') == ''
+        && request.resource.data.get('invoiceId', '') == ''
+        && request.resource.data.get('invoiceUrl', '') == ''
+        && request.resource.data.read == false;
+      allow update: if signedIn() && resource.data.userId == request.auth.uid
+        && validUserNotification(request.resource.data)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read']);
+      allow delete: if signedIn() && resource.data.userId == request.auth.uid;
     }
 
-    // --- ERP & OPERACIONES ---
-    match /erpLeads/{id} { allow read, write: if signedIn(); }
-    match /erpAgents/{id} { allow read, write: if signedIn(); }
-    match /erpAgentKpis/{id} { allow read, write: if signedIn(); }
-    match /erpActivities/{id} { allow read, write: if signedIn(); }
-    match /erpTasks/{id} { allow read, write: if signedIn(); }
-    match /erpIncomes/{id} { allow read, write: if signedIn(); }
-    match /erpExpenses/{id} { allow read, write: if signedIn(); }
-    match /erpRequisitions/{id} { allow read, write: if signedIn(); }
-    match /erpQuotes/{id} { allow read, write: if signedIn(); }
-    match /erpSolutions/{id} { allow read, write: if signedIn(); }
-    match /erpSolutionAssignments/{id} { allow read, write: if signedIn(); }
-    match /erpRemovedSolutions/{id} { allow read, write: if signedIn(); }
-    match /erpBooks/{id} { allow read, write: if signedIn(); }
-    match /erpAuthors/{id} { allow read, write: if signedIn(); }
-    match /erpAuthorWallets/{id} { allow read, write: if signedIn(); }
-    match /erpRoyaltyPayouts/{id} { allow read, write: if signedIn(); }
-    match /erpSaleTransactions/{id} { allow read, write: if signedIn(); }
-    match /erpCommissions/{id} { allow read, write: if signedIn(); }
-    match /erpWarehouseNodes/{id} { allow read, write: if signedIn(); }
-    match /erpTransfers/{id} { allow read, write: if signedIn(); }
-    match /erpBoxContainers/{id} { allow read, write: if signedIn(); }
-    match /erpGoals/{id} { allow read, write: if signedIn(); }
-    match /erpAuditTrail/{id} { allow read, write: if signedIn(); }
-    match /erpConfigs/{id} { allow read, write: if signedIn(); }
-    match /erpModules/{id} { allow read, write: if signedIn(); }
-    match /erpFilStages/{id} { allow read, write: if signedIn(); }
-    match /erpFilParticipants/{id} { allow read, write: if signedIn(); }
-    match /erpFilSchedule/{id} { allow read, write: if signedIn(); }
-    match /erpRoleAssignments/{id} { allow read, write: if signedIn(); }
+    // --- ERP & OPERACIONES (Restringido a Staff/Admin) ---
+    match /erpRoleAssignments/{id} { allow read, write: if isStaff(); }
+    match /erpLeads/{id} { allow read, write: if isStaff(); }
+    match /erpAgents/{id} { allow read, write: if isStaff(); }
+    match /erpAgentKpis/{id} { allow read, write: if isStaff(); }
+    match /erpActivities/{id} { allow read, write: if isStaff(); }
+    match /erpTasks/{id} { allow read, write: if isStaff(); }
+    match /erpIncomes/{id} { allow read, write: if isStaff(); }
+    match /erpExpenses/{id} { allow read, write: if isStaff(); }
+    match /erpRequisitions/{id} { allow read, write: if isStaff(); }
+    match /erpQuotes/{id} { allow read, write: if isStaff(); }
+    match /erpSolutions/{id} { allow read, write: if isStaff(); }
+    match /erpSolutionAssignments/{id} { allow read, write: if isStaff(); }
+    match /erpRemovedSolutions/{id} { allow read, write: if isStaff(); }
+    match /erpBooks/{id} { allow read, write: if isStaff(); }
+    match /erpAuthors/{id} { allow read, write: if isStaff(); }
+    match /erpAuthorWallets/{id} { allow read, write: if isStaff(); }
+    match /erpRoyaltyPayouts/{id} {
+      allow read: if isStaff() || (signedIn() && (
+        resource.data.get('authorId', '') == request.auth.uid ||
+        (request.auth.token.get('email_verified', false) == true && resource.data.get('authorEmail', '') == request.auth.token.get('email', ''))
+      ));
+      allow write: if isStaff();
+    }
+    match /erpSaleTransactions/{id} { allow read, write: if isStaff(); }
+    match /erpCommissions/{id} { allow read, write: if isStaff(); }
+    match /erpWarehouseNodes/{id} { allow read, write: if isStaff(); }
+    match /erpTransfers/{id} { allow read, write: if isStaff(); }
+    match /erpBoxContainers/{id} { allow read, write: if isStaff(); }
+    match /erpGoals/{id} { allow read, write: if isStaff(); }
+    match /erpAuditTrail/{id} { allow read, write: if isStaff(); }
+    match /erpConfigs/{id} { allow read, write: if isStaff(); }
+    match /erpModules/{id} { allow read: if signedIn(); allow write: if isStaff(); }
+    match /erpFilStages/{id} { allow read, write: if isStaff(); }
+    match /erpFilParticipants/{id} {
+      allow read: if isStaff() || (signedIn() && (
+        resource.data.get('userId', '') == request.auth.uid ||
+        (request.auth.token.get('email_verified', false) == true && resource.data.get('email', '') == request.auth.token.get('email', ''))
+      ));
+      allow write: if isStaff();
+    }
+    match /erpFilSchedule/{id} { allow read, write: if isStaff(); }
     match /erpBenchmarks/{id} {
-      allow read, write: if signedIn();
-      match /{sub=**} { allow read, write: if signedIn(); }
+      allow read, write: if isStaff();
+      match /{sub=**} { allow read, write: if isStaff(); }
     }
 
-    // --- KANBAN & GESTIÓN DE PROYECTOS ---
+    // --- KANBAN & GESTIÓN DE PROYECTOS (Restringido a Staff/Admin) ---
     match /kanbanBoards/{boardId} {
-      allow read, write: if signedIn();
-      match /{sub=**} { allow read, write: if signedIn(); }
+      allow read, write: if isStaff();
+      match /{sub=**} { allow read, write: if isStaff(); }
     }
     match /kanbanTasks/{taskId} {
-      allow read, write: if signedIn();
-      match /{sub=**} { allow read, write: if signedIn(); }
+      allow read, write: if isStaff();
+      match /{sub=**} { allow read, write: if isStaff(); }
     }
 
     // --- HUB, TELEMETRÍA Y SNAPSHOTS ---
-    match /hubLeads/{id} { allow read, write: if signedIn(); }
-    match /hubAgents/{id} { allow read, write: if signedIn(); }
-    match /hubExpenses/{id} { allow read, write: if signedIn(); }
-    match /hubIncomes/{id} { allow read, write: if signedIn(); }
-    match /hubSnapshots/{id} { allow read, write: if signedIn(); }
-    match /financialSnapshots/{id} { allow read, write: if signedIn(); }
-    match /subscriptionEvents/{id} { allow read, write: if signedIn(); }
-    match /collectionEvents/{id} { allow read, write: if signedIn(); }
-    match /saiaDevices/{id} { allow read, write: if signedIn(); }
-    match /saiaDomainSnapshots/{id} { allow read, write: if signedIn(); }
-    match /saiaUserContexts/{id} { allow read, write: if signedIn(); }
+    match /hubLeads/{id} { allow read, write: if isStaff(); }
+    match /hubAgents/{id} { allow read, write: if isStaff(); }
+    match /hubExpenses/{id} { allow read, write: if isStaff(); }
+    match /hubIncomes/{id} { allow read, write: if isStaff(); }
+    match /hubSnapshots/{id} { allow read, write: if isStaff(); }
+    match /financialSnapshots/{id} { allow read, write: if isStaff(); }
+    match /subscriptionEvents/{id} {
+      allow read: if isStaff() || (signedIn() && resource.data.get('userId', '') == request.auth.uid);
+      allow write: if isStaff();
+    }
+    match /collectionEvents/{id} { allow read, write: if isStaff(); }
+    match /saiaDevices/{id} {
+      allow read, write: if signedIn() && (
+        resource == null ||
+        resource.data.get('userId', '') == request.auth.uid ||
+        isStaff()
+      );
+    }
+    match /saiaDomainSnapshots/{id} { allow read, write: if isStaff(); }
+    match /saiaUserContexts/{id} {
+      allow read, write: if signedIn() && (
+        resource == null ||
+        resource.data.get('userId', '') == request.auth.uid ||
+        isStaff()
+      );
+    }
 
     // --- E-COMMERCE, SUSCRIPCIONES Y SERVICIOS ---
     match /subscriptionPlans/{planId} {
@@ -312,8 +820,16 @@ service cloud.firestore {
       allow write: if isStaff();
     }
     match /userSubscriptions/{subId} {
-      allow read, write: if signedIn();
+      // Billing state and entitlements must come from a trusted server after
+      // verifying Stripe, not from app callbacks or client-controlled data.
+      allow read: if signedIn() && resource.data.get('userId', '') == request.auth.uid;
+      allow write: if false;
     }
+    // Server-maintained verified Stripe ownership and delinquency history.
+    match /stripeSubscriptionOwners/{subId} { allow read, write: if false; }
+    match /stripeCustomerOwners/{customerId} { allow read, write: if false; }
+    match /stripeCheckoutOwners/{sessionId} { allow read, write: if false; }
+    match /subscriptionDunningState/{subId} { allow read, write: if false; }
     match /coupons/{couponId} {
       allow read: if true;
       allow write: if isStaff();
@@ -322,7 +838,21 @@ service cloud.firestore {
       allow read, write: if signedIn();
     }
     match /shopOrders/{orderId} {
-      allow read, write: if signedIn();
+      allow read: if signedIn() && (
+        isStaff() ||
+        resource.data.get('customerId', '') == request.auth.uid ||
+        resource.data.get('userId', '') == request.auth.uid ||
+        (request.auth.token.get('email_verified', false) == true && (
+          resource.data.get('customerEmail', '') == request.auth.token.get('email', '') ||
+          request.auth.token.get('email', '') in resource.data.get('sellerEmails', [])
+        ))
+      );
+      allow create: if signedIn() && (
+        request.resource.data.get('customerId', '') == request.auth.uid ||
+        request.resource.data.get('userId', '') == request.auth.uid ||
+        (request.auth.token.get('email_verified', false) == true && request.resource.data.get('customerEmail', '') == request.auth.token.get('email', ''))
+      );
+      allow update, delete: if isStaff();
     }
     match /shopMerchItems/{itemId} {
       allow read: if true;
@@ -342,6 +872,11 @@ service cloud.firestore {
       allow read: if true;
       allow write: if signedIn();
     }
+    // Soporte para ambos nombres: shippingZones (cliente) y shopShippingZones (legacy)
+    match /shippingZones/{zoneId} {
+      allow read: if true;
+      allow write: if isStaff();
+    }
     match /shopShippingZones/{zoneId} {
       allow read: if true;
       allow write: if isStaff();
@@ -353,8 +888,22 @@ service cloud.firestore {
     match /shopRefunds/{refundId} {
       allow read, write: if signedIn();
     }
+    // Soporte para ambos nombres: shopStock (cliente) y shopStocks (legacy)
+    match /shopStock/{stockId} {
+      allow read: if true;
+      allow write: if signedIn() && (
+        isStaff() ||
+        (resource != null && request.auth.token.get('email_verified', false) == true && resource.data.get('ownerEmail', '') == request.auth.token.get('email', '')) ||
+        (request.resource != null && request.auth.token.get('email_verified', false) == true && request.resource.data.get('ownerEmail', '') == request.auth.token.get('email', ''))
+      );
+    }
     match /shopStocks/{stockId} {
-      allow read, write: if signedIn();
+      allow read: if true;
+      allow write: if signedIn() && (
+        isStaff() ||
+        (resource != null && request.auth.token.get('email_verified', false) == true && resource.data.get('ownerEmail', '') == request.auth.token.get('email', '')) ||
+        (request.resource != null && request.auth.token.get('email_verified', false) == true && request.resource.data.get('ownerEmail', '') == request.auth.token.get('email', ''))
+      );
     }
     match /shopAddresses/{addressId} {
       allow read, write: if signedIn();
@@ -367,22 +916,655 @@ service cloud.firestore {
       allow read: if true;
       allow write: if isStaff();
     }
-    match /quotations/{quotationId} { allow read, write: if signedIn(); }
-    match /royaltyPayouts/{payoutId} { allow read, write: if signedIn(); }
-    match /withdrawalRequests/{reqId} { allow read, write: if signedIn(); }
+    // Assumed Data Model — quotations/{quotationId}:
+    //   - quotations/default: parámetros tarifarios públicos sin PII (minQty, midQty, maxQty,
+    //     tax, isbn, indautor, coverDesignCost, processACost, processBCost, etc.) leídos vía get
+    //     en rutas Guest (/quotation, /cotizacion) y SAIA; escritura restringida a staff/admin.
+    //   - quotations/{otherId}: cotizaciones de sesión autenticada (nunca públicas ni listables sin auth).
+    match /quotations/{quotationId} {
+      allow get: if quotationId == 'default' || signedIn();
+      allow list: if signedIn();
+      allow create, update, delete: if (quotationId != 'default' && signedIn())
+        || isStaff()
+        || isUserDocAdmin();
+    }
+    match /royaltyPayouts/{payoutId} {
+      allow read: if isStaff() || (signedIn() && (
+        resource.data.get('authorId', '') == request.auth.uid ||
+        resource.data.get('userId', '') == request.auth.uid ||
+        (request.auth.token.get('email_verified', false) == true && resource.data.get('authorEmail', '') == request.auth.token.get('email', ''))
+      ));
+      allow write: if isStaff();
+    }
+    match /withdrawalRequests/{reqId} {
+      allow read: if isStaff() || (signedIn() && (
+        resource.data.get('userId', '') == request.auth.uid ||
+        resource.data.get('profileId', '') == request.auth.uid ||
+        (request.auth.token.get('email_verified', false) == true && resource.data.get('ownerEmail', '') == request.auth.token.get('email', ''))
+      ));
+      allow create: if signedIn() && (
+        request.resource.data.get('userId', '') == request.auth.uid ||
+        request.resource.data.get('profileId', '') == request.auth.uid ||
+        (request.auth.token.get('email_verified', false) == true && request.resource.data.get('ownerEmail', '') == request.auth.token.get('email', ''))
+      );
+      allow update, delete: if isStaff();
+    }
     match /tickets/{ticketId} { allow read, write: if signedIn(); }
     match /sponsors/{sponsorId} {
       allow read: if true;
       allow write: if isStaff();
     }
     match /bank/{docId} { allow read, write: if isStaff(); }
-    match /transactions/{txId} { allow read, write: if signedIn(); }
+    match /transactions/{txId} {
+      allow read: if signedIn() && (
+        isStaff() ||
+        resource.data.get('senderId', '') == request.auth.uid ||
+        resource.data.get('recipientId', '') == request.auth.uid ||
+        resource.data.get('userId', '') == request.auth.uid ||
+        (request.auth.token.get('email_verified', false) == true && (
+          resource.data.get('senderEmail', '') == request.auth.token.get('email', '') ||
+          resource.data.get('recipientEmail', '') == request.auth.token.get('email', '') ||
+          resource.data.get('ownerEmail', '') == request.auth.token.get('email', '')
+        ))
+      );
+      allow create: if signedIn() && (
+        isStaff() ||
+        request.resource.data.get('senderId', '') == request.auth.uid ||
+        request.resource.data.get('userId', '') == request.auth.uid ||
+        (request.auth.token.get('email_verified', false) == true && (
+          request.resource.data.get('senderEmail', '') == request.auth.token.get('email', '') ||
+          request.resource.data.get('ownerEmail', '') == request.auth.token.get('email', '')
+        ))
+      );
+      allow update, delete: if isStaff();
+    }
+
+    // ===============================================================
+    // EMXI Fondeos (neom_founding) — Assumed Data Model & Security Rules
+    // ===============================================================
+    //
+    // Collection: foundingCampaigns/{campaignId}
+    //   - ownerUid: string (required, immutable for clients)
+    //   - collaboratorUids: list<string> (optional, <= 20 UIDs, owner/staff editable)
+    //   - status: string (required; draft, pendingReview, prelaunch, active,
+    //       funded, inProduction, fulfilled, cancelled, failed)
+    //   - goalAmount: number (required, > 0, locked for clients once approved)
+    //   - currentAmount: number (required, >= 0, == 0 on create, client-immutable)
+    //   - backerCount: number (required, >= 0, == 0 on create, client-immutable)
+    //   - fulfillmentLocked: bool (optional, false on create)
+    //   - postCampaignPledgingEnabled: bool (optional)
+    //   - story, rewardTiers, addOns, stretchGoals, faqs, createdTime, updatedTime
+    //
+    // Subcollection: foundingCampaigns/{campaignId}/followers/{uid}
+    //   - uid: string (required, == uid == request.auth.uid, PII keys forbidden)
+    //
+    // Subcollection: foundingCampaigns/{campaignId}/planning/forecast
+    //   - Private author-only estimate; all fields required.
+    //   - ownerUid: string, must match parent owner and immutable on update.
+    //   - expectedSupporters, expectedBookBuyers, reserveCopies: 0..1,000,000;
+    //     buyers <= supporters and buyers + reserveCopies <= 1,000,000.
+    //   - updatedTime: integer Unix milliseconds, 0..253402300799999.
+    //   - Access also requires the parent campaign's current owner; no staff,
+    //     collaborator, or visibility shortcuts are permitted.
+    //
+    // Subcollection: foundingCampaigns/{campaignId}/publicBackers/{pledgeId}
+    //   - Sanitized PII-free Muro de Mecenas projection:
+    //     only ['pledgeId', 'backerUid', 'displayName', 'avatarUrl', 'tierTitle',
+    //           'backerNumber', 'isAnonymous', 'createdTime', 'updatedTime']
+    //
+    // Subcollection: foundingCampaigns/{campaignId}/updates/{updateId}
+    //   - Author/collaborator campaign updates + Zero-Ops community report counter
+    //     (reportedByUids, reportCount, hidden == (reportCount >= 3))
+    //
+    // Subcollection: foundingCampaigns/{campaignId}/comments/{commentId}
+    //   - authorUid: string (required, immutable), text: string (1..2000 chars)
+    //   - Zero-Ops community report counter (reportedByUids, reportCount, hidden)
+    //
+    // Collection: foundingPledges/{pledgeId} (PII & Financial Audit Log — NEVER public)
+    //   - backerUid: string (required, immutable)
+    //   - campaignId: string (required, immutable)
+    //   - campaignOwnerUid: string (required, immutable)
+    //   - amountMxn: number (required, > 0, client-immutable after create)
+    //   - status: string (required; ['pending', 'onHold'] on create; 'paid' via Admin SDK)
+    //   - Self-service fields (before parent campaign fulfillmentLocked):
+    //     acknowledgmentName, dedicationNote, isAnonymous, shippingAddress, pickupAtEvent,
+    //     pendingUpgradeTierId, pendingUpgradeTierTitle, pendingUpgradeDeltaMxn,
+    //     pendingUpgradeSessionId, updatedTime
+    //   - Delivery confirmation (backer): backerCompleted, backerCompletedTime, updatedTime
+    //   - Fulfillment tracking (creator): fulfillmentStatus, trackingNumber,
+    //     trackingCarrier, deliveredAtEventTime, updatedTime
+    // ===============================================================
+    function foundingSignedIn() {
+      return signedIn()
+        && request.auth.token.get('firebase', {}).get('sign_in_provider', '') != 'anonymous';
+    }
+    function foundingId(v) {
+      return v is string && v.size() > 0 && v.size() <= 128 && !v.matches('.*[/].*');
+    }
+    function foundingText(v, maxLen) {
+      return v is string && v.size() <= maxLen;
+    }
+    function foundingUrl(v) {
+      return v is string && v.size() <= 2048 && v.matches('(|https?://.*|gs://.*|assets/.*|/.*)');
+    }
+    function foundingBool(v) {
+      return v is bool;
+    }
+    function foundingTime(v) {
+      return (v is int && v >= 0) || v is timestamp;
+    }
+    function foundingNum(v, minVal, maxVal) {
+      return v is number && v >= minVal && v <= maxVal;
+    }
+    function foundingList(v, maxLen) {
+      return v is list && v.size() <= maxLen;
+    }
+    function foundingBudget(v) {
+      return (v is map && v.keys().size() <= 50)
+        || (v is list && v.size() <= 50);
+    }
+    function foundingCampaignExists(campaignId) {
+      return exists(/databases/$(database)/documents/foundingCampaigns/$(campaignId));
+    }
+    function foundingCampaignIsOwner(campaignId) {
+      return signedIn() && foundingCampaignExists(campaignId)
+        && get(/databases/$(database)/documents/foundingCampaigns/$(campaignId)).data.get('ownerUid', '') == request.auth.uid;
+    }
+    function foundingCampaignDocOwnerOrCollab(campaignId) {
+      let campaign = get(/databases/$(database)/documents/foundingCampaigns/$(campaignId)).data;
+      return campaign.get('ownerUid', '') == request.auth.uid
+        || request.auth.uid in campaign.get('collaboratorUids', []);
+    }
+    function foundingCampaignOwnerOrCollab(campaignId) {
+      return signedIn() && foundingCampaignExists(campaignId)
+        && foundingCampaignDocOwnerOrCollab(campaignId);
+    }
+    function isValidFoundingForecast(data) {
+      return data.keys().hasAll(['ownerUid', 'expectedSupporters', 'expectedBookBuyers', 'reserveCopies', 'updatedTime'])
+        && data.keys().hasOnly(['ownerUid', 'expectedSupporters', 'expectedBookBuyers', 'reserveCopies', 'updatedTime'])
+        && foundingId(data.ownerUid)
+        && data.expectedSupporters is int && data.expectedSupporters >= 0 && data.expectedSupporters <= 1000000
+        && data.expectedBookBuyers is int && data.expectedBookBuyers >= 0 && data.expectedBookBuyers <= data.expectedSupporters
+        && data.reserveCopies is int && data.reserveCopies >= 0 && data.reserveCopies <= 1000000
+        && data.expectedBookBuyers + data.reserveCopies <= 1000000
+        && data.updatedTime is int && data.updatedTime >= 0 && data.updatedTime <= 253402300799999;
+    }
+    function foundingForecastOwnerAfter(campaignId) {
+      let parent = /databases/$(database)/documents/foundingCampaigns/$(campaignId);
+      return foundingSignedIn()
+        // For a batch creating the parent, getAfter sees its post-write owner.
+        && getAfter(parent).data.get('ownerUid', '') == request.auth.uid
+        // If the parent already exists, its owner must not change in this batch.
+        && (!exists(parent) || get(parent).data.get('ownerUid', '') == request.auth.uid);
+    }
+    function foundingCommunityReportIncrement() {
+      let prevReported = resource.data.get('reportedByUids', []);
+      let nextReported = request.resource.data.get('reportedByUids', null);
+      let prevCount = resource.data.get('reportCount', 0);
+      let nextCount = request.resource.data.get('reportCount', -1);
+      return foundingSignedIn()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['reportedByUids', 'reportCount', 'hidden', 'updatedTime'])
+        && prevReported is list && nextReported is list && nextReported.size() <= 500
+        && !(request.auth.uid in prevReported)
+        && request.auth.uid in nextReported
+        && nextReported.size() == prevReported.size() + 1
+        && nextReported.hasAll(prevReported)
+        && nextReported.toSet().difference(prevReported.toSet()) == [request.auth.uid].toSet()
+        && prevCount is number && nextCount is int && nextCount == prevCount + 1
+        && request.resource.data.get('hidden', null) is bool
+        && request.resource.data.hidden == (nextCount >= 3);
+    }
+    function isValidFoundingCampaign(data) {
+      return data.keys().size() <= 65
+        && data.keys().hasAll(['ownerUid', 'status', 'goalAmount', 'currentAmount', 'backerCount'])
+        && foundingId(data.ownerUid)
+        && data.status in ['draft', 'pendingReview', 'prelaunch', 'active', 'funded', 'inProduction', 'fulfilled', 'cancelled', 'failed']
+        && data.goalAmount is number && data.goalAmount > 0 && data.goalAmount <= 100000000
+        && data.currentAmount is number && data.currentAmount >= 0 && data.currentAmount <= 1000000000
+        && data.backerCount is number && data.backerCount >= 0 && data.backerCount <= 10000000
+        && foundingBool(data.get('fulfillmentLocked', false))
+        && foundingBool(data.get('postCampaignPledgingEnabled', false))
+        && foundingList(data.get('collaboratorUids', []), 20)
+        && foundingText(data.get('slug', ''), 200)
+        && foundingText(data.get('title', ''), 300)
+        && foundingText(data.get('subtitle', ''), 1000)
+        && foundingText(data.get('ownerName', ''), 200)
+        && foundingText(data.get('ownerContactPhone', ''), 64)
+        && foundingText(data.get('synopsis', ''), 50000)
+        && foundingText(data.get('story', ''), 50000)
+        && foundingText(data.get('authorBio', ''), 20000)
+        && foundingUrl(data.get('coverUrl', ''))
+        && foundingUrl(data.get('pitchVideoUrl', ''))
+        && foundingUrl(data.get('ownerAvatarUrl', ''))
+        && foundingBudget(data.get('budgetBreakdown', {}))
+        && foundingList(data.get('rewardTiers', []), 30)
+        && foundingList(data.get('addOns', []), 30)
+        && foundingList(data.get('stretchGoals', []), 30)
+        && foundingList(data.get('faqs', []), 50)
+        && foundingTime(data.get('createdTime', 0))
+        && foundingTime(data.get('updatedTime', 0));
+    }
+    function foundingCampaignCreate(campaignId) {
+      let data = request.resource.data;
+      return foundingSignedIn()
+        && isValidFoundingCampaign(data)
+        && data.keys().hasOnly([
+          'id', 'slug', 'title', 'subtitle', 'synopsis', 'authorBio', 'coverUrl',
+          'pitchVideoUrl', 'category', 'ownerUid', 'ownerName', 'ownerAvatarUrl',
+          'ownerContactPhone', 'collaboratorUids', 'status', 'modality', 'endMethod',
+          'goalAmount', 'currentAmount', 'backerCount', 'startDate', 'endDate',
+          'budgetBreakdown', 'rewardTiers', 'addOns', 'stretchGoals', 'faqs',
+          'aiUsage', 'aiDisclosureNote', 'fulfillmentLocked', 'postCampaignPledgingEnabled',
+          'quotationSummary', 'pagesCount', 'printRunCopies', 'unitPrintCostMxn',
+          'estimatedDeliveryDays', 'createdTime', 'updatedTime'
+        ])
+        && data.ownerUid == request.auth.uid
+        && data.status == 'draft'
+        && data.get('id', '') == campaignId
+        // A unique server-issued ID prevents reusing legacy campaign IDs.
+        && get(/databases/$(database)/documents/foundingDraftProvisions/$(campaignId)).data.get('ownerUid', '') == request.auth.uid
+        && get(/databases/$(database)/documents/foundingDraftProvisions/$(campaignId)).data.get('state', '') == 'begun'
+        && data.get('ownerContactPhone', '') == ''
+        && data.get('clabe', '') == '' && data.get('clabeAccount', '') == ''
+        && data.currentAmount == 0
+        && data.backerCount == 0
+        && data.get('fulfillmentLocked', false) == false;
+    }
+    function foundingCampaignUpdate(campaignId) {
+      let before = resource.data;
+      let after = request.resource.data;
+      return isValidFoundingCampaign(after)
+        && after.diff(before).addedKeys().hasOnly([
+          'id', 'slug', 'title', 'subtitle', 'synopsis', 'authorBio', 'coverUrl',
+          'pitchVideoUrl', 'category', 'ownerUid', 'ownerName', 'ownerAvatarUrl',
+          'ownerContactPhone', 'collaboratorUids', 'status', 'modality', 'endMethod',
+          'goalAmount', 'currentAmount', 'backerCount', 'startDate', 'endDate',
+          'budgetBreakdown', 'rewardTiers', 'addOns', 'stretchGoals', 'faqs',
+          'aiUsage', 'aiDisclosureNote', 'fulfillmentLocked', 'postCampaignPledgingEnabled',
+          'quotationSummary', 'pagesCount', 'printRunCopies', 'unitPrintCostMxn',
+          'estimatedDeliveryDays', 'createdTime', 'updatedTime'
+        ])
+        // Financial totals and ownership are managed by trusted server code.
+        && !after.diff(before).affectedKeys().hasAny(['id', 'ownerUid', 'currentAmount', 'backerCount', 'createdTime'])
+        // Contact and banking data cannot be newly inserted into a document
+        // that is publicly readable. Legacy fields may only be cleared.
+        && (!after.diff(before).affectedKeys().hasAny(['ownerContactPhone', 'clabe', 'clabeAccount'])
+          || (after.get('ownerContactPhone', '') == '' && after.get('clabe', '') == '' && after.get('clabeAccount', '') == ''))
+        // Once the server has reserved capacity, even a draft cannot mutate
+        // the prices or inventory used by that provision.
+        && (!exists(/databases/$(database)/documents/foundingDraftProvisions/$(campaignId))
+          || get(/databases/$(database)/documents/foundingDraftProvisions/$(campaignId)).data.get('state', '') != 'ready'
+          || !after.diff(before).affectedKeys().hasAny(['rewardTiers', 'addOns']))
+        // Once a campaign is published, its reward catalogue is frozen for
+        // every client role. Admin SDK transactions can update claimedCount.
+        && (!(before.status in ['prelaunch', 'active', 'funded', 'inProduction', 'fulfilled', 'cancelled', 'failed'])
+          || (!after.diff(before).affectedKeys().hasAny(['rewardTiers', 'addOns', 'goalAmount'])
+            && !(after.status in ['draft', 'pendingReview'])))
+        // Only server provisioning may submit a draft for review or publish it.
+        && (before.status != 'draft' || after.status in ['draft', 'cancelled'])
+        && (
+        isStaff()
+        || (
+          signedIn()
+          && (before.get('ownerUid', '') == request.auth.uid
+            || request.auth.uid in before.get('collaboratorUids', []))
+          && !after.diff(before).affectedKeys().hasAny(['ownerUid', 'currentAmount', 'backerCount', 'createdTime'])
+          && (before.get('ownerUid', '') == request.auth.uid
+            || !after.diff(before).affectedKeys().hasAny(['collaboratorUids', 'ownerContactPhone', 'clabe', 'clabeAccount']))
+          && (
+            (before.status in ['draft', 'pendingReview']
+              && after.status in ['draft', 'pendingReview', 'cancelled'])
+            || (before.status in ['prelaunch', 'active', 'funded', 'inProduction', 'fulfilled']
+              && after.status == before.status
+              && after.goalAmount == before.goalAmount)
+          )
+        )
+      );
+    }
+    function isValidFoundingFollower(data, uid) {
+      return data.keys().size() <= 12
+        && data.keys().hasAll(['uid'])
+        && !data.keys().hasAny(['email', 'backerEmail', 'phone', 'phoneNumber', 'shippingAddress', 'address'])
+        && foundingId(data.uid) && data.uid == uid
+        && foundingText(data.get('campaignId', ''), 128)
+        && foundingText(data.get('profileId', ''), 128)
+        && foundingText(data.get('displayName', ''), 200)
+        && foundingUrl(data.get('avatarUrl', ''))
+        && foundingBool(data.get('notifyPush', false))
+        && foundingTime(data.get('createdTime', 0))
+        && foundingTime(data.get('updatedTime', 0));
+    }
+    function isValidPublicBacker(data, pledgeId) {
+      return data.keys().hasOnly(['pledgeId', 'backerUid', 'displayName', 'avatarUrl', 'tierTitle', 'backerNumber', 'isAnonymous', 'createdTime', 'updatedTime'])
+        && data.keys().hasAll(['backerUid'])
+        && data.backerUid is string && data.backerUid.size() <= 128
+        && foundingText(data.get('pledgeId', ''), 128)
+        && (data.get('pledgeId', '') == '' || data.get('pledgeId', '') == pledgeId)
+        && foundingText(data.get('displayName', ''), 200)
+        && foundingUrl(data.get('avatarUrl', ''))
+        && foundingText(data.get('tierTitle', ''), 300)
+        && foundingNum(data.get('backerNumber', 0), 0, 10000000)
+        && foundingBool(data.get('isAnonymous', false))
+        && foundingTime(data.get('createdTime', 0))
+        && foundingTime(data.get('updatedTime', 0));
+    }
+    function isValidFoundingUpdate(data) {
+      return data.keys().size() <= 25
+        && foundingText(data.get('id', ''), 128)
+        && foundingText(data.get('campaignId', ''), 128)
+        && foundingText(data.get('authorUid', ''), 128)
+        && foundingText(data.get('authorName', ''), 200)
+        && foundingUrl(data.get('authorAvatarUrl', ''))
+        && foundingText(data.get('title', ''), 300)
+        && foundingText(data.get('body', ''), 50000)
+        && foundingText(data.get('content', ''), 50000)
+        && foundingBool(data.get('isPublic', true))
+        && foundingBool(data.get('backersOnly', false))
+        && foundingBool(data.get('hidden', false))
+        && foundingNum(data.get('reportCount', 0), 0, 1000000)
+        && foundingList(data.get('reportedByUids', []), 500)
+        && foundingTime(data.get('createdTime', 0))
+        && foundingTime(data.get('updatedTime', 0));
+    }
+    function foundingUpdateEdit(campaignId) {
+      return isValidFoundingUpdate(request.resource.data)
+        && (isStaff()
+          || (foundingCampaignOwnerOrCollab(campaignId)
+            && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['reportCount', 'reportedByUids', 'hidden', 'authorUid', 'createdTime']))
+          || foundingCommunityReportIncrement());
+    }
+    function isValidFoundingComment(data) {
+      return data.keys().size() <= 20
+        && data.keys().hasAll(['authorUid', 'text'])
+        && foundingId(data.authorUid)
+        && data.text is string && data.text.size() > 0 && data.text.size() <= 2000
+        && foundingText(data.get('id', ''), 128)
+        && foundingText(data.get('campaignId', ''), 128)
+        && foundingText(data.get('parentCommentId', ''), 128)
+        && foundingText(data.get('authorName', ''), 200)
+        && foundingUrl(data.get('authorAvatarUrl', ''))
+        && foundingBool(data.get('isAuthor', false))
+        && foundingBool(data.get('isBacker', false))
+        && foundingBool(data.get('hidden', false))
+        && foundingNum(data.get('reportCount', 0), 0, 1000000)
+        && foundingList(data.get('reportedByUids', []), 500)
+        && foundingTime(data.get('createdTime', 0))
+        && foundingTime(data.get('updatedTime', 0));
+    }
+    function foundingCommentEdit() {
+      return isValidFoundingComment(request.resource.data)
+        && (isStaff()
+          || (signedIn()
+            && resource.data.get('authorUid', '') == request.auth.uid
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['text', 'updatedTime']))
+          || foundingCommunityReportIncrement());
+    }
+    function foundingShippingAddress(addr) {
+      return addr == null
+        || (addr is string && addr.size() <= 1000)
+        || (addr is map
+          && addr.keys().hasOnly(['fullName', 'phone', 'streetLine1', 'neighborhood', 'city', 'state', 'postalCode', 'country', 'references'])
+          && foundingText(addr.get('fullName', ''), 140)
+          && foundingText(addr.get('phone', ''), 32)
+          && foundingText(addr.get('streetLine1', ''), 240)
+          && foundingText(addr.get('neighborhood', ''), 140)
+          && foundingText(addr.get('city', ''), 120)
+          && foundingText(addr.get('state', ''), 120)
+          && foundingText(addr.get('postalCode', ''), 20)
+          && foundingText(addr.get('country', ''), 80)
+          && foundingText(addr.get('references', ''), 400));
+    }
+    function isValidFoundingPledge(data) {
+      return data.keys().size() <= 60
+        && data.keys().hasAll(['backerUid', 'campaignId', 'campaignOwnerUid', 'amountMxn', 'status'])
+        && foundingId(data.backerUid)
+        && foundingId(data.campaignId)
+        && foundingId(data.campaignOwnerUid)
+        && data.amountMxn is number && data.amountMxn > 0 && data.amountMxn <= 100000000
+        && data.status in ['pending', 'onHold', 'paid', 'paymentFailed', 'refunded', 'cancelled']
+        && foundingText(data.get('backerEmail', ''), 320)
+        && foundingText(data.get('tierId', ''), 128)
+        && foundingList(data.get('selectedAddOns', []), 30)
+        && foundingText(data.get('acknowledgmentName', ''), 200)
+        && foundingText(data.get('dedicationNote', ''), 1000)
+        && foundingBool(data.get('isAnonymous', false))
+        && foundingBool(data.get('pickupAtEvent', false))
+        && foundingText(data.get('pickupQrCode', ''), 512)
+        && foundingShippingAddress(data.get('shippingAddress', null))
+        && foundingBool(data.get('backerCompleted', false))
+        && foundingTime(data.get('backerCompletedTime', 0))
+        && foundingText(data.get('pendingUpgradeTierId', ''), 128)
+        && foundingText(data.get('pendingUpgradeTierTitle', ''), 300)
+        && foundingNum(data.get('pendingUpgradeDeltaMxn', 0), 0, 100000000)
+        && foundingText(data.get('pendingUpgradeSessionId', ''), 256)
+        && foundingText(data.get('fulfillmentStatus', ''), 64)
+        && foundingText(data.get('trackingNumber', ''), 128)
+        && foundingText(data.get('trackingCarrier', ''), 128)
+        && foundingTime(data.get('deliveredAtEventTime', 0))
+        && foundingTime(data.get('createdTime', 0))
+        && foundingTime(data.get('updatedTime', 0))
+        && foundingTime(data.get('paidTime', 0));
+    }
+    function foundingPledgeCreate(pledgeId) {
+      let data = request.resource.data;
+      return foundingSignedIn()
+        && isValidFoundingPledge(data)
+        && data.keys().hasOnly([
+          'id', 'campaignId', 'campaignSlug', 'campaignTitle', 'campaignOwnerUid',
+          'backerUid', 'backerDisplayName', 'backerEmail', 'backerAvatarUrl', 'backerNumber',
+          'tierId', 'tierTitle', 'requiresPhysicalDelivery', 'amountMxn', 'bonusAmount',
+          'shippingCostMxn', 'selectedAddOns', 'paymentMethod', 'status', 'fulfillmentStatus',
+          'acknowledgmentName', 'dedicationNote', 'isAnonymous', 'pickupAtEvent', 'pickupQrCode',
+          'shippingAddress', 'referralTag', 'backerCompleted', 'backerCompletedTime',
+          'upgradedFromTierId', 'pendingUpgradeTierId', 'pendingUpgradeTierTitle',
+          'pendingUpgradeDeltaMxn', 'pendingUpgradeSessionId', 'trackingNumber',
+          'trackingCarrier', 'deliveredAtEventTime', 'stripeSessionId',
+          'stripePaymentIntentId', 'coinTransactionId', 'createdTime', 'paidTime', 'updatedTime'
+        ])
+        && (data.get('id', '') == '' || data.id == pledgeId)
+        && foundingText(data.get('backerDisplayName', ''), 200)
+        && foundingNum(data.get('bonusAmount', 0), 0, 100000000)
+        && data.get('paymentMethod', 'stripeCardOrAsync') in ['stripeCardOrAsync', 'appCoin']
+        && data.backerUid == request.auth.uid
+        && foundingCampaignExists(data.campaignId)
+        && get(/databases/$(database)/documents/foundingCampaigns/$(data.campaignId)).data.get('ownerUid', '') == data.campaignOwnerUid
+        && data.status == 'pending'
+        && data.get('backerCompleted', false) == false
+        && data.get('backerNumber', 0) == 0
+        && data.get('stripeSessionId', '') == ''
+        && data.get('stripePaymentIntentId', '') == ''
+        && data.get('coinTransactionId', '') == ''
+        && data.get('rewardFulfillmentState', '') == ''
+        && data.get('fulfillmentStatus', 'awaitingProduction') == 'awaitingProduction'
+        && data.get('trackingNumber', '') == '' && data.get('trackingCarrier', '') == ''
+        && data.get('deliveredAtEventTime', 0) == 0
+        && data.get('upgradedFromTierId', '') == ''
+        && data.get('pendingUpgradeTierId', '') == ''
+        && data.get('pendingUpgradeTierTitle', '') == ''
+        && data.get('pendingUpgradeDeltaMxn', 0) == 0
+        && data.get('pendingUpgradeSessionId', '') == ''
+        && data.get('backerCompletedTime', 0) == 0
+        && (data.get('paidTime', 0) == 0 || data.get('paidTime', null) == null);
+    }
+    function foundingPledgeUpdate(pledgeId) {
+      let before = resource.data;
+      let after = request.resource.data;
+      return isValidFoundingPledge(after)
+        // Receipt confirmation is meaningful only after payment was already
+        // confirmed; applying this before role branches also prevents a staff
+        // client from marking a pending pledge received in a single write.
+        && (!after.diff(before).affectedKeys().hasAny(['backerCompleted'])
+          || after.get('backerCompleted', false) != true
+          || before.get('status', '') == 'paid')
+        && (
+        (
+          signedIn()
+          && before.get('backerUid', '') == request.auth.uid
+          && (
+            (
+              after.diff(before).affectedKeys().hasOnly(['backerCompleted', 'backerCompletedTime', 'updatedTime'])
+              && before.get('status', '') == 'paid'
+              && after.backerCompleted == true
+            )
+            || (
+              after.diff(before).affectedKeys().hasOnly([
+                'acknowledgmentName', 'dedicationNote', 'isAnonymous', 'shippingAddress', 'pickupAtEvent',
+                'pendingUpgradeTierId', 'pendingUpgradeTierTitle', 'pendingUpgradeDeltaMxn', 'pendingUpgradeSessionId',
+                'updatedTime'
+              ])
+              && foundingCampaignExists(before.campaignId)
+              && get(/databases/$(database)/documents/foundingCampaigns/$(before.campaignId)).data.get('fulfillmentLocked', false) == false
+              // The selected delivery method affects the amount charged.
+              // Freeze it when server checkout has started or payment ended.
+              && (!after.diff(before).affectedKeys().hasAny(['pickupAtEvent'])
+                || (before.status == 'pending'
+                  && !exists(/databases/$(database)/documents/foundingCheckoutLocks/$(pledgeId))))
+            )
+          )
+        )
+        || (
+          signedIn()
+          && (before.get('campaignOwnerUid', '') == request.auth.uid || isStaff())
+          && before.status == 'paid'
+          && after.diff(before).affectedKeys().hasOnly([
+            'fulfillmentStatus', 'trackingNumber', 'trackingCarrier', 'deliveredAtEventTime', 'updatedTime'
+          ])
+        )
+      );
+    }
+
+    match /foundingCampaigns/{campaignId} {
+      allow read: if resource == null
+        || resource.data.get('status', '') in ['prelaunch', 'active', 'funded', 'inProduction', 'fulfilled']
+        || isStaff()
+        || (signedIn()
+          && (resource.data.get('ownerUid', '') == request.auth.uid
+            || request.auth.uid in resource.data.get('collaboratorUids', [])));
+
+      allow create: if foundingCampaignCreate(campaignId);
+
+      allow update: if resource != null && foundingCampaignUpdate(campaignId);
+
+      // Published identifiers cannot be deleted/recreated by a client while
+      // server-side inventory and checkout reservations still reference them.
+      allow delete: if resource != null
+        && resource.data.get('status', '') == 'draft'
+        && resource.data.get('backerCount', 0) == 0
+        && (!exists(/databases/$(database)/documents/foundingDraftProvisions/$(campaignId))
+          || get(/databases/$(database)/documents/foundingDraftProvisions/$(campaignId)).data.get('state', '') != 'ready')
+        && (isStaff() || (signedIn() && resource.data.get('ownerUid', '') == request.auth.uid));
+
+      match /planning/{planningId} {
+        // No list or privileged-role shortcut: only the campaign owner can
+        // access the exact private forecast document.
+        allow get: if planningId == 'forecast'
+          && foundingSignedIn() && foundingCampaignIsOwner(campaignId)
+          && (resource == null || resource.data.ownerUid == request.auth.uid);
+        allow create: if planningId == 'forecast'
+          && foundingForecastOwnerAfter(campaignId)
+          && isValidFoundingForecast(request.resource.data)
+          && request.resource.data.ownerUid == request.auth.uid;
+        allow update: if planningId == 'forecast'
+          && foundingForecastOwnerAfter(campaignId)
+          && resource != null && resource.data.ownerUid == request.auth.uid
+          && isValidFoundingForecast(request.resource.data)
+          && request.resource.data.ownerUid == resource.data.ownerUid;
+        allow delete: if planningId == 'forecast'
+          && resource != null && resource.data.ownerUid == request.auth.uid
+          && foundingForecastOwnerAfter(campaignId);
+      }
+
+      match /followers/{uid} {
+        allow read: if true;
+        allow create: if signedIn()
+          && request.auth.uid == uid
+          && isValidFoundingFollower(request.resource.data, uid);
+        allow update: if signedIn() && resource != null
+          && request.auth.uid == uid
+          && isValidFoundingFollower(request.resource.data, uid)
+          && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['createdTime']);
+        allow delete: if signedIn() && request.auth.uid == uid;
+      }
+
+      match /publicBackers/{pledgeId} {
+        allow read: if true;
+        // The verified payment webhook maintains this public projection.
+        allow write: if false;
+      }
+
+      match /updates/{updateId} {
+        allow read: if true;
+        allow create: if isValidFoundingUpdate(request.resource.data)
+          && (isStaff()
+            || (foundingCampaignOwnerOrCollab(campaignId)
+              && (!('authorUid' in request.resource.data) || request.resource.data.authorUid == request.auth.uid)
+              && request.resource.data.get('reportCount', 0) == 0
+              && request.resource.data.get('hidden', false) == false
+              && request.resource.data.get('reportedByUids', []) == []));
+        allow update: if resource != null && foundingUpdateEdit(campaignId);
+        allow delete: if isStaff() || foundingCampaignIsOwner(campaignId);
+      }
+
+      match /comments/{commentId} {
+        allow read: if true;
+        allow create: if foundingSignedIn()
+          && isValidFoundingComment(request.resource.data)
+          && request.resource.data.authorUid == request.auth.uid
+          && request.resource.data.get('reportCount', 0) == 0
+          && request.resource.data.get('hidden', false) == false
+          && request.resource.data.get('reportedByUids', []) == [];
+        allow update: if resource != null && foundingCommentEdit();
+        allow delete: if isStaff()
+          || (signedIn() && resource != null
+            && (resource.data.get('authorUid', '') == request.auth.uid
+              || foundingCampaignIsOwner(campaignId)));
+      }
+    }
+
+    match /foundingPledges/{pledgeId} {
+      allow read: if isStaff()
+        || (signedIn() && resource != null
+          && (resource.data.get('backerUid', '') == request.auth.uid
+            || resource.data.get('campaignOwnerUid', '') == request.auth.uid));
+
+      allow create: if foundingPledgeCreate(pledgeId);
+
+      allow update: if resource != null && foundingPledgeUpdate(pledgeId);
+
+      allow delete: if false;
+    }
+
+    // Server-owned capacity and checkout locks are never client-controlled.
+    match /foundingInventory/{inventoryId} { allow read, write: if false; }
+    match /foundingCheckoutLocks/{pledgeId} { allow read, write: if false; }
+    match /foundingDraftProvisions/{campaignId} { allow read, write: if false; }
+    match /foundingDraftRequests/{requestId} { allow read, write: if false; }
+    match /founders_counters/{tierId} {
+      allow read: if true;
+      allow write: if isStaff();
+    }
 
     // --- POS & FACTURACIÓN SAT ---
-    match /posSessions/{sessionId} { allow read, write: if signedIn(); }
-    match /posReceipts/{receiptId} { allow read, write: if signedIn(); }
-    match /posStockAdjustments/{adjId} { allow read, write: if signedIn(); }
-    match /satInvoices/{invId} { allow read, write: if signedIn(); }
+    match /posSessions/{sessionId} {
+      allow read, write: if isStaff();
+    }
+    match /posReceipts/{receiptId} {
+      allow read: if isStaff() || (signedIn() && (
+        resource.data.get('customerId', '') == request.auth.uid ||
+        (request.auth.token.get('email_verified', false) == true && resource.data.get('customerEmail', '') == request.auth.token.get('email', ''))
+      ));
+      allow write: if isStaff();
+    }
+    match /posStockAdjustments/{adjId} {
+      allow read, write: if isStaff();
+    }
+    match /satInvoices/{invId} {
+      allow read: if isStaff() || (signedIn() && (
+        resource.data.get('userId', '') == request.auth.uid ||
+        (request.auth.token.get('email_verified', false) == true && resource.data.get('customerEmail', '') == request.auth.token.get('email', ''))
+      ));
+      allow write: if isStaff();
+    }
 
 
     // ===============================================================
@@ -883,6 +2065,302 @@ service cloud.firestore {
           && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['text']);
         allow delete: if roomMember('liveSessions',sessionId) && (resource.data.ownerUid == request.auth.uid || roomHost('liveSessions',sessionId));
       }
+    }
+
+    // ===============================================================
+    // Telemetría Agregada de Errores (NeomErrorLogger) — Assumed Data Model & Security Rules
+    // ===============================================================
+    //
+    // Collection: errorLogs/{moduleId}
+    // Document ID: nombre del módulo (1..64 chars, ej. 'neom_core', 'neom_commerce')
+    // Fields:
+    //   - module: string (requerido en create, == moduleId, inmutable)
+    //   - totalErrors: int (requerido; 1..1000 en create; incremento monotónico +1..+1000 en update)
+    //   - operations: map<string, int> (requerido; <= 200 claves)
+    //   - recentErrors: list<map> (requerido; <= 10 entradas {operation, message, timestamp})
+    //   - lastErrorAt: timestamp (requerido)
+    //   - createdAt: timestamp (requerido == request.time en create; opcional en docs legados; inmutable)
+    //   - updatedAt: timestamp (requerido == request.time en create/update de cliente)
+    // ===============================================================
+    function isValidErrorLogRecentItem(item, prevRecent) {
+      return (prevRecent is list && item in prevRecent)
+        || (item is map
+          && item.keys().hasOnly(['operation', 'message', 'timestamp'])
+          && (!('operation' in item) || (item.operation is string && item.operation.size() <= 256))
+          && (!('message' in item) || (item.message is string && item.message.size() <= 2048))
+          && (!('timestamp' in item) || item.timestamp is timestamp));
+    }
+
+    function isValidErrorLogRecentAt(items, prevRecent, idx) {
+      return items.size() <= idx || isValidErrorLogRecentItem(items[idx], prevRecent);
+    }
+
+    function isValidErrorLogRecentList(items, prevRecent) {
+      return items is list
+        && items.size() <= 10
+        && isValidErrorLogRecentAt(items, prevRecent, 0)
+        && isValidErrorLogRecentAt(items, prevRecent, 1)
+        && isValidErrorLogRecentAt(items, prevRecent, 2)
+        && isValidErrorLogRecentAt(items, prevRecent, 3)
+        && isValidErrorLogRecentAt(items, prevRecent, 4)
+        && isValidErrorLogRecentAt(items, prevRecent, 5)
+        && isValidErrorLogRecentAt(items, prevRecent, 6)
+        && isValidErrorLogRecentAt(items, prevRecent, 7)
+        && isValidErrorLogRecentAt(items, prevRecent, 8)
+        && isValidErrorLogRecentAt(items, prevRecent, 9);
+    }
+
+    function isValidErrorLog(data, moduleId) {
+      let prevRecent = resource == null ? [] : resource.data.get('recentErrors', []);
+      return moduleId.size() > 0 && moduleId.size() <= 64 && !moduleId.matches('.*[/].*')
+        && data.keys().hasAll(['totalErrors', 'operations', 'recentErrors', 'lastErrorAt', 'updatedAt'])
+        && (!('module' in data) || (data.module is string && data.module == moduleId))
+        && (!('createdAt' in data) || data.createdAt is timestamp)
+        && data.totalErrors is int && data.totalErrors >= 0 && data.totalErrors <= 1000000000
+        && data.operations is map && data.operations.keys().size() <= 200
+        && isValidErrorLogRecentList(data.recentErrors, prevRecent)
+        && data.lastErrorAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    function errorLogCreate(moduleId) {
+      let data = request.resource.data;
+      return signedIn()
+        && isValidErrorLog(data, moduleId)
+        && data.keys().hasAll(['module', 'totalErrors', 'operations', 'recentErrors', 'lastErrorAt', 'createdAt', 'updatedAt'])
+        && data.keys().hasOnly(['module', 'totalErrors', 'operations', 'recentErrors', 'lastErrorAt', 'createdAt', 'updatedAt'])
+        && data.totalErrors >= 1 && data.totalErrors <= 1000
+        && data.createdAt == request.time
+        && data.updatedAt == request.time;
+    }
+
+    function errorLogUpdate(moduleId) {
+      let before = resource.data;
+      let after = request.resource.data;
+      let prevTotal = before.get('totalErrors', 0);
+      return isValidErrorLog(after, moduleId) && (
+        (
+          signedIn()
+          && after.diff(before).affectedKeys().hasOnly(['totalErrors', 'operations', 'recentErrors', 'lastErrorAt', 'updatedAt'])
+          && prevTotal is number
+          && after.totalErrors > prevTotal
+          && after.totalErrors <= prevTotal + 1000
+          && after.updatedAt == request.time
+        )
+        || (
+          (isStaff() || isUserDocStaff())
+          && after.keys().hasOnly(['module', 'totalErrors', 'operations', 'recentErrors', 'lastErrorAt', 'createdAt', 'updatedAt'])
+          && !after.diff(before).affectedKeys().hasAny(['module', 'createdAt'])
+        )
+      );
+    }
+
+    match /errorLogs/{moduleId} {
+      allow get: if signedIn();
+      allow list, delete: if isStaff() || isUserDocStaff();
+      allow create: if errorLogCreate(moduleId);
+      allow update: if resource != null && errorLogUpdate(moduleId);
+    }
+
+    // --- MUSEUM & ARTE DIGITAL (neom_museum) ---
+    match /museumArtworks/{artworkId} {
+      allow read: if true;
+      allow create: if signedIn();
+      allow update: if signedIn() && (
+        isStaff() ||
+        (request.auth.token.get('email_verified', false) == true && resource.data.get('artistEmail', '') == request.auth.token.get('email', '')) ||
+        resource.data.get('artistId', '') == request.auth.uid ||
+        resource.data.get('ownerId', '') == request.auth.uid ||
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likeCount', 'likedProfiles', 'viewCount'])
+      );
+      allow delete: if signedIn() && (
+        isStaff() ||
+        resource.data.get('artistId', '') == request.auth.uid ||
+        resource.data.get('ownerId', '') == request.auth.uid ||
+        (request.auth.token.get('email_verified', false) == true && resource.data.get('artistEmail', '') == request.auth.token.get('email', ''))
+      );
+    }
+    match /museumGalleries/{galleryId} {
+      allow read: if true;
+      allow create: if signedIn();
+      allow update, delete: if signedIn() && (
+        isStaff() ||
+        resource.data.get('curatorId', '') == request.auth.uid ||
+        (request.auth.token.get('email_verified', false) == true && resource.data.get('curatorEmail', '') == request.auth.token.get('email', ''))
+      );
+    }
+    match /museumAuctions/{auctionId} {
+      allow read: if true;
+      allow create: if signedIn();
+      allow update: if signedIn() && (
+        isStaff() ||
+        resource.data.get('sellerId', '') == request.auth.uid ||
+        (request.auth.token.get('email_verified', false) == true && resource.data.get('sellerEmail', '') == request.auth.token.get('email', '')) ||
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['bidCount', 'currentBidCoins', 'highestBidderId', 'updatedTime'])
+      );
+      allow delete: if isStaff();
+
+      match /bids/{bidId} {
+        allow read: if true;
+        allow create: if signedIn();
+        allow update, delete: if isStaff();
+      }
+    }
+    match /museumComments/{commentId} {
+      allow read: if true;
+      allow create: if signedIn();
+      allow update, delete: if signedIn() && (
+        isStaff() ||
+        resource.data.get('profileId', '') == request.auth.uid ||
+        resource.data.get('ownerId', '') == request.auth.uid
+      );
+    }
+
+    // --- VECTORES & IA (neom_corpus, LibroTerapia, Librinder) ---
+    match /neomVectors/{vectorId} {
+      allow read: if true;
+      allow write: if isStaff();
+    }
+
+    // --- JUEGOS LITERARIOS & AJEDREZ (neom_games) ---
+    match /games/{gameId} {
+      allow read: if true;
+      allow create, update: if signedIn();
+      allow delete: if isStaff();
+
+      match /moves/{moveId} {
+        allow read: if true;
+        allow create, update: if signedIn();
+        allow delete: if isStaff();
+      }
+    }
+
+    // --- EVENTOS CULTURALES FIL GUADALAJARA (neom_fil) ---
+    match /filEvents/{eventId} {
+      allow read: if true;
+      allow write: if isStaff();
+
+      match /participants/{participantId} {
+        allow read: if true;
+        allow create: if signedIn();
+        allow update, delete: if signedIn() && (
+          isStaff() ||
+          resource.data.get('userId', '') == request.auth.uid ||
+          resource.data.get('ownerId', '') == request.auth.uid ||
+          (request.auth.token.get('email_verified', false) == true && resource.data.get('email', '') == request.auth.token.get('email', ''))
+        );
+      }
+    }
+
+    // --- APRENDIZAJE & E-LEARNING (neom_learning) ---
+    match /learningProgress/{progressId} {
+      allow read: if signedIn() && (
+        isStaff() ||
+        progressId == request.auth.uid ||
+        resource.data.get('userId', '') == request.auth.uid ||
+        resource.data.get('profileId', '') == request.auth.uid
+      );
+      allow create, update: if signedIn() && (
+        isStaff() ||
+        progressId == request.auth.uid ||
+        request.resource.data.get('userId', '') == request.auth.uid ||
+        request.resource.data.get('profileId', '') == request.auth.uid
+      );
+      allow delete: if isStaff();
+    }
+    match /learningLeaderboard/{entryId} {
+      allow read: if true;
+      allow create, update: if signedIn();
+      allow delete: if isStaff();
+    }
+
+    // --- CALENDARIO & AGENDAS (neom_calendar) ---
+    match /userAgendas/{agendaId} {
+      allow read: if true;
+      allow write: if signedIn() && (
+        agendaId == request.auth.uid ||
+        isStaff() ||
+        (resource != null && resource.data.get('userId', '') == request.auth.uid) ||
+        (request.resource != null && request.resource.data.get('userId', '') == request.auth.uid)
+      );
+    }
+    match /agendaMeetingBookings/{bookingId} {
+      allow read: if signedIn() && (
+        isStaff() ||
+        resource.data.get('hostId', '') == request.auth.uid ||
+        resource.data.get('bookerId', '') == request.auth.uid ||
+        resource.data.get('userId', '') == request.auth.uid ||
+        (request.auth.token.get('email_verified', false) == true && (
+          resource.data.get('hostEmail', '') == request.auth.token.get('email', '') ||
+          resource.data.get('bookerEmail', '') == request.auth.token.get('email', '')
+        ))
+      );
+      allow create: if signedIn();
+      allow update, delete: if signedIn() && (
+        isStaff() ||
+        resource.data.get('hostId', '') == request.auth.uid ||
+        resource.data.get('bookerId', '') == request.auth.uid
+      );
+    }
+    match /agendaMeetingSlotLocks/{lockId} {
+      allow read: if true;
+      allow create, update, delete: if signedIn();
+    }
+
+    // --- LOGROS & PROGRESO (neom_achievements) ---
+    match /achievements/{achievementId} {
+      allow read: if true;
+      allow write: if isStaff();
+
+      match /items/{itemId} {
+        allow read: if true;
+        allow write: if isStaff();
+      }
+      match /progress/{progressId} {
+        allow read, write: if signedIn();
+      }
+    }
+
+    // --- DISCIPLINAS LITERARIAS & INSTRUMENTOS (neom_instruments, neom_jobs) ---
+    match /profileInstruments/{docId} {
+      allow read: if signedIn();
+      allow write: if signedIn();
+    }
+
+    // --- BASE DE CONOCIMIENTO DE SOPORTE IA (neom_ia) ---
+    match /itzliSupportKb/{docId} {
+      allow read: if signedIn();
+      allow write: if isStaff();
+    }
+
+    // --- TELEMETRÍA, ANALÍTICA Y FLUJOS (neom_analytics, neom_core) ---
+    match /analytics/{analyticsId} {
+      allow create, update: if signedIn();
+      allow read, delete: if isStaff();
+
+      match /userLocations/{locId} {
+        allow read, write: if signedIn();
+      }
+    }
+    match /flowLogs/{logId} {
+      allow create: if true;
+      allow read, update, delete: if isStaff();
+    }
+    match /screenLogs/{logId} {
+      allow create: if true;
+      allow read, update, delete: if isStaff();
+    }
+
+    // --- QA TRACKER (neom_qa_tracker, neom_tests) ---
+    match /e_qa_test_runs/{runId} {
+      allow read, write: if isStaff();
+
+      match /cases/{caseId} {
+        allow read, write: if isStaff();
+      }
+    }
+    match /e_qa_defects/{defectId} {
+      allow read, write: if isStaff();
     }
 
     // --- BLOQUEO DEFENSIVO POR DEFECTO ---

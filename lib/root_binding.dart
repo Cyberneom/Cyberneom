@@ -5,6 +5,7 @@ import 'package:flutter/material.dart' show Icons;
 import 'package:neom_cloud/neom_cloud.dart';
 import 'package:neom_core/domain/use_cases/cloud_drive_service.dart';
 import 'package:neom_core/domain/use_cases/cloud_email_service.dart';
+import 'package:neom_core/domain/use_cases/google_auth_service.dart';
 import 'package:neom_core/domain/use_cases/google_calendar_sync_service.dart';
 import 'package:neom_core/domain/use_cases/release_upload_service.dart';
 import 'package:neom_generator/data/implementations/harmonic/harmonic_footprint_controller.dart';
@@ -88,6 +89,7 @@ import 'package:neom_core/domain/use_cases/image_editor_service.dart';
 import 'package:neom_core/domain/use_cases/media_player_service.dart';
 import 'package:neom_core/domain/use_cases/media_upload_service.dart';
 import 'package:neom_core/domain/use_cases/profile_service.dart';
+import 'package:neom_core/domain/use_cases/qr_scanner_service.dart';
 import 'package:neom_core/domain/use_cases/report_service.dart';
 import 'package:neom_core/domain/use_cases/search_service.dart';
 import 'package:neom_core/domain/use_cases/settings_service.dart';
@@ -121,6 +123,7 @@ import 'package:neom_core/domain/use_cases/post_details_service.dart';
 import 'package:neom_posts/ui/details/post_details_controller.dart';
 import 'package:neom_posts/ui/upload/post_upload_controller.dart';
 import 'package:neom_profile/ui/profile_controller.dart';
+import 'package:neom_scanner/neom_scanner.dart' show MobileQrScannerService;
 import 'package:neom_search/ui/app_search_controller.dart';
 import 'package:neom_settings/ui/settings_controller.dart';
 import 'package:neom_stripe/data/implementations/stripe_api_controller.dart';
@@ -137,147 +140,107 @@ class RootBinding extends Binding {
     // ListeningStats, PlaylistGenerator) as eager singletons.
     AudioPlatformBinding.dependencies();
 
-    return [
-      Bind.put(UserController(), permanent: true),
-      Bind.lazyPut<UserService>(() => Sint.find<UserController>(), fenix: true),
-      Bind.put(LoginController(), permanent: true),
-      Bind.lazyPut<LoginService>(() => Sint.find<LoginController>(), fenix: true),
-      Bind.put(NeomGeneratorController(), permanent: true),
-      Bind.lazyPut<NeomGeneratorService>(() => Sint.find<NeomGeneratorController>(), fenix: true),
+    return <Bind>[
+      Bind.putContract<UserService, UserController>(UserController(), permanent: true),
+      Bind.putContract<LoginService, LoginController>(LoginController(), permanent: true),
+      Bind.putContract<NeomGeneratorService, NeomGeneratorController>(NeomGeneratorController(), permanent: true),
 
-      Bind.lazyPut(() => HomeController(), fenix: true),
-      Bind.lazyPut<HomeService>(() => Sint.find<HomeController>(), fenix: true),
-      Bind.lazyPut(() => TimelineController(), fenix: true),
-      Bind.lazyPut<TimelineService>(() => Sint.find<TimelineController>(), fenix: true),
+      Bind.contract<HomeService, HomeController>(() => HomeController(), fenix: true),
+      Bind.contract<TimelineService, TimelineController>(() => TimelineController(), fenix: true),
 
-      Bind.lazyPut(() => AudioPlayerInvoker(), fenix: true),
-      Bind.lazyPut<AudioPlayerInvokerService>(() => Sint.find<AudioPlayerInvoker>(), fenix: true),
-      Bind.lazyPut<NeomAudioHandler>(() => NeomAudioProvider.audioHandler!, fenix: true),
-      Bind.lazyPut<AudioHandlerService>(() => Sint.find<NeomAudioHandler>(), fenix: true),
-      Bind.lazyPut(() => EnhancedPlaybackController(), fenix: true),
-      Bind.lazyPut<EnhancedPlaybackService>(() => Sint.find<EnhancedPlaybackController>(), fenix: true),
-      Bind.lazyPut(() => MiniPlayerController(), fenix: true),
-      Bind.lazyPut<MiniPlayerService>(() => Sint.find<MiniPlayerController>(), fenix: true),
+      Bind.contract<AudioPlayerInvokerService, AudioPlayerInvoker>(() => AudioPlayerInvoker(), fenix: true),
+      Bind.contract<AudioHandlerService, NeomAudioHandler>(() => NeomAudioProvider.audioHandler!, fenix: true),
+      Bind.contract<EnhancedPlaybackService, EnhancedPlaybackController>(() => EnhancedPlaybackController(), fenix: true),
+      Bind.contract<MiniPlayerService, MiniPlayerController>(() => MiniPlayerController(), fenix: true),
       Bind.lazyPut(() => AudioPlayerHomeController()),
-      Bind.lazyPut(() => AudioLitePlayerController(), fenix: true),
-      Bind.lazyPut<AudioLitePlayerService>(() => Sint.find<AudioLitePlayerController>(), fenix: true),
+      Bind.contract<AudioLitePlayerService, AudioLitePlayerController>(() => AudioLitePlayerController(), fenix: true),
 
       Bind.lazyPut<EventDetailsService?>(() => Sint.isRegistered<EventDetailsController>()
           ? Sint.find<EventDetailsController>() : null, fenix: true),
+      Bind.lazyPut<QrScannerService>(() => const MobileQrScannerService(), fenix: true),
 
-      Bind.lazyPut(() => ItemlistController(), fenix: true),
-      Bind.lazyPut<ItemlistService>(() => Sint.find<ItemlistController>(), fenix: true),
-      Bind.lazyPut(() => AppSearchController(), fenix: true),
-      Bind.lazyPut<SearchService>(() => Sint.find<AppSearchController>(), fenix: true),
-      Bind.lazyPut(() => PostDetailsController(), fenix: true),
-      Bind.lazyPut<PostDetailsService>(() => Sint.find<PostDetailsController>(), fenix: true),
+      Bind.contract<ItemlistService, ItemlistController>(() => ItemlistController(), fenix: true),
+      Bind.contract<SearchService, AppSearchController>(() => AppSearchController(), fenix: true),
+      Bind.contract<PostDetailsService, PostDetailsController>(() => PostDetailsController(), fenix: true),
 
-      Bind.lazyPut(() => PostUploadController(), fenix: true),
-      Bind.lazyPut<PostUploadService>(() => Sint.find<PostUploadController>(), fenix: true),
+      Bind.contract<PostUploadService, PostUploadController>(() => PostUploadController(), fenix: true),
       if (!kIsWeb) ...[
-        Bind.lazyPut(() => AppCameraController(), fenix: true),
-        Bind.lazyPut<AppCameraService>(() => Sint.find<AppCameraController>(), fenix: true),
-        Bind.lazyPut(() => ImageEditorController(), fenix: true),
-        Bind.lazyPut<ImageEditorService>(() => Sint.find<ImageEditorController>(), fenix: true),
-        Bind.lazyPut(() => MediaUploadController(), fenix: true),
-        Bind.lazyPut<MediaUploadService>(() => Sint.find<MediaUploadController>(), fenix: true),
-        Bind.lazyPut(() => MediaPlayerController(), fenix: true),
-        Bind.lazyPut<MediaPlayerService>(() => Sint.find<MediaPlayerController>(), fenix: true),
+        Bind.contract<AppCameraService, AppCameraController>(() => AppCameraController(), fenix: true),
+        Bind.contract<ImageEditorService, ImageEditorController>(() => ImageEditorController(), fenix: true),
+        Bind.contract<MediaUploadService, MediaUploadController>(() => MediaUploadController(), fenix: true),
+        Bind.contract<MediaPlayerService, MediaPlayerController>(() => MediaPlayerController(), fenix: true),
       ],
       if (kIsWeb) ...[
-        Bind.lazyPut(() => MediaUploadWebController(), fenix: true),
-        Bind.lazyPut<MediaUploadService>(() => Sint.find<MediaUploadWebController>(), fenix: true),
+        Bind.contract<MediaUploadService, MediaUploadWebController>(() => MediaUploadWebController(), fenix: true),
       ],
 
       Bind.lazyPut<AnalyticsRepository>(() => AnalyticsFirestore(), fenix: true),
       Bind.lazyPut<JobRepository>(() => JobFirestore()),
 
-      Bind.lazyPut(() => AppDrawerController(), fenix: true),
-      Bind.lazyPut<AppDrawerService>(() => Sint.find<AppDrawerController>(), fenix: true),
-      Bind.lazyPut(() => SettingsController(), fenix: true),
-      Bind.lazyPut<SettingsService>(() => Sint.find<SettingsController>(), fenix: true),
-      Bind.lazyPut(() => ProfileController(), fenix: true),
-      Bind.lazyPut<ProfileService>(() => Sint.find<ProfileController>(), fenix: true),
-      Bind.lazyPut(() => MateController(), fenix: true),
-      Bind.lazyPut<MateService>(() => Sint.find<MateController>(), fenix: true),
+      Bind.contract<AppDrawerService, AppDrawerController>(() => AppDrawerController(), fenix: true),
+      Bind.contract<SettingsService, SettingsController>(() => SettingsController(), fenix: true),
+      Bind.contract<ProfileService, ProfileController>(() => ProfileController(), fenix: true),
+      Bind.contract<MateService, MateController>(() => MateController(), fenix: true),
 
       if (!kIsWeb) ...[
-        Bind.lazyPut(() => PushNotificationInvoker(), fenix: true),
-        Bind.lazyPut<NotificationService>(() => Sint.find<PushNotificationInvoker>(), fenix: true),
+        Bind.contract<NotificationService, PushNotificationInvoker>(() => PushNotificationInvoker(), fenix: true),
       ],
 
-      Bind.lazyPut(() => CollectiveController(), fenix: true),
-      Bind.lazyPut<CollectiveService>(() => Sint.find<CollectiveController>(), fenix: true),
-      Bind.lazyPut(() => CollectiveDetailsController(), fenix: true),
-      Bind.lazyPut<CollectiveDetailsService>(() => Sint.find<CollectiveDetailsController>(), fenix: true),
+      Bind.contract<CollectiveService, CollectiveController>(() => CollectiveController(), fenix: true),
+      Bind.contract<CollectiveDetailsService, CollectiveDetailsController>(() => CollectiveDetailsController(), fenix: true),
 
-      Bind.lazyPut(() => BankController(), fenix: true),
-      Bind.lazyPut<BankService>(() => Sint.find<BankController>(), fenix: true),
-      Bind.lazyPut(() => WalletFirestore(), fenix: true),
-      Bind.lazyPut<WalletRepository>(() => Sint.find<WalletFirestore>(), fenix: true),
-      Bind.lazyPut(() => WooMediaAPI(), fenix: true),
-      Bind.lazyPut<WooMediaService>(() => Sint.find<WooMediaAPI>(), fenix: true),
-      Bind.lazyPut(() => WooGatewayController(), fenix: true),
-      Bind.lazyPut<WooGatewayService>(() => Sint.find<WooGatewayController>(), fenix: true),
-      Bind.lazyPut(() => StripeGatewayController(), fenix: true),
-      Bind.lazyPut<StripeGatewayService>(() => Sint.find<StripeGatewayController>(), fenix: true),
-      Bind.lazyPut(() => StripeApiController(), fenix: true),
-      Bind.lazyPut<StripeApiService>(() => Sint.find<StripeApiController>(), fenix: true),
+      Bind.contract<BankService, BankController>(() => BankController(), fenix: true),
+      Bind.contract<WalletRepository, WalletFirestore>(() => WalletFirestore(), fenix: true),
+      Bind.contract<WooMediaService, WooMediaAPI>(() => WooMediaAPI(), fenix: true),
+      Bind.contract<WooGatewayService, WooGatewayController>(() => WooGatewayController(), fenix: true),
+      Bind.contract<StripeGatewayService, StripeGatewayController>(() => StripeGatewayController(), fenix: true),
+      Bind.contract<StripeApiService, StripeApiController>(() => StripeApiController(), fenix: true),
 
       // Google Cloud — Calendar, Drive, Gmail
-      Bind.lazyPut(() => GoogleAuthController(), fenix: true),
-      Bind.lazyPut(() => GoogleCalendarController(Sint.find<GoogleAuthController>()), fenix: true),
-      Bind.lazyPut<GoogleCalendarSyncService>(() => Sint.find<GoogleCalendarController>(), fenix: true),
-      Bind.lazyPut(() => GoogleDriveController(Sint.find<GoogleAuthController>()), fenix: true),
-      Bind.lazyPut<CloudDriveService>(() => Sint.find<GoogleDriveController>(), fenix: true),
-      Bind.lazyPut(() => GoogleGmailController(Sint.find<GoogleAuthController>()), fenix: true),
-      Bind.lazyPut<CloudEmailService>(() => Sint.find<GoogleGmailController>(), fenix: true),
+      Bind.contract<GoogleAuthService, GoogleAuthController>(() => GoogleAuthController(), fenix: true),
+      Bind.contract<GoogleCalendarSyncService, GoogleCalendarController>(
+        () => GoogleCalendarController(Sint.find<GoogleAuthService>()),
+        fenix: true,
+      ),
+      Bind.contract<CloudDriveService, GoogleDriveController>(
+        () => GoogleDriveController(Sint.find<GoogleAuthService>()),
+        fenix: true,
+      ),
+      Bind.contract<CloudEmailService, GoogleGmailController>(
+        () => GoogleGmailController(Sint.find<GoogleAuthService>()),
+        fenix: true,
+      ),
 
-      Bind.lazyPut(() => InstrumentController(), fenix: true),
-      Bind.lazyPut<InstrumentService>(() => Sint.find<InstrumentController>(), fenix: true),
-      Bind.lazyPut(() => GenreController(), fenix: true),
-      Bind.lazyPut<GenreService>(() => Sint.find<GenreController>(), fenix: true),
-      Bind.lazyPut(() => ProfileInstrumentsFirestore(), fenix: true),
-      Bind.lazyPut<ProfileInstrumentsRepository>(() => Sint.find<ProfileInstrumentsFirestore>(), fenix: true),
+      Bind.contract<InstrumentService, InstrumentController>(() => InstrumentController(), fenix: true),
+      Bind.contract<GenreService, GenreController>(() => GenreController(), fenix: true),
+      Bind.contract<ProfileInstrumentsRepository, ProfileInstrumentsFirestore>(() => ProfileInstrumentsFirestore(), fenix: true),
 
-      Bind.lazyPut(() => InboxController(), fenix: true),
-      Bind.lazyPut<InboxService>(() => Sint.find<InboxController>(), fenix: true),
-      Bind.lazyPut(() => InboxRoomController(), fenix: true),
-      Bind.lazyPut<InboxRoomService>(() => Sint.find<InboxRoomController>(), fenix: true),
+      Bind.contract<InboxService, InboxController>(() => InboxController(), fenix: true),
+      Bind.contract<InboxRoomService, InboxRoomController>(() => InboxRoomController(), fenix: true),
 
-      Bind.lazyPut(() => ChamberFirestore(), fenix: true),
-      Bind.lazyPut<ChamberRepository>(() => Sint.find<ChamberFirestore>(), fenix: true),
+      Bind.contract<ChamberRepository, ChamberFirestore>(() => ChamberFirestore(), fenix: true),
 
       if (!kIsWeb) ...[
-        Bind.lazyPut(() => GeoLocatorController(), fenix: true),
-        Bind.lazyPut<GeoLocatorService>(() => Sint.find<GeoLocatorController>(), fenix: true),
-        Bind.lazyPut(() => MapsController(), fenix: true),
-        Bind.lazyPut<MapsService>(() => Sint.find<MapsController>(), fenix: true),
+        Bind.contract<GeoLocatorService, GeoLocatorController>(() => GeoLocatorController(), fenix: true),
+        Bind.contract<MapsService, MapsController>(() => MapsController(), fenix: true),
       ],
 
-      Bind.lazyPut(() => AppHiveController(), fenix: true),
-      Bind.lazyPut<AppHiveService>(() => Sint.find<AppHiveController>(), fenix: true),
+      Bind.contract<AppHiveService, AppHiveController>(() => AppHiveController(), fenix: true),
 
-      Bind.lazyPut(() => ReportController(), fenix: true),
-      Bind.lazyPut<ReportService>(() => Sint.find<ReportController>(), fenix: true),
+      Bind.contract<ReportService, ReportController>(() => ReportController(), fenix: true),
 
-      Bind.lazyPut(() => InvoiceFirestore(), fenix: true),
-      Bind.lazyPut<InvoiceRepository>(() => Sint.find<InvoiceFirestore>(), fenix: true),
+      Bind.contract<InvoiceRepository, InvoiceFirestore>(() => InvoiceFirestore(), fenix: true),
 
-      Bind.lazyPut(() => SubscriptionController(), fenix: true),
-      Bind.lazyPut<SubscriptionService>(() => Sint.find<SubscriptionController>(), fenix: true),
+      Bind.contract<SubscriptionService, SubscriptionController>(() => SubscriptionController(), fenix: true),
 
-      Bind.lazyPut(() => EqualizerController(), fenix: true),
-      Bind.lazyPut<EqualizerService>(() => Sint.find<EqualizerController>(), fenix: true),
+      Bind.contract<EqualizerService, EqualizerController>(() => EqualizerController(), fenix: true),
 
-      Bind.lazyPut(() => CreatorAnalyticsController(), fenix: true),
-      Bind.lazyPut<CreatorAnalyticsService>(() => Sint.find<CreatorAnalyticsController>(), fenix: true),
+      Bind.contract<CreatorAnalyticsService, CreatorAnalyticsController>(() => CreatorAnalyticsController(), fenix: true),
 
       Bind.lazyPut(() => LiveHostController(), fenix: true),
       Bind.lazyPut(() => LiveListenerController(), fenix: true),
 
-      Bind.lazyPut(() => ReleaseUploadController(), fenix: true),
-      Bind.lazyPut<ReleaseUploadService>(() => Sint.find<ReleaseUploadController>(), fenix: true),
+      Bind.contract<ReleaseUploadService, ReleaseUploadController>(() => ReleaseUploadController(), fenix: true),
 
       // Huella Armónica — voice-based personal frequency identity
       Bind.lazyPut(() => HarmonicFootprintController(), fenix: true),

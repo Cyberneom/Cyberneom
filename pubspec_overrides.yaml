@@ -148,3 +148,49 @@ dependency_overrides:
     path: ../neom_modules/neom/neom_levitation
   neom_ble:
     path: ../neom_modules/hardware/neom_ble
+  neom_scanner:
+    path: ../neom_modules/hardware/neom_scanner
+  audio_service:
+    path: ../neom_modules/hardware/neom_audio_service/audio_service
+  audio_service_platform_interface:
+    path: ../neom_modules/hardware/neom_audio_service/audio_service_platform_interface
+  audio_service_web:
+    path: ../neom_modules/hardware/neom_audio_service/audio_service_web
+  hashtagable_v3:
+    path: ../neom_modules/creator/neom_hashtagable
+  neom_ar:
+    path: ../neom_modules/vr/neom_ar
+  neom_cloud:
+    path: ../neom_modules/ai/neom_cloud
+  neom_codecs:
+    path: ../neom_modules/main/neom_codecs
+  neom_corpus:
+    path: ../neom_modules/ai/neom_corpus
+  neom_forum:
+    path: ../neom_modules/social/neom_forum
+  neom_google_books:
+    path: ../neom_modules/content/neom_google_books
+  neom_google_places:
+    path: ../neom_modules/content/neom_google_places
+  neom_ia:
+    path: ../neom_modules/ai/neom_ia
+  neom_iaas:
+    path: ../neom_modules/ai/neom_iaas
+  neom_learning:
+    path: ../neom_modules/engage/neom_learning
+  neom_maps_services:
+    path: ../neom_modules/content/neom_maps_services
+  neom_memory:
+    path: ../neom_modules/ai/neom_memory
+  neom_qa_tracker:
+    path: ../neom_modules/platform/neom_qa_tracker
+  neom_share:
+    path: ../neom_modules/social/neom_share
+  neom_vr:
+    path: ../neom_modules/vr/neom_vr
+  neom_wifi:
+    path: ../neom_modules/hardware/neom_wifi
+  saia_core:
+    path: ../neom_modules/ai/saia_core
+  saia_turbovec:
+    path: ../neom_modules/ai/saia_turbovec

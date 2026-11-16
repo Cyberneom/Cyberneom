@@ -12,8 +12,10 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  material_ui: ^1.2.0
-  cupertino_ui: ^1.0.0
+  material_ui: ^1.11.1
+
+  cupertino_ui: ^1.1.7
+
 
   # --- Core Modules ---
   neom_admin:
@@ -43,6 +45,9 @@ dependencies:
   neom_camera:
     git:
       url: git@github.com:Cyberneom/neom_camera.git
+  neom_scanner:
+    git:
+      url: git@github.com:Open-Neom/neom_scanner.git
   neom_core:
     git:
       url: git@github.com:Open-Neom/neom_core.git
@@ -223,6 +228,7 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^6.0.0
+
   dependency_validator: ^5.0.2
   flutter_launcher_icons: ^0.14.4
 

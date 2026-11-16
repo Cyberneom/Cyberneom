@@ -88,13 +88,8 @@ void main() async {
     AppConfig.logger.e(e.toString());
   }
 
-  // Initialize AdMob (no-op on web)
-  await AdService.instance.init();
-
-  // Wire ad banner into timeline feed
-  if (AdService.instance.shouldShowAds) {
-    TimelinePage.adWidgetBuilder = () => const AdBannerWidget();
-  }
+  // Register unified multi-surface ads & house-ads ecosystem (Feed, Reader, Audio)
+  NeomAdsBootstrap.register();
 
   // Wire frequency quick-start bar into timeline header (mobile only — web uses right sidebar)
   if (!kIsWeb) {
@@ -130,7 +125,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     initializeDateFormatting(AppLocale.spanish.code);
     return SentinelApp(
-      config: SentinelConfig.production(),
+      config: SentinelConfig.ecosystem(),
       child: SintApp(
       localeListResolutionCallback: (locales, supportedLocales) {
         for (var locale in locales!) {

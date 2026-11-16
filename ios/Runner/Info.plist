@@ -103,5 +103,16 @@
     <string>$(PROJECT_NAME) requires access to media library</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-9248844542810621~4699252247</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>Este identificador nos permite mostrar contenido patrocinado relevante para sostener las herramientas gratuitas de bienestar y frecuencias.</string>
+	<key>SKAdNetworkItems</key>
+	<array>
+		<dict>
+			<key>SKAdNetworkIdentifier</key>
+			<string>cstr6suwn9.skadnetwork</string>
+		</dict>
+	</array>
 </dict>
 </plist>
