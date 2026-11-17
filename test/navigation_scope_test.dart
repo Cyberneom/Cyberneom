@@ -49,6 +49,10 @@ void main() {
       kDebugMode,
     );
     expect(names, contains(AppRouteConstants.audioPlayer));
+    expect(names, contains(AppRouteConstants.qrScannerPath));
+    expect(names, contains(AppRouteConstants.generator));
+    expect(names, contains('/eeg'));
+    expect(names, contains('/eeg/report'));
   });
 
   test('generic reader routes do not expose the EMXI catalogue', () {

@@ -59,6 +59,9 @@ class CyberneomEegPracticeBridge extends SintController {
       annotateOn: [chamber.currentFreq, chamber.currentBeat, chamber.currentOctave],
       detectedVoiceHz: chamber.detectedFrequency,
       voiceCapturing: chamber.isRecording,
+      annotationMinInterval: const Duration(milliseconds: 100),
+      voiceMinInterval: const Duration(milliseconds: 250),
+      voiceMinDeltaHz: 0.5,
     )..attach();
   }
 

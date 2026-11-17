@@ -32,6 +32,7 @@ import 'package:neom_creator_analytics/domain/use_cases/creator_analytics_servic
 import 'package:neom_rooms/data/implementations/live_host_controller.dart';
 import 'package:neom_rooms/data/implementations/live_listener_controller.dart';
 import 'package:neom_sound/data/implementations/equalizer_controller.dart';
+import 'package:neom_sound/data/implementations/soloud_equalizer_bridge.dart';
 import 'package:neom_sound/domain/use_cases/equalizer_service.dart';
 import 'package:neom_audio_player/data/implementations/audio_lite_player_controller.dart';
 import 'package:neom_audio_player/data/providers/neom_audio_provider.dart';
@@ -233,7 +234,11 @@ class RootBinding extends Binding {
 
       Bind.contract<SubscriptionService, SubscriptionController>(() => SubscriptionController(), fenix: true),
 
-      Bind.contract<EqualizerService, EqualizerController>(() => EqualizerController(), fenix: true),
+      Bind.contract<EqualizerService, EqualizerController>(() {
+        final ctrl = EqualizerController();
+        unawaited(ctrl.attachBridge(SoLoudEqualizerBridge()));
+        return ctrl;
+      }, fenix: true),
 
       Bind.contract<CreatorAnalyticsService, CreatorAnalyticsController>(() => CreatorAnalyticsController(), fenix: true),
 

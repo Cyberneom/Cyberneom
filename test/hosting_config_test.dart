@@ -51,4 +51,33 @@ void main() {
       ]),
     );
   });
+
+  test('Hosting configures COOP/COEP cross-origin isolation and Wasm headers', () {
+    final config =
+        jsonDecode(File('firebase.json').readAsStringSync())
+            as Map<String, dynamic>;
+    final headersRules = (config['hosting']['headers'] as List)
+        .cast<Map<String, dynamic>>();
+
+    final globalRule = headersRules.firstWhere(
+      (rule) => rule['source'] == '**',
+    );
+    final globalHeaders = <String, String>{
+      for (final h in (globalRule['headers'] as List).cast<Map<String, dynamic>>())
+        h['key'] as String: h['value'] as String,
+    };
+    expect(globalHeaders['Cross-Origin-Opener-Policy'], 'same-origin');
+    expect(globalHeaders['Cross-Origin-Embedder-Policy'], 'credentialless');
+    expect(globalHeaders['X-Content-Type-Options'], 'nosniff');
+
+    final wasmRule = headersRules.firstWhere(
+      (rule) => rule['source'] == '**/*.wasm',
+    );
+    final wasmHeaders = <String, String>{
+      for (final h in (wasmRule['headers'] as List).cast<Map<String, dynamic>>())
+        h['key'] as String: h['value'] as String,
+    };
+    expect(wasmHeaders['Content-Type'], 'application/wasm');
+    expect(wasmHeaders['Cache-Control'], contains('no-cache'));
+  });
 }

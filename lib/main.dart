@@ -19,7 +19,6 @@ import 'package:sint_sentinel/sint_sentinel.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:logger/logger.dart';
 import 'package:neom_commons/app_flavour.dart';
 import 'package:neom_commons/ui/theme/app_color.dart';
 import 'package:neom_commons/ui/theme/app_theme.dart';
@@ -31,7 +30,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:neom_core/utils/enums/app_locale.dart';
 import 'package:neom_notifications/data/implementations/push_notification_invoker.dart';
 import 'package:neom_profile/ui/slug_resolver_page.dart';
-import 'package:sint/navigation/src/router/url_strategy/url_strategy.dart';
 
 import 'app_routes.dart';
 import 'localization/app_translations.dart';
