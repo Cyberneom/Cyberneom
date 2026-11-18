@@ -472,9 +472,32 @@ service cloud.firestore {
       }
     }
 
+    // Story reactions (neom_stories) & low-fanout caller ownership helper
+    function ownsCallerId(id) {
+      return signedIn() && id is string && id.size() > 0 && id.size() <= 128 && (
+        request.auth.uid == id
+        || (request.auth.token.email != null && request.auth.token.get('email_verified', false) == true && request.auth.token.email == id)
+        || exists(/databases/$(database)/documents/users/$(request.auth.uid)/profiles/$(id))
+      );
+    }
+
     match /stories/{storyId} {
       allow read: if true;
       allow write: if signedIn();
+
+      match /reactions/{reactionId} {
+        allow read: if signedIn();
+        allow create: if ownsCallerId(request.resource.data.get('userId', ''))
+          && request.resource.data.keys().hasAll(['id', 'storyId', 'userId', 'type', 'createdTime'])
+          && request.resource.data.keys().hasOnly(['id', 'storyId', 'userId', 'userName', 'type', 'createdTime'])
+          && request.resource.data.id == reactionId
+          && request.resource.data.storyId == storyId
+          && roomText(request.resource.data.get('userName', ''), 120)
+          && request.resource.data.type in ['fire', 'music', 'clap', 'heart', 'mindBlown']
+          && isValidBlogEpochMs(request.resource.data.createdTime);
+        allow update: if false;
+        allow delete: if ownsCallerId(resource.data.get('userId', '')) || isStaff();
+      }
     }
 
     match /activityFeed/{profileId} {
@@ -2275,36 +2298,172 @@ service cloud.firestore {
     }
 
     // --- CALENDARIO & AGENDAS (neom_calendar) ---
+    function isValidAgendaSlotLock(d) {
+      return d.keys().hasAll(['bookingId', 'agendaId', 'date', 'startHour', 'startMinute', 'durationMinutes', 'status', 'updatedAt'])
+        && d.keys().hasOnly(['bookingId', 'agendaId', 'date', 'startHour', 'startMinute', 'durationMinutes', 'status', 'updatedAt'])
+        && d.bookingId is string && d.bookingId.size() > 0 && d.bookingId.size() <= 256 && !d.bookingId.matches('.*[/].*')
+        && d.agendaId is string && d.agendaId.size() > 0 && d.agendaId.size() <= 256 && !d.agendaId.matches('.*[/].*')
+        && d.date is int && d.date > 0
+        && d.startHour is int && d.startHour >= 0 && d.startHour <= 23
+        && d.startMinute is int && d.startMinute >= 0 && d.startMinute <= 59
+        && d.durationMinutes is int && d.durationMinutes >= 5 && d.durationMinutes <= 720
+        && d.status in ['confirmed', 'pending']
+        && d.updatedAt is int && d.updatedAt > 0;
+    }
+
+    function isValidAgendaSlotLockUpdate(d) {
+      return d.keys().hasOnly(['bookingId', 'agendaId', 'date', 'startHour', 'startMinute', 'durationMinutes', 'status', 'updatedAt'])
+        && d.get('bookingId', 'x') is string && d.get('bookingId', 'x').size() > 0 && d.get('bookingId', 'x').size() <= 256 && !d.get('bookingId', 'x').matches('.*[/].*')
+        && d.get('agendaId', 'x') is string && d.get('agendaId', 'x').size() > 0 && d.get('agendaId', 'x').size() <= 256 && !d.get('agendaId', 'x').matches('.*[/].*')
+        && d.get('date', 1) is int && d.get('date', 1) > 0
+        && d.get('startHour', 0) is int && d.get('startHour', 0) >= 0 && d.get('startHour', 0) <= 23
+        && d.get('startMinute', 0) is int && d.get('startMinute', 0) >= 0 && d.get('startMinute', 0) <= 59
+        && d.get('durationMinutes', 30) is int && d.get('durationMinutes', 30) >= 5 && d.get('durationMinutes', 30) <= 720
+        && d.get('status', 'confirmed') in ['confirmed', 'pending', 'cancelled']
+        && d.get('updatedAt', 1) is int && d.get('updatedAt', 1) > 0;
+    }
+
+    function isValidAgendaMeetingBookingCreate(d, bookingId) {
+      return d.keys().hasAll(['id', 'agendaId', 'guestName', 'date', 'startHour', 'startMinute', 'durationMinutes', 'status', 'createdAt'])
+        && d.keys().hasOnly([
+          'id', 'agendaId', 'hostId', 'hostName', 'guestId', 'guestName',
+          'guestEmail', 'guestPhone', 'guestPhotoUrl', 'date', 'startHour',
+          'startMinute', 'durationMinutes', 'status', 'notes', 'location',
+          'virtualLink', 'createdAt', 'bookerId', 'userId', 'hostEmail', 'bookerEmail'
+        ])
+        && d.id is string && d.id == bookingId
+        && d.agendaId is string && d.agendaId.size() > 0 && d.agendaId.size() <= 256 && !d.agendaId.matches('.*[/].*')
+        && d.get('hostId', '') is string && d.get('hostId', '').size() <= 256 && !d.get('hostId', '').matches('.*[/].*')
+        && d.get('hostName', '') is string && d.get('hostName', '').size() <= 200
+        && d.get('guestId', '') is string && d.get('guestId', '').size() <= 256 && !d.get('guestId', '').matches('.*[/].*')
+        && d.guestName is string && d.guestName.size() > 0 && d.guestName.size() <= 200
+        && d.get('guestEmail', '') is string && d.get('guestEmail', '').size() <= 320
+        && d.get('guestPhone', '') is string && d.get('guestPhone', '').size() <= 64
+        && d.get('guestPhotoUrl', '') is string && d.get('guestPhotoUrl', '').size() <= 2048
+        && d.get('notes', '') is string && d.get('notes', '').size() <= 2000
+        && d.get('location', '') is string && d.get('location', '').size() <= 500
+        && d.get('virtualLink', '') is string && d.get('virtualLink', '').size() <= 2048
+        && d.get('bookerId', '') is string && d.get('bookerId', '').size() <= 256 && !d.get('bookerId', '').matches('.*[/].*')
+        && d.get('userId', '') is string && d.get('userId', '').size() <= 256 && !d.get('userId', '').matches('.*[/].*')
+        && d.get('hostEmail', '') is string && d.get('hostEmail', '').size() <= 320
+        && d.get('bookerEmail', '') is string && d.get('bookerEmail', '').size() <= 320
+        && d.date is int && d.date > 0
+        && d.startHour is int && d.startHour >= 0 && d.startHour <= 23
+        && d.startMinute is int && d.startMinute >= 0 && d.startMinute <= 59
+        && d.durationMinutes is int && d.durationMinutes >= 5 && d.durationMinutes <= 720
+        && d.status in ['confirmed', 'pending']
+        && d.createdAt is int && d.createdAt > 0
+        && (
+          (!signedIn() && d.get('guestId', '') == '' && d.get('bookerId', '') == '' && d.get('userId', '') == '')
+          || (signedIn() && (
+            isStaff()
+            || (
+              (d.get('guestId', '') == '' || ownsCallerId(d.get('guestId', '')))
+              && (d.get('bookerId', '') == '' || ownsCallerId(d.get('bookerId', '')))
+              && (d.get('userId', '') == '' || ownsCallerId(d.get('userId', '')))
+            )
+          ))
+        );
+    }
+
+    function isSafeAgendaMeetingBookingUpdate(d, bookingId) {
+      return d.keys().hasOnly([
+          'id', 'agendaId', 'hostId', 'hostName', 'guestId', 'guestName',
+          'guestEmail', 'guestPhone', 'guestPhotoUrl', 'date', 'startHour',
+          'startMinute', 'durationMinutes', 'status', 'notes', 'location',
+          'virtualLink', 'createdAt', 'bookerId', 'userId', 'hostEmail', 'bookerEmail'
+        ])
+        && d.get('id', bookingId) == resource.data.get('id', bookingId)
+        && d.get('agendaId', '') == resource.data.get('agendaId', '')
+        && d.get('hostId', '') == resource.data.get('hostId', '')
+        && d.get('guestId', '') == resource.data.get('guestId', '')
+        && d.get('bookerId', '') == resource.data.get('bookerId', '')
+        && d.get('userId', '') == resource.data.get('userId', '')
+        && d.get('createdAt', 0) == resource.data.get('createdAt', 0)
+        && d.get('hostName', '') is string && d.get('hostName', '').size() <= 200
+        && d.get('guestName', '') is string && d.get('guestName', '').size() <= 200
+        && d.get('guestEmail', '') is string && d.get('guestEmail', '').size() <= 320
+        && d.get('guestPhone', '') is string && d.get('guestPhone', '').size() <= 64
+        && d.get('guestPhotoUrl', '') is string && d.get('guestPhotoUrl', '').size() <= 2048
+        && d.get('notes', '') is string && d.get('notes', '').size() <= 2000
+        && d.get('location', '') is string && d.get('location', '').size() <= 500
+        && d.get('virtualLink', '') is string && d.get('virtualLink', '').size() <= 2048
+        && d.get('hostEmail', '') is string && d.get('hostEmail', '').size() <= 320
+        && d.get('bookerEmail', '') is string && d.get('bookerEmail', '').size() <= 320
+        && d.get('date', 1) is int && d.get('date', 1) > 0
+        && d.get('startHour', 0) is int && d.get('startHour', 0) >= 0 && d.get('startHour', 0) <= 23
+        && d.get('startMinute', 0) is int && d.get('startMinute', 0) >= 0 && d.get('startMinute', 0) <= 59
+        && d.get('durationMinutes', 30) is int && d.get('durationMinutes', 30) >= 5 && d.get('durationMinutes', 30) <= 720
+        && d.get('status', 'confirmed') in ['confirmed', 'pending', 'cancelled'];
+    }
+
     match /userAgendas/{agendaId} {
       allow read: if true;
-      allow write: if signedIn() && (
-        agendaId == request.auth.uid ||
+      allow create: if signedIn() && (
         isStaff() ||
-        (resource != null && resource.data.get('userId', '') == request.auth.uid) ||
-        (request.resource != null && request.resource.data.get('userId', '') == request.auth.uid)
+        agendaId == request.auth.uid ||
+        ownsCallerId(request.resource.data.get('ownerId', '')) ||
+        ownsCallerId(request.resource.data.get('userId', ''))
+      );
+      allow update: if signedIn() && (
+        isStaff() ||
+        (
+          (agendaId == request.auth.uid || ownsCallerId(resource.data.get('ownerId', '')) || ownsCallerId(resource.data.get('userId', '')))
+          && (agendaId == request.auth.uid || ownsCallerId(request.resource.data.get('ownerId', '')) || ownsCallerId(request.resource.data.get('userId', '')))
+        )
+      );
+      allow delete: if signedIn() && (
+        isStaff() ||
+        agendaId == request.auth.uid ||
+        ownsCallerId(resource.data.get('ownerId', '')) ||
+        ownsCallerId(resource.data.get('userId', ''))
       );
     }
+
     match /agendaMeetingBookings/{bookingId} {
       allow read: if signedIn() && (
         isStaff() ||
-        resource.data.get('hostId', '') == request.auth.uid ||
-        resource.data.get('bookerId', '') == request.auth.uid ||
-        resource.data.get('userId', '') == request.auth.uid ||
-        (request.auth.token.get('email_verified', false) == true && (
-          resource.data.get('hostEmail', '') == request.auth.token.get('email', '') ||
-          resource.data.get('bookerEmail', '') == request.auth.token.get('email', '')
-        ))
+        ownsCallerId(resource.data.get('hostId', '')) ||
+        ownsCallerId(resource.data.get('guestId', '')) ||
+        ownsCallerId(resource.data.get('bookerId', '')) ||
+        ownsCallerId(resource.data.get('userId', '')) ||
+        (request.auth.token.get('email_verified', false) == true
+          && request.auth.token.get('email', '') is string
+          && request.auth.token.get('email', '').size() > 0
+          && (
+            resource.data.get('hostEmail', '') == request.auth.token.get('email', '') ||
+            resource.data.get('guestEmail', '') == request.auth.token.get('email', '') ||
+            resource.data.get('bookerEmail', '') == request.auth.token.get('email', '')
+          ))
       );
-      allow create: if signedIn();
-      allow update, delete: if signedIn() && (
+      allow create: if isValidAgendaMeetingBookingCreate(request.resource.data, bookingId) || isStaff();
+      allow update: if signedIn() && (
         isStaff() ||
-        resource.data.get('hostId', '') == request.auth.uid ||
-        resource.data.get('bookerId', '') == request.auth.uid
+        (
+          (
+            ownsCallerId(resource.data.get('hostId', '')) ||
+            ownsCallerId(resource.data.get('guestId', '')) ||
+            ownsCallerId(resource.data.get('bookerId', '')) ||
+            ownsCallerId(resource.data.get('userId', ''))
+          )
+          && isSafeAgendaMeetingBookingUpdate(request.resource.data, bookingId)
+        )
+      );
+      allow delete: if signedIn() && (
+        isStaff() ||
+        ownsCallerId(resource.data.get('hostId', '')) ||
+        ownsCallerId(resource.data.get('guestId', '')) ||
+        ownsCallerId(resource.data.get('bookerId', '')) ||
+        ownsCallerId(resource.data.get('userId', ''))
       );
     }
+
     match /agendaMeetingSlotLocks/{lockId} {
       allow read: if true;
-      allow create, update, delete: if signedIn();
+      allow create: if isValidAgendaSlotLock(request.resource.data);
+      allow update: if (resource.data.get('status', '') == 'cancelled' && isValidAgendaSlotLock(request.resource.data))
+        || (signedIn() && (isStaff() || isValidAgendaSlotLockUpdate(request.resource.data)));
+      allow delete: if signedIn();
     }
 
     // --- LOGROS & PROGRESO (neom_achievements) ---
@@ -2351,16 +2510,406 @@ service cloud.firestore {
       allow read, update, delete: if isStaff();
     }
 
-    // --- QA TRACKER (neom_qa_tracker, neom_tests) ---
-    match /e_qa_test_runs/{runId} {
-      allow read, write: if isStaff();
+    // --- QA TRACKER & INTERMODULARITY MODULES ---
+    function staffOk() {
+      return signedIn() && (
+        request.auth.token.get('admin', false) == true
+        || request.auth.token.get('staff', false) == true
+        || get(/databases/$(database)/documents/users/$(request.auth.uid)).data.get('userRole', '') in ['support', 'erp', 'developer', 'admin', 'superAdmin']
+      );
+    }
 
-      match /cases/{caseId} {
-        allow read, write: if isStaff();
+    match /e_qa_test_runs/{runId} {
+      allow read, write: if staffOk();
+      match /cases/{caseId} { allow read, write: if staffOk(); }
+    }
+    match /e_qa_defects/{defectId} { allow read, write: if staffOk(); }
+    match /qa_test_runs/{runId} {
+      allow read, write: if staffOk();
+      match /cases/{caseId} { allow read, write: if staffOk(); }
+    }
+    match /qa_case_templates/{templateId} { allow read, write: if staffOk(); }
+    match /neom_tests_alerts/{alertId} { allow read, write: if staffOk(); }
+    match /neom_tests_status/{statusId} { allow read, write: if staffOk(); }
+    match /neom_tests_attachments/{attachmentId} { allow read, write: if staffOk(); }
+
+    // 1. Tips (neom_bank)
+    function tipCreateOk(d, tipId) {
+      return d.keys().hasAll(['id', 'senderId', 'recipientId', 'tier', 'amount', 'createdTime'])
+        && d.keys().hasOnly(['id', 'senderId', 'senderName', 'senderAvatarUrl', 'recipientId', 'recipientName', 'tier', 'amount', 'message', 'contextType', 'contextId', 'createdTime'])
+        && d.id == tipId && d.senderId != d.recipientId
+        && ownsCallerId(d.senderId) && !ownsCallerId(d.recipientId)
+        && roomText(d.get('senderName', ''), 200) && roomText(d.get('recipientName', ''), 200)
+        && d.tier in ['cafe', 'cuerdas', 'amplificador']
+        && d.amount is number && d.amount > 0 && d.amount <= 1000000
+        && (d.get('message', null) == null || roomText(d.message, 1000))
+        && d.createdTime is int && d.createdTime >= request.time.toMillis() - 600000 && d.createdTime <= request.time.toMillis() + 300000;
+    }
+
+    match /tips/{tipId} {
+      allow get: if true;
+      allow list: if request.query.limit != null && request.query.limit <= 1000;
+      allow create: if tipCreateOk(request.resource.data, tipId);
+      allow update: if false;
+      allow delete: if isAdmin();
+    }
+
+    // 2. ERP Receipts (neom_erp)
+    function validReceipt(d) {
+      return d.keys().hasAll(['userEmail', 'amount', 'currency', 'createdAt'])
+        && d.keys().hasOnly(['id', 'userId', 'userEmail', 'clientName', 'description', 'solution', 'amount', 'currency', 'paymentMethod', 'source', 'isPaid', 'paymentType', 'installments', 'installmentsPaid', 'totalAmount', 'frequency', 'incomeId', 'createdAt', 'updatedAt', 'date', 'status'])
+        && roomText(d.userEmail, 320) && d.userEmail.size() >= 3
+        && foundingNum(d.amount, 0, 1000000000) && roomText(d.currency, 16) && foundingTime(d.createdAt);
+    }
+
+    match /userPaymentHistory/{receiptId} {
+      allow read: if (signedIn() && request.auth.token.get('email_verified', false) == true && resource != null && resource.data.userEmail == request.auth.token.get('email', '')) || staffOk();
+      allow create: if validReceipt(request.resource.data) && staffOk();
+      allow update: if validReceipt(request.resource.data) && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['id', 'userEmail', 'createdAt', 'incomeId']) && staffOk();
+      allow delete: if isAdmin();
+    }
+
+    // 3. SAIA Spirit (saia_core)
+    function ownsUidOrEmail(id) {
+      return signedIn() && id is string && id.size() > 0 && id.size() <= 128 && (
+        request.auth.uid == id || (request.auth.token.get('email_verified', false) == true && request.auth.token.get('email', '') == id)
+      );
+    }
+
+    function validSpirit(d, userId) {
+      return d.keys().hasAll(['userId', 'ownerName', 'tierLevel', 'tstLevel', 'karma', 'isRecognized', 'itzliReplies', 'manualReplies', 'feedbackCount', 'confirmationRate', 'acceptedAnswers', 'createdAt', 'lastActiveAt'])
+        && d.keys().hasOnly(['id', 'userId', 'ownerName', 'tierLevel', 'tstLevel', 'karma', 'isRecognized', 'itzliReplies', 'manualReplies', 'feedbackCount', 'confirmationRate', 'acceptedAnswers', 'createdAt', 'lastActiveAt'])
+        && d.userId == userId && roomText(d.ownerName, 120)
+        && d.tierLevel is int && d.tstLevel is int && d.karma is int && d.isRecognized is bool
+        && d.itzliReplies is int && d.manualReplies is int && d.feedbackCount is int
+        && d.confirmationRate is number && d.acceptedAnswers is int
+        && isValidBlogEpochMs(d.createdAt) && isValidBlogEpochMs(d.lastActiveAt);
+    }
+
+    function spiritUpdateOk(d, prev, userId) {
+      let chg = d.diff(prev).affectedKeys();
+      return validSpirit(d, userId) && (
+        (signedIn() && request.auth.uid == userId
+          && !chg.hasAny(['id', 'userId', 'isRecognized', 'tierLevel', 'tstLevel', 'karma', 'acceptedAnswers', 'createdAt'])
+          && d.itzliReplies <= prev.itzliReplies + 1 && d.manualReplies <= prev.manualReplies + 1 && d.feedbackCount <= prev.feedbackCount + 1)
+        || staffOk()
+      );
+    }
+
+    match /spirits/{userId} {
+      allow read: if ownsUidOrEmail(userId) || staffOk();
+      allow create: if validSpirit(request.resource.data, userId) && (
+        (signedIn() && request.auth.uid == userId && request.resource.data.isRecognized == false && request.resource.data.karma == 0
+          && request.resource.data.acceptedAnswers == 0 && request.resource.data.tierLevel <= 1 && request.resource.data.tstLevel == 0)
+        || staffOk()
+      );
+      allow update: if spiritUpdateOk(request.resource.data, resource.data, userId);
+      allow delete: if isAdmin();
+    }
+
+    // 4. Forum (neom_forum)
+    function validThread(d, threadId) {
+      return d.keys().hasAll(['id', 'authorId', 'authorName', 'title', 'body', 'sessionId', 'isPublic', 'tierLevel', 'category', 'createdAt', 'replyCount', 'upvoteCount', 'downvoteCount', 'viewCount', 'tags', 'isPinned', 'isLocked', 'isRemoved', 'isEdited', 'seoKeywords'])
+        && d.keys().hasOnly(['id', 'authorId', 'authorName', 'title', 'body', 'aiSummary', 'imageUrl', 'sessionId', 'isPublic', 'tierLevel', 'category', 'createdAt', 'updatedAt', 'replyCount', 'upvoteCount', 'downvoteCount', 'viewCount', 'tags', 'isPinned', 'isLocked', 'isRemoved', 'isEdited', 'seoKeywords', 'metaDescription'])
+        && d.id == threadId && roomText(d.authorName, 120) && roomText(d.title, 300) && d.title.size() >= 1 && roomText(d.body, 32000) && d.body.size() >= 1
+        && d.isPublic is bool && d.tierLevel is int && d.category in ['general', 'descubrimiento', 'pregunta', 'tutorial', 'debate', 'showcase']
+        && d.createdAt is timestamp && d.tags is list && d.tags.size() <= 32 && d.seoKeywords is list && d.seoKeywords.size() <= 40
+        && d.replyCount is int && d.upvoteCount is int && d.downvoteCount is int && d.viewCount is int
+        && d.isPinned is bool && d.isLocked is bool && d.isRemoved is bool && d.isEdited is bool;
+    }
+
+    function threadUpdateOk(d, prev, threadId) {
+      let chg = d.diff(prev).affectedKeys();
+      return validThread(d, threadId) && !chg.hasAny(['id', 'authorId', 'createdAt']) && (
+        (signedIn() && prev.isRemoved == false && chg.hasOnly(['viewCount']) && d.viewCount == prev.viewCount + 1)
+        || (signedIn() && prev.isRemoved == false && prev.isLocked == false && chg.hasOnly(['replyCount']) && d.replyCount == prev.replyCount + 1)
+        || (signedIn() && prev.isRemoved == false && chg.hasOnly(['upvoteCount', 'downvoteCount']) && d.upvoteCount <= prev.upvoteCount + 1 && d.downvoteCount <= prev.downvoteCount + 1)
+        || (ownsCallerId(prev.authorId) && prev.isRemoved == false && !chg.hasAny(['isPinned', 'isLocked', 'replyCount', 'upvoteCount', 'downvoteCount', 'viewCount']))
+        || staffOk()
+      );
+    }
+
+    match /forumThreads/{threadId} {
+      allow get: if resource == null || resource.data.get('isRemoved', false) == false || staffOk();
+      allow list: if request.query.limit != null && request.query.limit <= 100;
+      allow create: if validThread(request.resource.data, threadId) && ownsCallerId(request.resource.data.authorId)
+        && request.resource.data.replyCount == 0 && request.resource.data.upvoteCount == 0 && request.resource.data.downvoteCount == 0 && request.resource.data.viewCount == 0
+        && request.resource.data.isPinned == false && request.resource.data.isLocked == false && request.resource.data.isRemoved == false;
+      allow update: if threadUpdateOk(request.resource.data, resource.data, threadId);
+      allow delete: if staffOk();
+    }
+
+    function validReply(d, replyId) {
+      return d.keys().hasAll(['id', 'threadId', 'depth', 'authorId', 'authorName', 'body', 'replyMode', 'createdAt', 'upvoteCount', 'downvoteCount', 'isAccepted', 'isRemoved', 'isEdited'])
+        && d.keys().hasOnly(['id', 'threadId', 'parentReplyId', 'depth', 'authorId', 'authorName', 'body', 'replyMode', 'itzliDraftBody', 'createdAt', 'editedAt', 'upvoteCount', 'downvoteCount', 'isAccepted', 'isRemoved', 'isEdited'])
+        && d.id == replyId && d.depth is int && d.depth >= 0 && d.depth <= 4
+        && roomText(d.authorName, 120) && roomText(d.body, 16000) && d.body.size() >= 1
+        && d.replyMode in ['manual', 'itzliDraft', 'itzliConfirmed'] && d.createdAt is timestamp
+        && d.upvoteCount is int && d.downvoteCount is int && d.isAccepted is bool && d.isRemoved is bool && d.isEdited is bool;
+    }
+
+    function replyUpdateOk(d, prev, replyId) {
+      let chg = d.diff(prev).affectedKeys();
+      return validReply(d, replyId) && !chg.hasAny(['id', 'threadId', 'parentReplyId', 'depth', 'authorId', 'createdAt']) && (
+        (signedIn() && prev.isRemoved == false && chg.hasOnly(['upvoteCount', 'downvoteCount']) && d.upvoteCount <= prev.upvoteCount + 1 && d.downvoteCount <= prev.downvoteCount + 1)
+        || (ownsCallerId(prev.authorId) && prev.isRemoved == false && !chg.hasAny(['isAccepted', 'upvoteCount', 'downvoteCount']))
+        || (chg.hasOnly(['isAccepted']) && ownsCallerId(get(/databases/$(database)/documents/forumThreads/$(prev.threadId)).data.get('authorId', '')))
+        || staffOk()
+      );
+    }
+
+    match /forumReplies/{replyId} {
+      allow get: if resource == null || resource.data.get('isRemoved', false) == false || staffOk();
+      allow list: if resource.data.isRemoved == false && request.query.limit != null && request.query.limit <= 100;
+      allow create: if validReply(request.resource.data, replyId) && ownsCallerId(request.resource.data.authorId)
+        && exists(/databases/$(database)/documents/forumThreads/$(request.resource.data.threadId))
+        && request.resource.data.upvoteCount == 0 && request.resource.data.downvoteCount == 0 && request.resource.data.isAccepted == false && request.resource.data.isRemoved == false;
+      allow update: if replyUpdateOk(request.resource.data, resource.data, replyId);
+      allow delete: if staffOk();
+    }
+
+    match /forumVotes/{voteId} {
+      allow get: if signedIn() && (resource == null || ownsCallerId(resource.data.userId));
+      allow list: if ownsUidOrEmail(resource.data.userId) && request.query.limit != null && request.query.limit <= 100;
+      allow create, update: if request.resource.data.keys().hasAll(['targetId', 'userId', 'value', 'createdAt'])
+        && request.resource.data.keys().hasOnly(['targetId', 'userId', 'value', 'createdAt'])
+        && voteId == request.resource.data.targetId + '_' + request.resource.data.userId
+        && request.resource.data.value in [-1, 1] && request.resource.data.createdAt is timestamp
+        && ownsCallerId(request.resource.data.userId)
+        && (resource == null || (request.resource.data.targetId == resource.data.targetId && request.resource.data.userId == resource.data.userId));
+      allow delete: if resource != null && ownsCallerId(resource.data.userId);
+    }
+
+    match /forumReplyFeedback/{feedbackId} {
+      allow get: if resource != null && ownsUidOrEmail(resource.data.userId);
+      allow list: if ownsUidOrEmail(resource.data.userId) && request.query.limit != null && request.query.limit <= 100;
+      allow create: if request.resource.data.keys().hasAll(['replyId', 'threadId', 'userId', 'originalDraft', 'wasConfirmed', 'createdAt'])
+        && request.resource.data.keys().hasOnly(['id', 'replyId', 'threadId', 'userId', 'originalDraft', 'userEdit', 'wasConfirmed', 'createdAt'])
+        && roomText(request.resource.data.originalDraft, 16000) && request.resource.data.wasConfirmed is bool && request.resource.data.createdAt is timestamp
+        && ownsUidOrEmail(request.resource.data.userId);
+      allow update, delete: if false;
+    }
+
+    // 5. Bookings & Venues (neom_booking)
+    function validVenue(d, venueId) {
+      return d.keys().hasAll(['hostId', 'name', 'venueType', 'hourlyRate', 'currency', 'isActive', 'createdAt', 'updatedAt'])
+        && d.keys().hasOnly(['id', 'hostId', 'name', 'description', 'photos', 'address', 'city', 'state', 'country', 'latitude', 'longitude', 'venueType', 'genreTags', 'sessionTypes', 'maxCapacity', 'roomSizeM2', 'acousticRating', 'powerSpec', 'hourlyRate', 'halfDayRate', 'fullDayRate', 'currency', 'minimumHours', 'bufferMinutes', 'instantBook', 'maxAdvanceDays', 'includedGear', 'extraGear', 'amenities', 'houseRules', 'cancellationPolicy', 'hostName', 'hostPhotoUrl', 'hostResponseHours', 'isSuperhost', 'rating', 'reviewCount', 'completedBookings', 'isActive', 'createdAt', 'updatedAt'])
+        && (d.get('id', '') == '' || d.get('id', '') == venueId)
+        && roomText(d.name, 160) && d.name.size() >= 1 && roomText(d.get('description', ''), 4000)
+        && d.get('photos', []) is list && d.get('photos', []).size() <= 30
+        && roomText(d.venueType, 64) && foundingNum(d.hourlyRate, 0, 1000000) && roomText(d.currency, 16) && d.isActive is bool
+        && isValidBlogEpochMs(d.createdAt) && isValidBlogEpochMs(d.updatedAt);
+    }
+
+    function venueUpdateOk(d, prev, venueId) {
+      let chg = d.diff(prev).affectedKeys();
+      return validVenue(d, venueId) && !chg.hasAny(['id', 'hostId', 'createdAt']) && (
+        (signedIn() && chg.hasOnly(['rating', 'reviewCount']) && d.get('reviewCount', 0) <= prev.get('reviewCount', 0) + 2)
+        || (ownsCallerId(prev.hostId) && !chg.hasAny(['isSuperhost', 'rating', 'reviewCount', 'completedBookings']))
+        || staffOk()
+      );
+    }
+
+    function validReview(d, venueId, reviewId) {
+      return d.keys().hasAll(['bookingId', 'venueId', 'reviewerId', 'revieweeId', 'isHostReview', 'overallRating', 'comment', 'isVisible', 'pairSubmitted', 'createdAt', 'helpfulCount', 'isVerified'])
+        && d.keys().hasOnly(['id', 'bookingId', 'venueId', 'reviewerId', 'revieweeId', 'reviewerName', 'reviewerPhotoUrl', 'isHostReview', 'overallRating', 'equipmentRating', 'acousticsRating', 'cleanlinessRating', 'communicationRating', 'valueRating', 'comment', 'tags', 'photos', 'isVisible', 'pairSubmitted', 'createdAt', 'helpfulCount', 'isVerified'])
+        && (d.get('id', '') == '' || d.get('id', '') == reviewId) && d.venueId == venueId && d.reviewerId != d.revieweeId
+        && foundingNum(d.overallRating, 0, 5) && roomText(d.comment, 2000)
+        && d.isHostReview is bool && d.isVisible is bool && d.pairSubmitted is bool && d.isVerified is bool
+        && isValidBlogEpochMs(d.createdAt) && d.helpfulCount is int && d.helpfulCount >= 0;
+    }
+
+    function reviewUpdateOk(d, prev, venueId, reviewId) {
+      let chg = d.diff(prev).affectedKeys();
+      return validReview(d, venueId, reviewId) && !chg.hasAny(['id', 'bookingId', 'venueId', 'reviewerId', 'revieweeId', 'isHostReview', 'createdAt']) && (
+        (signedIn() && prev.isVisible == true && chg.hasOnly(['helpfulCount']) && d.helpfulCount == prev.helpfulCount + 1)
+        || (prev.isVisible == false && chg.hasOnly(['isVisible', 'pairSubmitted']) && (ownsCallerId(prev.reviewerId) || ownsCallerId(prev.revieweeId)))
+        || staffOk()
+      );
+    }
+
+    match /bookingVenues/{venueId} {
+      allow get: if resource == null || resource.data.get('isActive', false) == true || ownsCallerId(resource.data.get('hostId', '')) || staffOk();
+      allow list: if (resource.data.isActive == true && request.query.limit != null && request.query.limit <= 200) || staffOk();
+      allow create: if validVenue(request.resource.data, venueId) && ownsCallerId(request.resource.data.hostId)
+        && request.resource.data.get('isSuperhost', false) == false && request.resource.data.get('rating', 0) == 0
+        && request.resource.data.get('reviewCount', 0) == 0 && request.resource.data.get('completedBookings', 0) == 0;
+      allow update: if venueUpdateOk(request.resource.data, resource.data, venueId);
+      allow delete: if staffOk();
+
+      match /availability/{dateKey} {
+        allow get: if true;
+        allow list: if request.query.limit != null && request.query.limit <= 366;
+        allow create, update: if signedIn()
+          && dateKey.size() == 10 && dateKey.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
+          && request.resource.data.keys().hasOnly(['id', 'venueId', 'dateKey', 'date', 'slots', 'slotBookings', 'isBlackout', 'priceOverride'])
+          && request.resource.data.venueId == venueId && request.resource.data.dateKey == dateKey
+          && request.resource.data.slots is map && request.resource.data.slots.size() <= 24
+          && request.resource.data.slotBookings is map && request.resource.data.slotBookings.size() <= 24
+          && (
+            (resource == null
+              ? (request.resource.data.isBlackout == false && request.resource.data.priceOverride == 0)
+              : (resource.data.isBlackout == false && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['slots', 'slotBookings'])))
+            || ownsCallerId(get(/databases/$(database)/documents/bookingVenues/$(venueId)).data.get('hostId', ''))
+            || staffOk()
+          );
+        allow delete: if ownsCallerId(get(/databases/$(database)/documents/bookingVenues/$(venueId)).data.get('hostId', '')) || staffOk();
+      }
+
+      match /reviews/{reviewId} {
+        allow get: if resource == null || resource.data.get('isVisible', false) == true || ownsCallerId(resource.data.reviewerId);
+        allow list: if (resource.data.isVisible == true && request.query.limit != null && request.query.limit <= (signedIn() ? 500 : 100))
+          || (signedIn() && request.query.limit != null && request.query.limit <= 2);
+        allow create: if validReview(request.resource.data, venueId, reviewId) && ownsCallerId(request.resource.data.reviewerId)
+          && request.resource.data.isVisible == false && request.resource.data.pairSubmitted == false && request.resource.data.helpfulCount == 0;
+        allow update: if reviewUpdateOk(request.resource.data, resource.data, venueId, reviewId);
+        allow delete: if staffOk();
       }
     }
-    match /e_qa_defects/{defectId} {
-      allow read, write: if isStaff();
+
+    function validRecurring(d, patternId) {
+      return d.keys().hasAll(['venueId', 'userId', 'hostId', 'dayOfWeek', 'startHour', 'endHour', 'repeatWeeks', 'weeksCompleted', 'bookingIds', 'status', 'createdAt'])
+        && d.keys().hasOnly(['id', 'venueId', 'userId', 'hostId', 'dayOfWeek', 'startHour', 'endHour', 'repeatWeeks', 'weeksCompleted', 'bookingIds', 'status', 'createdAt'])
+        && (d.get('id', '') == '' || d.get('id', '') == patternId)
+        && d.dayOfWeek is int && d.startHour is int && d.endHour is int && d.startHour < d.endHour
+        && d.repeatWeeks is int && d.weeksCompleted is int && d.bookingIds is list && d.bookingIds.size() <= 200
+        && d.status in ['active', 'paused', 'cancelled'] && isValidBlogEpochMs(d.createdAt);
+    }
+
+    match /recurringBookings/{patternId} {
+      allow read: if signedIn() && (resource == null || ownsCallerId(resource.data.userId) || staffOk());
+      allow create: if validRecurring(request.resource.data, patternId) && ownsCallerId(request.resource.data.userId)
+        && request.resource.data.weeksCompleted == 0 && request.resource.data.status == 'active';
+      allow update: if validRecurring(request.resource.data, patternId)
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['id', 'venueId', 'userId', 'hostId', 'createdAt'])
+        && ((ownsCallerId(resource.data.userId) && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['weeksCompleted', 'bookingIds'])) || staffOk());
+      allow delete: if staffOk();
+    }
+
+    // 6. Communities (neom_communities)
+    function isValidCommunity(d, communityId) {
+      return d.keys().hasAll(['name', 'createdById', 'category'])
+        && d.keys().hasOnly(['id', 'name', 'description', 'iconUrl', 'coverUrl', 'avatarUrl', 'imageUrl', 'category', 'createdById', 'memberIds', 'adminIds', 'tags', 'memberCount', 'createdTime', 'isPublic', 'rules', 'lastMessageTime'])
+        && (d.get('id', '') == '' || d.get('id', '') == communityId)
+        && d.name is string && d.name.size() >= 1 && d.name.size() <= 120
+        && roomText(d.get('description', ''), 4000)
+        && d.category in ['genre', 'instrument', 'production', 'networking', 'general']
+        && d.get('memberIds', []) is list && d.get('memberIds', []).size() <= 5000
+        && d.get('adminIds', []) is list && d.get('adminIds', []).size() <= 500
+        && d.get('tags', []) is list && d.get('tags', []).size() <= 64
+        && d.get('memberCount', 0) is int && d.get('memberCount', 0) >= 0
+        && d.get('isPublic', true) is bool
+        && (d.get('rules', null) == null || roomText(d.rules, 8000))
+        && isValidBlogEpochMs(d.get('lastMessageTime', 0));
+    }
+
+    function communityUpdateOk(d, prev, communityId) {
+      let chg = d.diff(prev).affectedKeys();
+      return signedIn() && isValidCommunity(d, communityId) && (
+        ((ownsCallerId(prev.get('createdById', '')) || request.auth.uid in prev.get('adminIds', []))
+          && d.createdById == prev.createdById && d.get('memberCount', 0) == prev.get('memberCount', 0))
+        || (chg.hasOnly(['memberIds', 'memberCount']) && d.get('memberCount', 0) >= prev.get('memberCount', 0) - 1 && d.get('memberCount', 0) <= prev.get('memberCount', 0) + 1)
+        || chg.hasOnly(['lastMessageTime'])
+        || staffOk()
+      );
+    }
+
+    function isValidCommunityMessage(d, communityId, messageId) {
+      return d.keys().hasAll(['communityId', 'senderId'])
+        && d.keys().hasOnly(['id', 'communityId', 'senderId', 'senderName', 'senderAvatarUrl', 'avatarUrl', 'text', 'content', 'message', 'type', 'mediaUrl', 'replyToId', 'createdTime', 'likedBy'])
+        && (d.get('id', '') == '' || d.get('id', '') == messageId) && d.communityId == communityId
+        && roomText(d.get('senderName', ''), 120) && roomText(d.get('text', ''), 8000)
+        && d.get('type', 'text') in ['text', 'image', 'audio', 'system']
+        && (d.get('mediaUrl', null) == null || roomText(d.mediaUrl, 2048))
+        && isValidBlogEpochMs(d.get('createdTime', 0))
+        && d.get('likedBy', []) is list && d.get('likedBy', []).size() <= 5000;
+    }
+
+    function messageUpdateOk(d, prev, communityId, messageId) {
+      let chg = d.diff(prev).affectedKeys();
+      return signedIn() && isValidCommunityMessage(d, communityId, messageId) && (
+        (ownsCallerId(prev.get('senderId', '')) && chg.hasOnly(['id', 'text']))
+        || chg.hasOnly(['likedBy'])
+        || staffOk()
+      );
+    }
+
+    match /communities/{communityId} {
+      allow get: if resource == null || resource.data.get('isPublic', false) == true || signedIn();
+      allow list: if resource.data.isPublic == true || signedIn();
+      allow create: if isValidCommunity(request.resource.data, communityId) && ownsCallerId(request.resource.data.createdById) && request.resource.data.get('memberCount', 0) <= 1;
+      allow update: if communityUpdateOk(request.resource.data, resource.data, communityId);
+      allow delete: if ownsCallerId(resource.data.get('createdById', '')) || staffOk();
+
+      match /members/{memberId} {
+        allow read: if signedIn();
+        allow create, update: if request.resource.data.keys().hasAll(['userId'])
+          && request.resource.data.keys().hasOnly(['userId', 'userName', 'avatarUrl', 'userAvatarUrl', 'photoUrl', 'role', 'joinedAt', 'isMuted'])
+          && request.resource.data.userId == memberId
+          && roomText(request.resource.data.get('userName', ''), 120) && roomText(request.resource.data.get('avatarUrl', ''), 2048)
+          && request.resource.data.get('role', 'member') in ['admin', 'moderator', 'member']
+          && isValidBlogEpochMs(request.resource.data.get('joinedAt', 0)) && request.resource.data.get('isMuted', false) is bool
+          && (
+            (ownsCallerId(memberId) && (
+              request.resource.data.get('role', 'member') == 'member'
+              || (resource != null && request.resource.data.get('role', 'member') == resource.data.get('role', 'member'))
+              || get(/databases/$(database)/documents/communities/$(communityId)).data.get('createdById', '') == memberId
+            ))
+            || staffOk()
+          );
+        allow delete: if ownsCallerId(memberId) || staffOk();
+      }
+
+      match /messages/{messageId} {
+        allow read: if signedIn();
+        allow create: if isValidCommunityMessage(request.resource.data, communityId, messageId) && ownsCallerId(request.resource.data.senderId);
+        allow update: if messageUpdateOk(request.resource.data, resource.data, communityId, messageId);
+        allow delete: if ownsCallerId(resource.data.get('senderId', '')) || staffOk();
+      }
+    }
+
+    // 7. Creator Analytics (neom_creator_analytics)
+    match /creatorAnalytics/{ownerId} {
+      allow read: if ownsCallerId(ownerId) || staffOk();
+      allow write: if staffOk();
+
+      match /daily/{dateId} {
+        allow read: if ownsCallerId(ownerId) || staffOk();
+        allow create, update: if dateId.size() == 10 && dateId.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
+          && request.resource.data.keys().hasOnly(['date', 'plays', 'followers', 'likes', 'comments', 'tips'])
+          && request.resource.data.get('date', '') == dateId
+          && request.resource.data.get('plays', 0) is int && request.resource.data.get('followers', 0) is int
+          && request.resource.data.get('likes', 0) is int && request.resource.data.get('comments', 0) is int
+          && request.resource.data.get('tips', 0) is number
+          && (ownsCallerId(ownerId) || staffOk());
+        allow delete: if staffOk();
+      }
+
+      match /tracks/{trackId} {
+        allow read: if ownsCallerId(ownerId) || staffOk();
+        allow write: if staffOk();
+      }
+    }
+
+    // 8. Family Plans / Multi-Seat (neom_subscriptions — Admin SDK write-only)
+    match /familyPlans/{ownerUid} {
+      allow get: if ownsCallerId(ownerUid) || (signedIn() && resource != null && request.auth.uid in resource.data.get('memberUids', [])) || staffOk();
+      allow list: if ownsCallerId(ownerUid) || (signedIn() && request.auth.uid in resource.data.memberUids) || staffOk();
+      allow write: if false;
+      match /invites/{inviteId} { allow read: if ownsCallerId(ownerUid) || staffOk(); allow write: if false; }
+    }
+
+    match /seats/{ownerUid} {
+      allow get: if ownsCallerId(ownerUid) || (signedIn() && resource != null && request.auth.uid in resource.data.get('memberUids', [])) || staffOk();
+      allow list: if ownsCallerId(ownerUid) || (signedIn() && request.auth.uid in resource.data.memberUids) || staffOk();
+      allow write: if false;
+      match /invites/{inviteId} { allow read: if ownsCallerId(ownerUid) || staffOk(); allow write: if false; }
+    }
+
+    match /{path=**}/invites/{inviteId} {
+      allow get: if signedIn() && ((request.auth.token.email != null && resource != null && resource.data.get('email', '') == request.auth.token.email.lower()) || staffOk());
+      allow list: if signedIn() && ((request.auth.token.email != null && resource.data.email == request.auth.token.email.lower()) || staffOk());
+      allow write: if false;
     }
 
     // --- BLOQUEO DEFENSIVO POR DEFECTO ---
