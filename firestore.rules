@@ -7,6 +7,10 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    function googleIdentityUid() {
+      return request.auth.token.get('firebase', {}).get('identities', {}).get('google.com', [''])[0];
+    }
+
     function userDocHasRoleAt(docId, roles) {
       return docId is string
         && docId.size() > 0
@@ -18,6 +22,7 @@ service cloud.firestore {
     function hasUserDocRole(roles) {
       return signedIn() && (
         userDocHasRoleAt(request.auth.uid, roles) ||
+        userDocHasRoleAt(googleIdentityUid(), roles) ||
         (request.auth.token.get('email_verified', false) == true
           && userDocHasRoleAt(request.auth.token.get('email', ''), roles))
       );
@@ -2323,6 +2328,16 @@ service cloud.firestore {
         && d.get('updatedAt', 1) is int && d.get('updatedAt', 1) > 0;
     }
 
+    function ownsAgendaId(id) {
+      return signedIn() && id is string && id.size() > 0 && id.size() <= 128 && !id.matches('.*[/].*') && (
+        request.auth.uid == id
+        || googleIdentityUid() == id
+        || (request.auth.token.email != null && request.auth.token.get('email_verified', false) == true && request.auth.token.email == id)
+        || (googleIdentityUid() != '' && exists(/databases/$(database)/documents/users/$(googleIdentityUid())/profiles/$(id)))
+        || exists(/databases/$(database)/documents/users/$(request.auth.uid)/profiles/$(id))
+      );
+    }
+
     function isValidAgendaMeetingBookingCreate(d, bookingId) {
       return d.keys().hasAll(['id', 'agendaId', 'guestName', 'date', 'startHour', 'startMinute', 'durationMinutes', 'status', 'createdAt'])
         && d.keys().hasOnly([
@@ -2355,14 +2370,10 @@ service cloud.firestore {
         && d.createdAt is int && d.createdAt > 0
         && (
           (!signedIn() && d.get('guestId', '') == '' && d.get('bookerId', '') == '' && d.get('userId', '') == '')
-          || (signedIn() && (
-            isStaff()
-            || (
-              (d.get('guestId', '') == '' || ownsCallerId(d.get('guestId', '')))
-              && (d.get('bookerId', '') == '' || ownsCallerId(d.get('bookerId', '')))
-              && (d.get('userId', '') == '' || ownsCallerId(d.get('userId', '')))
-            )
-          ))
+          || (signedIn()
+            && (d.get('guestId', '') == '' || ownsAgendaId(d.get('guestId', '')))
+            && (d.get('bookerId', '') == '' || ownsAgendaId(d.get('bookerId', '')))
+            && (d.get('userId', '') == '' || ownsAgendaId(d.get('userId', ''))))
         );
     }
 
@@ -2402,38 +2413,40 @@ service cloud.firestore {
       allow create: if signedIn() && (
         isStaff() ||
         agendaId == request.auth.uid ||
-        ownsCallerId(request.resource.data.get('ownerId', '')) ||
-        ownsCallerId(request.resource.data.get('userId', ''))
+        agendaId == googleIdentityUid() ||
+        ownsAgendaId(request.resource.data.get('ownerId', '')) ||
+        ownsAgendaId(request.resource.data.get('userId', ''))
       );
       allow update: if signedIn() && (
         isStaff() ||
         (
-          (agendaId == request.auth.uid || ownsCallerId(resource.data.get('ownerId', '')) || ownsCallerId(resource.data.get('userId', '')))
-          && (agendaId == request.auth.uid || ownsCallerId(request.resource.data.get('ownerId', '')) || ownsCallerId(request.resource.data.get('userId', '')))
+          (agendaId == request.auth.uid || agendaId == googleIdentityUid() || ownsAgendaId(resource.data.get('ownerId', '')) || ownsAgendaId(resource.data.get('userId', '')))
+          && (agendaId == request.auth.uid || agendaId == googleIdentityUid() || ownsAgendaId(request.resource.data.get('ownerId', '')) || ownsAgendaId(request.resource.data.get('userId', '')))
         )
       );
       allow delete: if signedIn() && (
         isStaff() ||
         agendaId == request.auth.uid ||
-        ownsCallerId(resource.data.get('ownerId', '')) ||
-        ownsCallerId(resource.data.get('userId', ''))
+        agendaId == googleIdentityUid() ||
+        ownsAgendaId(resource.data.get('ownerId', '')) ||
+        ownsAgendaId(resource.data.get('userId', ''))
       );
     }
 
     match /agendaMeetingBookings/{bookingId} {
       allow read: if signedIn() && (
         isStaff() ||
-        ownsCallerId(resource.data.get('hostId', '')) ||
-        ownsCallerId(resource.data.get('guestId', '')) ||
-        ownsCallerId(resource.data.get('bookerId', '')) ||
-        ownsCallerId(resource.data.get('userId', '')) ||
+        ('guestId' in resource.data && ownsAgendaId(resource.data.guestId)) ||
+        ('hostId' in resource.data && ownsAgendaId(resource.data.hostId)) ||
+        ('bookerId' in resource.data && ownsAgendaId(resource.data.bookerId)) ||
+        ('userId' in resource.data && ownsAgendaId(resource.data.userId)) ||
         (request.auth.token.get('email_verified', false) == true
           && request.auth.token.get('email', '') is string
           && request.auth.token.get('email', '').size() > 0
           && (
-            resource.data.get('hostEmail', '') == request.auth.token.get('email', '') ||
-            resource.data.get('guestEmail', '') == request.auth.token.get('email', '') ||
-            resource.data.get('bookerEmail', '') == request.auth.token.get('email', '')
+            ('hostEmail' in resource.data && resource.data.hostEmail == request.auth.token.get('email', '')) ||
+            ('guestEmail' in resource.data && resource.data.guestEmail == request.auth.token.get('email', '')) ||
+            ('bookerEmail' in resource.data && resource.data.bookerEmail == request.auth.token.get('email', ''))
           ))
       );
       allow create: if isValidAgendaMeetingBookingCreate(request.resource.data, bookingId) || isStaff();
@@ -2441,20 +2454,20 @@ service cloud.firestore {
         isStaff() ||
         (
           (
-            ownsCallerId(resource.data.get('hostId', '')) ||
-            ownsCallerId(resource.data.get('guestId', '')) ||
-            ownsCallerId(resource.data.get('bookerId', '')) ||
-            ownsCallerId(resource.data.get('userId', ''))
+            ownsAgendaId(resource.data.get('guestId', '')) ||
+            ownsAgendaId(resource.data.get('hostId', '')) ||
+            ownsAgendaId(resource.data.get('bookerId', '')) ||
+            ownsAgendaId(resource.data.get('userId', ''))
           )
           && isSafeAgendaMeetingBookingUpdate(request.resource.data, bookingId)
         )
       );
       allow delete: if signedIn() && (
         isStaff() ||
-        ownsCallerId(resource.data.get('hostId', '')) ||
-        ownsCallerId(resource.data.get('guestId', '')) ||
-        ownsCallerId(resource.data.get('bookerId', '')) ||
-        ownsCallerId(resource.data.get('userId', ''))
+        ownsAgendaId(resource.data.get('guestId', '')) ||
+        ownsAgendaId(resource.data.get('hostId', '')) ||
+        ownsAgendaId(resource.data.get('bookerId', '')) ||
+        ownsAgendaId(resource.data.get('userId', ''))
       );
     }
 

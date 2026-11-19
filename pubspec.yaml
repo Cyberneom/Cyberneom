@@ -66,6 +66,9 @@ dependencies:
   neom_experiences:
     git:
       url: git@github.com:Open-Neom/neom_experiencies.git
+  neom_google_places:
+    git:
+      url: git@github.com:Open-Neom/neom_google_places.git
   neom_home:
     git:
       url: git@github.com:Open-Neom/neom_home.git
