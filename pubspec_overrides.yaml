@@ -194,3 +194,66 @@ dependency_overrides:
     path: ../neom_modules/ai/saia_core
   saia_turbovec:
     path: ../neom_modules/ai/saia_turbovec
+  saia_gguf:
+    path: ../neom_modules/ai/saia_gguf
+  fllama:
+    path: ../neom_modules/ai/fllama
+  neom_ollama:
+    path: ../neom_modules/ai/neom_ollama
+  saia_hey:
+    path: ../neom_modules/ai/saia_hey
+  saia_provenance:
+    path: ../neom_modules/ai/saia_provenance
+  saia_lite_rt:
+    path: ../neom_modules/ai/saia_lite_rt
+  neom_hey:
+    path: ../neom_modules/ai/neom_hey
+  vrlizate:
+    path: ../neom_modules/vr/vrlizate
+  vrlizate_widgets:
+    path: ../neom_modules/vr/vrlizate_widgets
+  vrlizate_scene:
+    path: ../neom_modules/vr/vrlizate_scene
+  vrlizate_joystick:
+    path: ../neom_modules/vr/vrlizate_joystick
+  vrlizate_home:
+    git:
+      url: git@github.com:Open-Neom/vrlizate_home.git
+  vrlizate_assistant:
+    git:
+      url: git@github.com:Open-Neom/vrlizate_assistant.git
+  vrlizate_apps:
+    git:
+      url: git@github.com:Open-Neom/vrlizate_apps.git
+  vrlizate_avatar:
+    git:
+      url: git@github.com:Open-Neom/vrlizate_avatar.git
+  vrlizate_ble:
+    git:
+      url: git@github.com:Open-Neom/vrlizate_ble.git
+  vrlizate_cast:
+    git:
+      url: git@github.com:Open-Neom/vrlizate_cast.git
+  vrlizate_search:
+    git:
+      url: git@github.com:Open-Neom/vrlizate_search.git
+  vrlizate_tracking:
+    git:
+      url: git@github.com:Open-Neom/vrlizate_tracking.git
+  vrlizate_spatial_audio:
+    git:
+      url: git@github.com:Open-Neom/vrlizate_spatial_audio.git
+  vrlizate_physics:
+    git:
+      url: git@github.com:Open-Neom/vrlizate_physics.git
+  vrlizate_world:
+    git:
+      url: git@github.com:Open-Neom/vrlizate_world.git
+  vrlizate_games:
+    git:
+      url: git@github.com:Open-Neom/vrlizate_games.git
+  wordsphere:
+    path: ../wordsphere_plugin
+  archive: ^4.7.1
+  image: ^4.13.1
+  flutter_secure_storage: ^11.2.0

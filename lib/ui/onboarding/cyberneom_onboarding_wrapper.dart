@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:neom_core/domain/model/neom/neom_neuro_state.dart';
 import 'package:neom_generator/engine/audio/neom_voice_pitch_measurement.dart';
 import 'package:neom_generator/engine/neom_breath_engine.dart';

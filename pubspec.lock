@@ -82,7 +82,7 @@ packages:
     source: hosted
     version: "1.0.5"
   archive:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: archive
       sha256: "2fda90592c0afd219c5e285618a98da835cd10df38372666093d25dfe457a2d0"
@@ -150,14 +150,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.4"
-  audio_waveforms:
-    dependency: transitive
-    description:
-      name: audio_waveforms
-      sha256: "03b3430ecf430a2e90185518a228c02be3d26653c62dd931e50d671213a6dbc8"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.2"
   auto_size_text:
     dependency: transitive
     description:
@@ -310,6 +302,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.5.2"
+  change_case:
+    dependency: transitive
+    description:
+      name: change_case
+      sha256: e41ef3df58521194ef8d7649928954805aeb08061917cf658322305e61568003
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.0"
   characters:
     dependency: transitive
     description:
@@ -502,6 +502,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.2"
+  data_assets:
+    dependency: transitive
+    description:
+      name: data_assets
+      sha256: "8bfdbf25ec8a0f4b5a3c993042c4ab9996ba354f0b03d40f4e360f3730d71cae"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.20.0"
   dbus:
     dependency: transitive
     description:
@@ -550,14 +558,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
-  extension:
-    dependency: transitive
-    description:
-      name: extension
-      sha256: "1d6cc5a2d173407284780b68fd94f2b547184d4190ca7dbf6d0bf43eb43c29d8"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0"
   fake_async:
     dependency: transitive
     description:
@@ -582,6 +582,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.2"
+  fftea:
+    dependency: transitive
+    description:
+      name: fftea
+      sha256: fede501db039de9737d527a28b1f5ede8f68342f2c4e53459dfa372bd271ed6c
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.5.0+1"
   file:
     dependency: transitive
     description:
@@ -822,6 +830,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.1"
+  flat_buffers:
+    dependency: transitive
+    description:
+      name: flat_buffers
+      sha256: "7c1de2d6eb5f3e61e5c50040841109f509deaaf2b12ec0d57b92456d9ea50345"
+      url: "https://pub.dev"
+    source: hosted
+    version: "25.9.23"
   flip_card:
     dependency: transitive
     description:
@@ -830,6 +846,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.0"
+  fllama:
+    dependency: "direct overridden"
+    description:
+      path: "../neom_modules/ai/fllama"
+      relative: true
+    source: path
+    version: "0.0.2"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -915,6 +938,19 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.5.0"
+  flutter_gpu:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
+  flutter_gpu_shaders:
+    dependency: transitive
+    description:
+      name: flutter_gpu_shaders
+      sha256: "1e8c5438c24e79629f5688c7b5dfd2b7cf09b36b443a806bc8c083cd8c04644a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.2"
   flutter_image_compress:
     dependency: transitive
     description:
@@ -963,6 +999,70 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.5+1"
+  flutter_inappwebview:
+    dependency: transitive
+    description:
+      name: flutter_inappwebview
+      sha256: "80092d13d3e29b6227e25b67973c67c7210bd5e35c4b747ca908e31eb71a46d5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.5"
+  flutter_inappwebview_android:
+    dependency: transitive
+    description:
+      name: flutter_inappwebview_android
+      sha256: "62557c15a5c2db5d195cb3892aab74fcaec266d7b86d59a6f0027abd672cddba"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.3"
+  flutter_inappwebview_internal_annotations:
+    dependency: transitive
+    description:
+      name: flutter_inappwebview_internal_annotations
+      sha256: e30fba942e3debea7b7e6cdd4f0f59ce89dd403a9865193e3221293b6d1544c6
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.3.0"
+  flutter_inappwebview_ios:
+    dependency: transitive
+    description:
+      name: flutter_inappwebview_ios
+      sha256: "5818cf9b26cf0cbb0f62ff50772217d41ea8d3d9cc00279c45f8aabaa1b4025d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.2"
+  flutter_inappwebview_macos:
+    dependency: transitive
+    description:
+      name: flutter_inappwebview_macos
+      sha256: c1fbb86af1a3738e3541364d7d1866315ffb0468a1a77e34198c9be571287da1
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.2"
+  flutter_inappwebview_platform_interface:
+    dependency: transitive
+    description:
+      name: flutter_inappwebview_platform_interface
+      sha256: cf5323e194096b6ede7a1ca808c3e0a078e4b33cc3f6338977d75b4024ba2500
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.3.0+1"
+  flutter_inappwebview_web:
+    dependency: transitive
+    description:
+      name: flutter_inappwebview_web
+      sha256: "55f89c83b0a0d3b7893306b3bb545ba4770a4df018204917148ebb42dc14a598"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.2"
+  flutter_inappwebview_windows:
+    dependency: transitive
+    description:
+      name: flutter_inappwebview_windows
+      sha256: "8b4d3a46078a2cdc636c4a3d10d10f2a16882f6be607962dbfff8874d1642055"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.0"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -1088,8 +1188,16 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.1"
-  flutter_secure_storage:
+  flutter_scene:
     dependency: transitive
+    description:
+      name: flutter_scene
+      sha256: "6d2a4acb76307b2cf45a6e458fdf61c6bcf02693514656433e5ae67eda9d4056"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.24.3"
+  flutter_secure_storage:
+    dependency: "direct overridden"
     description:
       name: flutter_secure_storage
       sha256: d4e1fb6b2cb524868929e78dc0282fa000554b22060fb53789dc481c9fc95bb8
@@ -1521,22 +1629,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.0"
-  hive:
+  hive_ce:
     dependency: transitive
     description:
-      name: hive
-      sha256: "8dcf6db979d7933da8217edcec84e9df1bdb4e4edc7fc77dbd5aa74356d6d941"
+      name: hive_ce
+      sha256: "03ac73b673f98f48d7a3c364bb0b646a88f931240453e0f389ffcc0e18c5379f"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.3"
-  hive_flutter:
+    version: "2.24.0"
+  hive_ce_flutter:
     dependency: transitive
     description:
-      name: hive_flutter
-      sha256: dca1da446b1d808a51689fb5d0c6c9510c0a2ba01e22805d492c73b68e33eecc
+      name: hive_ce_flutter
+      sha256: "13f027a0c595ba4d1e705ae211a2d4b714ea00602227c2e6e27139b2510823e2"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0"
+    version: "2.6.0"
   hooks:
     dependency: transitive
     description:
@@ -1553,6 +1661,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.15.7"
+  html_unescape:
+    dependency: transitive
+    description:
+      name: html_unescape
+      sha256: "15362d7a18f19d7b742ef8dcb811f5fd2a2df98db9f80ea393c075189e0b61e3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   http:
     dependency: transitive
     description:
@@ -1570,7 +1686,7 @@ packages:
     source: hosted
     version: "4.1.2"
   image:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: image
       sha256: bc13f61f0f5cb77936e78ae5dae3800f442718dac5d2bc4654f03c239230ed0c
@@ -1729,6 +1845,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  isolate_channel:
+    dependency: transitive
+    description:
+      name: isolate_channel
+      sha256: bd56e1bb2787bed914158c2696943dc7254732bfea2c207aafca6bc930580fd4
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.2"
+  jinja:
+    dependency: transitive
+    description:
+      name: jinja
+      sha256: "554d1ddb13c1c6b5236b796993baefca7bb9dd9e448d8fa0a221b52fc8236d22"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.2"
   jni:
     dependency: transitive
     description:
@@ -1913,6 +2045,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.19.6"
+  native_toolchain_cmake:
+    dependency: transitive
+    description:
+      name: native_toolchain_cmake
+      sha256: "8ba223410102665483e873b83d2156720233a6a0181c07f9dc41cb2e961336b0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.2"
   neom_achievements:
     dependency: "direct overridden"
     description:
@@ -2194,12 +2334,19 @@ packages:
     source: path
     version: "1.1.0"
   neom_google_places:
-    dependency: "direct overridden"
+    dependency: "direct main"
     description:
       path: "../neom_modules/content/neom_google_places"
       relative: true
     source: path
     version: "2.0.3"
+  neom_hey:
+    dependency: "direct overridden"
+    description:
+      path: "../neom_modules/ai/neom_hey"
+      relative: true
+    source: path
+    version: "1.0.0"
   neom_historic_state:
     dependency: "direct main"
     description:
@@ -2347,6 +2494,13 @@ packages:
       relative: true
     source: path
     version: "1.6.1"
+  neom_ollama:
+    dependency: "direct overridden"
+    description:
+      path: "../neom_modules/ai/neom_ollama"
+      relative: true
+    source: path
+    version: "1.2.1"
   neom_onboarding:
     dependency: "direct main"
     description:
@@ -2500,7 +2654,7 @@ packages:
       path: "../neom_modules/vr/neom_vr"
       relative: true
     source: path
-    version: "1.4.0"
+    version: "2.0.0"
   neom_vst:
     dependency: "direct overridden"
     description:
@@ -2682,14 +2836,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.9.2"
-  pdfx:
-    dependency: transitive
-    description:
-      name: pdfx
-      sha256: "83bcd2b971fc2f6ee4299659c96d7d66b2ba4807748571a8a4889f1cde14b754"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.11.0"
   percent_indicator:
     dependency: transitive
     description:
@@ -2762,14 +2908,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.12.0"
-  photo_view:
-    dependency: transitive
-    description:
-      name: photo_view
-      sha256: "1fc3d970a91295fbd1364296575f854c9863f225505c28c46e0a03e48960c75e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.15.0"
   pie_chart:
     dependency: transitive
     description:
@@ -3008,6 +3146,34 @@ packages:
       relative: true
     source: path
     version: "1.0.2"
+  saia_gguf:
+    dependency: "direct overridden"
+    description:
+      path: "../neom_modules/ai/saia_gguf"
+      relative: true
+    source: path
+    version: "1.0.0"
+  saia_hey:
+    dependency: "direct overridden"
+    description:
+      path: "../neom_modules/ai/saia_hey"
+      relative: true
+    source: path
+    version: "0.1.0"
+  saia_lite_rt:
+    dependency: "direct overridden"
+    description:
+      path: "../neom_modules/ai/saia_lite_rt"
+      relative: true
+    source: path
+    version: "1.2.0"
+  saia_provenance:
+    dependency: "direct overridden"
+    description:
+      path: "../neom_modules/ai/saia_provenance"
+      relative: true
+    source: path
+    version: "1.0.0"
   saia_turbovec:
     dependency: "direct overridden"
     description:
@@ -3023,6 +3189,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.0"
+  scene:
+    dependency: transitive
+    description:
+      name: scene
+      sha256: "2e80649db2f492eed634a656efb924b43ec8b02a985f92a21d86ab2591583f30"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.1"
   sensors_plus:
     dependency: transitive
     description:
@@ -3266,6 +3440,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.10.2"
+  speech_to_text:
+    dependency: transitive
+    description:
+      name: speech_to_text
+      sha256: f2fabd017b5cb07f4e06d496b2d4b957e39534bc848f92b1e6acac80a10f4967
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.5.0"
+  speech_to_text_platform_interface:
+    dependency: transitive
+    description:
+      name: speech_to_text_platform_interface
+      sha256: "7e447356be3074c471223c9d179ef3f822475350b67ca923ec71ab3bf2ede214"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.5.0"
+  speech_to_text_windows:
+    dependency: transitive
+    description:
+      name: speech_to_text_windows
+      sha256: "2d1d10565b23262386b453b33656299608dc7a66784453735d6c1318f13f44d7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   sqflite:
     dependency: transitive
     description:
@@ -3402,6 +3600,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.12"
+  textwrap:
+    dependency: transitive
+    description:
+      name: textwrap
+      sha256: fd5db6fda8e378c06742254d21a60ea435075e482ab73029c7de1b66a77b5989
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.1"
   timezone:
     dependency: transitive
     description:
@@ -3611,13 +3817,141 @@ packages:
     source: hosted
     version: "15.4.0"
   vrlizate:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: vrlizate
-      sha256: a8ee14e3e6fd673b81e9ada15b9dbedebfe276bc6ca7a8b00b7d5d308091ce9c
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.12.0"
+      path: "../neom_modules/vr/vrlizate"
+      relative: true
+    source: path
+    version: "1.13.0"
+  vrlizate_apps:
+    dependency: "direct overridden"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "056e97ab3ac03e407e2ac92f909b9ab1f28c8165"
+      url: "git@github.com:Open-Neom/vrlizate_apps.git"
+    source: git
+    version: "1.0.0"
+  vrlizate_assistant:
+    dependency: "direct overridden"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "8e6b71d9ff605d67abbded8de329190bebb225bd"
+      url: "git@github.com:Open-Neom/vrlizate_assistant.git"
+    source: git
+    version: "1.0.0"
+  vrlizate_avatar:
+    dependency: "direct overridden"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: df154be8063722a0473ccf54ef7089aa07b1a8b3
+      url: "git@github.com:Open-Neom/vrlizate_avatar.git"
+    source: git
+    version: "1.0.0"
+  vrlizate_ble:
+    dependency: "direct overridden"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "24ae61ebc419e30df5ac868b5a0a1dc0148d8f57"
+      url: "git@github.com:Open-Neom/vrlizate_ble.git"
+    source: git
+    version: "1.0.0"
+  vrlizate_cast:
+    dependency: "direct overridden"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "1eeaf9966c97606bb0d453a3e1baf3b855bcea57"
+      url: "git@github.com:Open-Neom/vrlizate_cast.git"
+    source: git
+    version: "1.0.0"
+  vrlizate_games:
+    dependency: "direct overridden"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: e88c1a75c3b896dd9fd6fa5a294fed3351cf2bfc
+      url: "git@github.com:Open-Neom/vrlizate_games.git"
+    source: git
+    version: "1.0.0"
+  vrlizate_home:
+    dependency: "direct overridden"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "1d5e03008c90c5317d75bc3d161524e350d8017a"
+      url: "git@github.com:Open-Neom/vrlizate_home.git"
+    source: git
+    version: "1.0.0"
+  vrlizate_joystick:
+    dependency: "direct overridden"
+    description:
+      path: "../neom_modules/vr/vrlizate_joystick"
+      relative: true
+    source: path
+    version: "1.0.0"
+  vrlizate_physics:
+    dependency: "direct overridden"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "410aeab3bfeb3acf70818a6d7b9737752d53ecfc"
+      url: "git@github.com:Open-Neom/vrlizate_physics.git"
+    source: git
+    version: "1.0.0"
+  vrlizate_scene:
+    dependency: "direct overridden"
+    description:
+      path: "../neom_modules/vr/vrlizate_scene"
+      relative: true
+    source: path
+    version: "1.0.0"
+  vrlizate_search:
+    dependency: "direct overridden"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "9fc947b1ff56d4cd6b0ec7a785aef4b51b5a01c9"
+      url: "git@github.com:Open-Neom/vrlizate_search.git"
+    source: git
+    version: "1.0.0"
+  vrlizate_spatial_audio:
+    dependency: "direct overridden"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "310704cd0f9cf0147f15db157343f651d8292b60"
+      url: "git@github.com:Open-Neom/vrlizate_spatial_audio.git"
+    source: git
+    version: "1.0.0"
+  vrlizate_tracking:
+    dependency: "direct overridden"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: e10dd9ad2f37724a564959ff4ab2bbc2cc078c28
+      url: "git@github.com:Open-Neom/vrlizate_tracking.git"
+    source: git
+    version: "1.0.0"
+  vrlizate_widgets:
+    dependency: "direct overridden"
+    description:
+      path: "../neom_modules/vr/vrlizate_widgets"
+      relative: true
+    source: path
+    version: "1.0.0"
+  vrlizate_world:
+    dependency: "direct overridden"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "120d939a20f08a993f57e1863adf9084f2d8661b"
+      url: "git@github.com:Open-Neom/vrlizate_world.git"
+    source: git
+    version: "1.0.0"
   wakelock_plus:
     dependency: transitive
     description:
@@ -3722,6 +4056,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.2"
+  wordsphere:
+    dependency: "direct overridden"
+    description:
+      path: "../wordsphere_plugin"
+      relative: true
+    source: path
+    version: "1.3.0"
   xdg_directories:
     dependency: transitive
     description:
@@ -3746,6 +4087,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.4"
+  yaml_edit:
+    dependency: transitive
+    description:
+      name: yaml_edit
+      sha256: "07c9e63ba42519745182b88ca12264a7ba2484d8239958778dfe4d44fe760488"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.4"
   youtube_player_flutter:
     dependency: transitive
     description:

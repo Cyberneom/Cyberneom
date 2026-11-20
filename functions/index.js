@@ -162,12 +162,17 @@ exports.getOrganicPromos = onRequest(
 // (WOO secrets already defined above for getWooProducts)
 // ============================================================
 const { HttpsError } = require('firebase-functions/v2/https');
-
-const STRIPE_SECRET_KEY = defineSecret('STRIPE_SECRET_KEY');
-const GOOGLE_API_KEY    = defineSecret('GOOGLE_API_KEY');
+const {
+  GeminiProxyError,
+  handleGeminiProxy,
+  handleGeminiStreamProxy,
+  isTrustedGuestOrigin,
+} = require('./gemini_proxy');
 
 const CYBERNEOM_PUBLIC_CONFIG = {
   appName: 'Cyberneom',
+  saiaName: 'Itzli',
+  isItzliEnabled: true,
   appBotName: 'Neom Bot',
   appSourceNames: { e: 'Emxi', g: 'Gigmeout', c: 'Cyberneom', i: 'Itzli', d: 'Srznik', o: 'Open Neom' },
   appStoreUrl: 'https://apps.apple.com/us/app/cyberneom/id6452385727',
@@ -225,7 +230,7 @@ const CYBERNEOM_PUBLIC_CONFIG = {
 exports.secureOps = require('firebase-functions/v2/https').onCall(
   {
     region: 'us-central1',
-    secrets: [STRIPE_SECRET_KEY, WOO_KEY, WOO_SECRET, WP_USER, WP_APP_PASSWORD, GOOGLE_API_KEY],
+    secrets: [WOO_KEY, WOO_SECRET, WP_USER, WP_APP_PASSWORD],
   },
   async (request) => {
     const { action, ...params } = request.data || {};
@@ -256,12 +261,14 @@ exports.secureOps = require('firebase-functions/v2/https').onCall(
       }
 
       case 'stripeProxy': {
+        const stripeSecret = process.env.STRIPE_SECRET_KEY || '';
+        if (!stripeSecret) throw new HttpsError('failed-precondition', 'Stripe secret not configured');
         const { method, path, body } = params;
         if (!path) throw new HttpsError('invalid-argument', 'path required');
         const res = await fetch(`https://api.stripe.com/v1${path}`, {
           method: method || 'POST',
           headers: {
-            'Authorization': `Bearer ${STRIPE_SECRET_KEY.value()}`,
+            'Authorization': `Bearer ${stripeSecret}`,
             'Content-Type': 'application/x-www-form-urlencoded',
           },
           body: body || undefined,
@@ -300,8 +307,27 @@ exports.secureOps = require('firebase-functions/v2/https').onCall(
       }
 
       case 'getSecret':
-        if (params.key === 'googleApiKey') return { value: GOOGLE_API_KEY.value() };
+        if (params.key === 'googleApiKey') {
+          const gKey = process.env.GOOGLE_API_KEY || '';
+          if (!gKey) throw new HttpsError('failed-precondition', 'googleApiKey not configured');
+          return { value: gKey };
+        }
         throw new HttpsError('invalid-argument', `Unknown secret: ${params.key}`);
+
+      case 'geminiProxy': {
+        try {
+          return await handleGeminiProxy({
+            params,
+            auth: request.auth,
+            db: admin.firestore(),
+          });
+        } catch (err) {
+          if (err instanceof GeminiProxyError) {
+            throw new HttpsError(err.code, err.message);
+          }
+          throw new HttpsError('unavailable', 'Itzli no pudo completar la respuesta en este momento.');
+        }
+      }
 
       default:
         throw new HttpsError('invalid-argument', `Unknown action: ${action}`);
@@ -318,28 +344,35 @@ exports.secureOpsWeb = onRequest(
   {
     region: 'us-central1',
     cors: true,
-    secrets: [STRIPE_SECRET_KEY, WOO_KEY, WOO_SECRET, WP_USER, WP_APP_PASSWORD, GOOGLE_API_KEY],
+    secrets: [WOO_KEY, WOO_SECRET, WP_USER, WP_APP_PASSWORD],
   },
   async (req, res) => {
     try {
-      const body = req.body || {};
-      const { action, ...params } = typeof body === 'string' ? JSON.parse(body) : body;
+      const rawBody = req.body || {};
+      const parsedBody = typeof rawBody === 'string' ? JSON.parse(rawBody) : rawBody;
+      const unwrapped = (parsedBody.data && typeof parsedBody.data === 'object' && parsedBody.data.action)
+        ? parsedBody.data
+        : parsedBody;
+      const { action, ...params } = unwrapped;
 
       if (action === 'getConfig') {
         return res.status(200).json(CYBERNEOM_PUBLIC_CONFIG);
       }
 
-      // All other actions require auth
+      // All other actions require auth, except embedded Itzli cloud proxy calls
+      // from official Cyberneom web origins (rate-limited by hashed IP).
+      const isItzliProxyAction = action === 'geminiProxy' || action === 'geminiStreamProxy';
       const authHeader = req.headers.authorization || '';
-      if (!authHeader.startsWith('Bearer ')) {
+      let decodedToken = null;
+      if (authHeader.startsWith('Bearer ')) {
+        const token = authHeader.split('Bearer ')[1];
+        try {
+          decodedToken = await admin.auth().verifyIdToken(token);
+        } catch (e) {
+          return res.status(401).json({ error: 'Invalid token' });
+        }
+      } else if (!isItzliProxyAction || !isTrustedGuestOrigin(req)) {
         return res.status(401).json({ error: 'Missing Bearer token' });
-      }
-
-      const token = authHeader.split('Bearer ')[1];
-      try {
-        await admin.auth().verifyIdToken(token);
-      } catch (e) {
-        return res.status(401).json({ error: 'Invalid token' });
       }
 
       switch (action) {
@@ -355,12 +388,14 @@ exports.secureOpsWeb = onRequest(
         }
 
         case 'stripeProxy': {
+          const stripeSecret = process.env.STRIPE_SECRET_KEY || '';
+          if (!stripeSecret) return res.status(503).json({ error: 'Stripe secret not configured' });
           const { method, path, body: stripeBody } = params;
           if (!path) return res.status(400).json({ error: 'path required' });
           const stripeRes = await fetch(`https://api.stripe.com/v1${path}`, {
             method: method || 'POST',
             headers: {
-              'Authorization': `Bearer ${STRIPE_SECRET_KEY.value()}`,
+              'Authorization': `Bearer ${stripeSecret}`,
               'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: stripeBody || undefined,
@@ -400,8 +435,46 @@ exports.secureOpsWeb = onRequest(
         }
 
         case 'getSecret':
-          if (params.key === 'googleApiKey') return res.status(200).json({ value: GOOGLE_API_KEY.value() });
+          if (params.key === 'googleApiKey') {
+            const gKey = process.env.GOOGLE_API_KEY || '';
+            if (!gKey) return res.status(503).json({ error: 'googleApiKey not configured' });
+            return res.status(200).json({ value: gKey });
+          }
           return res.status(400).json({ error: `Unknown secret: ${params.key}` });
+
+        case 'geminiProxy': {
+          const authCtx = decodedToken ? { uid: decodedToken.uid, token: decodedToken } : null;
+          try {
+            const result = await handleGeminiProxy({
+              params,
+              auth: authCtx,
+              req,
+              db: admin.firestore(),
+            });
+            return res.status(200).json(result);
+          } catch (err) {
+            if (err instanceof GeminiProxyError) {
+              return res.status(err.httpStatus).json({ error: { message: err.message, status: err.code } });
+            }
+            return res.status(503).json({
+              error: {
+                message: 'Itzli no pudo completar la respuesta en este momento.',
+                status: 'unavailable',
+              },
+            });
+          }
+        }
+
+        case 'geminiStreamProxy': {
+          const authCtx = decodedToken ? { uid: decodedToken.uid, token: decodedToken } : null;
+          return await handleGeminiStreamProxy({
+            params,
+            auth: authCtx,
+            req,
+            res,
+            db: admin.firestore(),
+          });
+        }
 
         default:
           return res.status(400).json({ error: `Unknown action: ${action}` });

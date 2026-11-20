@@ -17,7 +17,7 @@ import 'package:neom_posts/ui/upload/web/text_post_web_modal.dart';
 import 'package:sint/sint.dart';
 import 'package:sint_sentinel/sint_sentinel.dart';
 
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:neom_commons/app_flavour.dart';
 import 'package:neom_commons/ui/theme/app_color.dart';
@@ -69,7 +69,7 @@ void main() async {
     await AppConfig.instance.initialize(
       app: AppInUse.c,
     );
-    AppProperties();
+    await AppProperties.ensureInitialized();
     AppFlavour();
     initNeomCommons();
     await hiveFuture;
